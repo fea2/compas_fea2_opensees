@@ -10,7 +10,7 @@ from subprocess import Popen
 from subprocess import PIPE
 
 from compas_fea2.results import Results, StepResults
-from compas_fea2.backends.opensees.results.read_results import get_data
+from .read_results import get_data
 
 
 class OpenseesResults(Results):

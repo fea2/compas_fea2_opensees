@@ -7,8 +7,7 @@ from compas_fea2.problem import Problem
 from compas_fea2.utilities._utils import timer
 from compas_fea2.utilities._utils import launch_process
 
-# from compas_fea2.backends.opensees.results import odb_extract
-from compas_fea2.backends.opensees.job.input_file import OpenseesInputFile
+from ..job.input_file import OpenseesInputFile
 
 
 class OpenseesProblem(Problem):
