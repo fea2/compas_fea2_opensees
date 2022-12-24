@@ -300,9 +300,9 @@ try:
         OpenseesParametersFile,
     )
 
-    @plugin(category='fea_backends')
+    # build the plugin registry
     def register_backend():
-        backend = compas_fea2.BACKENDS['opensees']
+        backend = compas_fea2.BACKENDS['compas_fea2_opensees']
 
         backend[Model] = OpenseesModel
         backend[DeformablePart] = OpenseesPart
