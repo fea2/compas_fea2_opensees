@@ -133,7 +133,7 @@ class OpenseesRectangularSection(RectangularSection):
     def __init__(self, w, h, material, name=None, **kwargs):
         super(OpenseesRectangularSection, self).__init__(w=w, h=h, material=material, name=name, **kwargs)
 
-    def _generate_jobdata(self):
+    def jobdata(self):
         return 'section Elastic {} {} {} {} {} {} {}'.format(self.key, self.material.E, self.A, self.Iyy, self.Ixx, self.material.G, self.J)
 
 
@@ -209,7 +209,7 @@ class OpenseesShellSection(ShellSection):
     def __init__(self, t, material, name=None, **kwargs):
         super(OpenseesShellSection, self).__init__(t, material, name=name, **kwargs)
 
-    def _generate_jobdata(self):
+    def jobdata(self):
         return 'section ElasticMembranePlateSection {} {} {} {} {}'.format(self.key, self.material.E, self.material.v, self.t, self.material.density)
 
 

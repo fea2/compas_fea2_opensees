@@ -17,7 +17,7 @@ class OpenseesFieldOutput(FieldOutput):
         self.nodes_set = nodes_set
         self.elements_set = elements_set
 
-    def _generate_jobdata(self):
+    def jobdata(self):
         node_outputs = {
             'u':  '1 2 3 disp',
             'ur': '4 5 6 disp',
@@ -60,7 +60,6 @@ class OpenseesFieldOutput(FieldOutput):
                     output = element_outputs[field]
                     data.append(f'recorder Element -file {field}.out -time -eleRange {key_range} -dof {output}')
                     data.append(f'recorder Element -xml {field}.xml -time -eleRange {key_range} -dof {output}')
-
 
         return '\n'.join(data)
 

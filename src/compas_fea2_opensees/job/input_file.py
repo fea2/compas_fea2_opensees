@@ -26,7 +26,7 @@ class OpenseesInputFile(InputFile):
         super(OpenseesInputFile, self).__init__(name=name, **kwargs)
         self._extension = 'tcl'
 
-    def _generate_jobdata(self):
+    def jobdata(self):
         """Generate the content of the input fileself from the Problem object.
 
         Parameters
@@ -58,7 +58,7 @@ class OpenseesInputFile(InputFile):
 #------------------------------------------------------------------
 #------------------------------------------------------------------
 #
-#{self.problem.model._generate_jobdata()}
+#{self.problem.model.jobdata()}
 #
 #
 # -----------------------------------------------------------------
@@ -67,7 +67,7 @@ class OpenseesInputFile(InputFile):
 # -----------------------------------------------------------------
 # -----------------------------------------------------------------
 #
-#{self.problem._generate_jobdata()}
+#{self.problem.jobdata()}
 """
 
 

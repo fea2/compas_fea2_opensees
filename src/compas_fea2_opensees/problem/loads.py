@@ -25,7 +25,7 @@ class OpenseesPointLoad(PointLoad):
     def __init__(self, x=None, y=None, z=None, xx=None, yy=None, zz=None, axes='global', name=None, **kwargs):
         super(OpenseesPointLoad, self).__init__(x=x, y=y, z=z, xx=xx, yy=yy, zz=zz, axes=axes, name=name, **kwargs)
 
-    def _generate_jobdata(self, distribution):
+    def jobdata(self, distribution):
         jobdata = []
         if not isinstance(distribution, Iterable):
             distribution = [distribution]

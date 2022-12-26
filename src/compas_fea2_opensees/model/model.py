@@ -21,9 +21,8 @@ class OpenseesModel(Model):
     def __init__(self, name=None, description=None, author=None, **kwargs):
         super(OpenseesModel, self).__init__(name=name, description=description, author=author, **kwargs)
 
-
-    def _generate_jobdata(self):
+    def jobdata(self):
         data = [f'#\nwipe\n#']
         for part in self.parts:
-            data.append(part._generate_jobdata(self.bcs))
+            data.append(part.jobdata())
         return '\n'.join(data)

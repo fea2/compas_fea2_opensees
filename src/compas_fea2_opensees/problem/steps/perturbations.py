@@ -17,7 +17,7 @@ class OpenseesModalAnalysis(ModalAnalysis):
     def __init__(self, modes=1, name=None, **kwargs):
         super(OpenseesModalAnalysis, self).__init__(modes, name=name, **kwargs)
         raise NotImplementedError
-    # def _generate_jobdata(self):
+    # def jobdata(self):
     #     'timeSeries Constant {0} -factor 1.0'.format(s_index)
     #     'pattern Plain {0} {0} -fact {1} {2}'.format(s_index, 1, '{')
 

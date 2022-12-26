@@ -18,7 +18,7 @@ from compas_fea2.model import RollerBCXZ
 dofs = ['x',  'y',  'z',  'xx', 'yy', 'zz']
 
 
-def _generate_jobdata(bc, nodes):
+def _jobdata(bc, nodes):
     return '\n'.join(['fix {} {}'.format(node.key, ' '.join([str(int(getattr(bc, dof))) for dof in dofs[:node.part.ndf]])) for node in nodes])
 
 
@@ -30,8 +30,8 @@ class OpenseesFixedBC(FixedBC):
     def __init__(self, name=None, **kwargs):
         super(OpenseesFixedBC, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 
 class OpenseesPinnedBC(PinnedBC):
@@ -42,8 +42,8 @@ class OpenseesPinnedBC(PinnedBC):
     def __init__(self, name=None, **kwargs):
         super(OpenseesPinnedBC, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 
 class OpenseesFixedBCXX(ClampBCXX):
@@ -54,8 +54,8 @@ class OpenseesFixedBCXX(ClampBCXX):
     def __init__(self, name=None, **kwargs):
         super(OpenseesFixedBCXX, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 
 class OpenseesFixedBCYY(ClampBCYY):
@@ -66,9 +66,8 @@ class OpenseesFixedBCYY(ClampBCYY):
     def __init__(self, name=None, **kwargs):
         super(OpenseesFixedBCYY, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
-
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 class OpenseesFixedBCZZ(ClampBCZZ):
     """OpenSees implementation of :class:`FixedBCZZ`.\n
@@ -78,8 +77,8 @@ class OpenseesFixedBCZZ(ClampBCZZ):
     def __init__(self, name=None, **kwargs):
         super(OpenseesFixedBCZZ, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 
 class OpenseesRollerBCX(RollerBCX):
@@ -90,8 +89,8 @@ class OpenseesRollerBCX(RollerBCX):
     def __init__(self, name=None, **kwargs):
         super(OpenseesRollerBCX, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 
 class OpenseesRollerBCY(RollerBCY):
@@ -102,8 +101,8 @@ class OpenseesRollerBCY(RollerBCY):
     def __init__(self, name=None, **kwargs):
         super(OpenseesRollerBCY, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 
 class OpenseesRollerBCZ(RollerBCZ):
@@ -114,8 +113,8 @@ class OpenseesRollerBCZ(RollerBCZ):
     def __init__(self, name=None, **kwargs):
         super(OpenseesRollerBCZ, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 
 class OpenseesRollerBCXY(RollerBCXY):
@@ -126,8 +125,8 @@ class OpenseesRollerBCXY(RollerBCXY):
     def __init__(self, name=None, **kwargs):
         super(OpenseesRollerBCXY, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 
 class OpenseesRollerBCYZ(RollerBCYZ):
@@ -138,8 +137,8 @@ class OpenseesRollerBCYZ(RollerBCYZ):
     def __init__(self, name=None, **kwargs):
         super(OpenseesRollerBCYZ, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 
 class OpenseesRollerBCXZ(RollerBCXZ):
@@ -150,5 +149,5 @@ class OpenseesRollerBCXZ(RollerBCXZ):
     def __init__(self, name=None, **kwargs):
         super(OpenseesRollerBCXZ, self).__init__(name=name, **kwargs)
 
-    def _generate_jobdata(self, nodes):
-        return _generate_jobdata(self, nodes)
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)

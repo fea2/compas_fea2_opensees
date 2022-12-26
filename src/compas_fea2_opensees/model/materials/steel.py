@@ -21,5 +21,5 @@ class OpenseesSteel(Steel):
     def EshE(self):
         return self._EshE
 
-    def _generate_jobdata(self):
+    def jobdata(self):
         return 'uniaxialMaterial Steel01 {0} {1} {2} {3}'.format(self.key, self.fy, self.E, self.EshE)

@@ -43,7 +43,7 @@ class OpenseesBeamElement(BeamElement):
         except:
             raise ValueError('{} is not a valid implementation model'.format(implementation))
 
-    def _generate_jobdata(self):
+    def jobdata(self):
         return '\n'.join(['geomTransf Corotational {} {}'.format(self.key, ' '.join([str(i) for i in self.frame])),
                           self._job_data()
                           ])
@@ -117,7 +117,7 @@ class OpenseesShellElement(ShellElement):
     def mat_behaviour(self):
         return self._mat_behaviour
 
-    def _generate_jobdata(self):
+    def jobdata(self):
         return getattr(self, '_'+self._implementation.lower())()
         try:
             return getattr(self, '_'+self._implementation.lower())()
@@ -235,13 +235,13 @@ class _OpenseesElement3D(_Element3D):
         except:
             raise ValueError('{} is not a valid implementation.'.format(self._implementation))
 
-    def _generate_jobdata(self):
+    def jobdata(self):
         return 'element {}  {}  {}'.format(self.key,
                                            self._implementation,
                                            ' '.join(node.key for node in self.nodes),
                                            self.section.material.key)
 
-    # TODO complete implementations: for now it is all done in _generate_jobdata
+    # TODO complete implementations: for now it is all done in jobdata
     def _stdbrick(self):
         """Construct an eight-node brick element object, which uses the standard isoparametric formulation.
 
@@ -322,7 +322,7 @@ class OpenseesTetrahedronElement(TetrahedronElement):
         if len(self._nodes) not in [4]:
             raise ValueError('A solid element with {} nodes cannot be created.'.format(len(nodes)))
 
-    def _generate_jobdata(self):
+    def jobdata(self):
         try:
             return getattr(self, '_'+self.implementation)()
         except:

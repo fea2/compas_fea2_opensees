@@ -15,18 +15,7 @@ class OpenseesStaticStep(StaticStep):
         super(OpenseesStaticStep, self).__init__(max_increments, initial_inc_size,
                                                  min_inc_size, time, nlgeom, modify, name=name, **kwargs)
 
-    def _generate_jobdata(self):
-        """Generates the string information for the input file.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        input file data line (str).
-        """
-
+    def jobdata(self):
         return """#
 {}
 # - Displacements
@@ -77,12 +66,12 @@ timeSeries Constant {1} -factor 1.0
 """.format(self.name, self.problem._steps_order.index(self))
 
     def _generate_displacements_section(self):
-        return '\n'.join([pattern.load._generate_jobdata(pattern.distribution) for pattern in self.displacements]) or '#'
+        return '\n'.join([pattern.load.jobdata(pattern.distribution) for pattern in self.displacements]) or '#'
 
     def _generate_loads_section(self):
         if self.loads:
             return "pattern Plain {0} {0} -fact 1 {{\n{1}\n}}".format(self.problem._steps_order.index(self),
-                                                                    '\n'.join([pattern.load._generate_jobdata(pattern.distribution) for pattern in self.loads]))
+                                                                    '\n'.join([pattern.load.jobdata(pattern.distribution) for pattern in self.loads]))
         else:
             return '#'
 
@@ -93,10 +82,10 @@ timeSeries Constant {1} -factor 1.0
         data_section=['#']
         if self._field_outputs:
             for foutput in self._field_outputs:
-                data_section.append(foutput._generate_jobdata())
+                data_section.append(foutput.jobdata())
         if self._history_outputs:
             for houtput in self._history_outputs:
-                data_section.append(houtput._generate_jobdata())
+                data_section.append(houtput.jobdata())
         return '\n'.join(data_section)
 
 

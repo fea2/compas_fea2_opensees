@@ -75,7 +75,7 @@ class OpenseesProblem(Problem):
     # =============================================================================
 
     @timer(message='Problem generated in ')
-    def _generate_jobdata(self):
+    def jobdata(self):
         """Generates the string information for the input file.
 
         Parameters
@@ -86,8 +86,7 @@ class OpenseesProblem(Problem):
         -------
         input file data line (str).
         """
-
-        return '\n'.join([step._generate_jobdata() for step in self._steps_order])
+        return '\n'.join([step.jobdata() for step in self._steps_order])
         """recorder Node -file Node3.out -time -node 3 -dof 1 2 disp
 recorder Element -file Element1.out -time -ele 1 force
 
