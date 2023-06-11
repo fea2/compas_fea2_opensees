@@ -197,6 +197,9 @@ def read_results_file(database_path, database_name, field_output):
     if field_output.node_outputs:
         for field in field_output.node_outputs:
             field = field.lower()
+            if field not in field_info:
+                print(f'WARNING - the output request {field.upper()} is either not implemented or not available.')
+                continue
             number_of_components = field_info[field]["num_of_comp"]
             results.setdefault(field, {})
 
@@ -226,9 +229,12 @@ def read_results_file(database_path, database_name, field_output):
 
             print('***** {0}.out data loaded *****'.format(filepath))
 
-    elif field_output.element_outputs:
+    if field_output.element_outputs:
         for field in field_output.element_outputs:
             field = field.lower()
+            if field not in field_info:
+                print(f'WARNING - the output request {field.upper()} is either not implemented or not available.')
+                continue
             number_of_components = field_info[field]["num_of_comp"]
             results.setdefault(field, {})
 
@@ -255,7 +261,7 @@ def read_results_file(database_path, database_name, field_output):
 
             print('***** {0}.out data loaded *****'.format(filepath))
 
-    else:
+    if not field_output.node_outputs and not field_output.element_outputs:
         print('WARNING - No field outputs found! Did you add an output request before running the analysis?')
 
     database = os.path.join(database_path, f'{database_name}-results.db')
