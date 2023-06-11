@@ -1,7 +1,7 @@
 import os.path
 from datetime import datetime
-from compas_fea2.job.input_file import InputFile
-from compas_fea2.job.input_file import ParametersFile
+from compas_fea2.job import InputFile
+from compas_fea2.job import ParametersFile
 
 
 class OpenseesInputFile(InputFile):

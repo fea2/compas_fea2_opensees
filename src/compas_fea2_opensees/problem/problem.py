@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
 from pathlib import Path
 from compas_fea2.problem import Problem
 from compas_fea2.utilities._utils import timer
@@ -31,7 +32,7 @@ class OpenseesProblem(Problem):
 
     @timer(message='Analysis completed in')
     def analyse(self, path, exe='C:/OpenSees3.2.0/bin/OpenSees.exe', verbose=False, *args, **kwargs):
-        """Runs the analysis through abaqus.
+        """Runs the analysis through the OpenSees solver.
 
         Parameters
         ----------
@@ -39,36 +40,48 @@ class OpenseesProblem(Problem):
             Path to the analysis folder. A new folder with the name
             of the problem will be created at this location for all the required
             analysis files.
-        save : bool
-            Save structure to .cfp before the analysis.
         exe : str, optional
-            Full terminal command to bypass subprocess defaults, by default ``None``.
-        cpus : int, optional
-            Number of CPU cores to use, by default ``1``.
-        output : bool, optional
-            Print terminal output, by default ``True``.
-        overwrite : bool, optional
-            Overwrite existing analysis files, by default ``True``.
-        restart : bool, optional
-            If `True`, save additional files for restarting the analysis later,
-            by default `False`
+            Location of the OpenSees executable, by default ``C:/OpenSees3.2.0/bin/OpenSees.exe``.
+        verbose : bool, optional
+            Decide wether print or not the output from the solver, by default ``False``.
 
         Returns
         -------
         None
 
         """
-        import os
         print('\nBegin the analysis...')
         self._check_analysis_path(path)
+        print(self.path, self.model.path)
         self.write_input_file()
         filepath=os.path.join(self.path, self.name+'.tcl')
         cmd = 'cd {} && {} {}'.format(self.path, exe, filepath)
         for line in launch_process(cmd_args=cmd, cwd=self.path, verbose=verbose):
             print(line)
 
-    def analyse_and_extract(self, path, exe='C:/OpenSees3.2.0/bin/OpenSees.exe', cpus=1, verbose=False, *args, **kwargs):
-        self.analyse(path=path, exe=exe, verbose=False, *args, **kwargs)
+    def analyse_and_extract(self, path, exe='C:/OpenSees3.2.0/bin/OpenSees.exe', verbose=False, *args, **kwargs):
+        """Runs the analysis through the OpenSees solver and extract the results
+        from the native format into a SQLite database. The Model is also saved as
+        .cfm file.
+
+        Parameters
+        ----------
+        path : str, :class:`pathlib.Path`
+            Path to the analysis folder. A new folder with the name
+            of the problem will be created at this location for all the required
+            analysis files.
+        exe : str, optional
+            Location of the OpenSees executable, by default ``C:/OpenSees3.2.0/bin/OpenSees.exe``.
+        verbose : bool, optional
+            Decide wether print or not the output from the solver, by default ``False``.
+
+        Returns
+        -------
+        None
+
+        """
+        self.analyse(path=path, exe=exe, verbose=verbose, *args, **kwargs)
+        self.model.to_cfm(self.model.path.joinpath(f'{self.model.name}.cfm'))
         return self.convert_results_to_sqlite()
     # =============================================================================
     #                               Job data
@@ -125,7 +138,7 @@ loadConst -time 0.0
         None
 
         """
-        print('\nExtracting data from Abaqus .odb file...')
+        print('\nExtracting data from Opensees .out files...')
         database_path = database_path or self.path
         database_name = database_name or self.name
         from ..results.results_to_sql import read_results_file #, create_database
