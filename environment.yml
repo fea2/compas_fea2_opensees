@@ -2,5 +2,9 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - pip
+  - pip:
+    - -e ../compas_fea2_opensees
   - compas_view2
   - qtpy
+  
