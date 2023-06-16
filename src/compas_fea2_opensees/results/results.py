@@ -10,8 +10,6 @@ from subprocess import Popen
 from subprocess import PIPE
 
 from compas_fea2.results import Results, StepResults
-from .read_results import get_data
-
 
 class OpenseesResults(Results):
 

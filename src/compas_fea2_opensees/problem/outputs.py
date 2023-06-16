@@ -8,6 +8,14 @@ from typing import Iterable
 class OpenseesFieldOutput(FieldOutput):
     """"""
     __doc__ += FieldOutput.__doc__
+    __doc__ += """
+Additional Parameters
+---------------------
+nodes_set : set
+    __description
+elements_set : set
+    __descriptions
+"""
 
     def __init__(self, node_outputs=None, element_outputs=None, nodes_set=None, elements_set=None, frequency=1, name=None, **kwargs):
         super(OpenseesFieldOutput, self).__init__(node_outputs=node_outputs,

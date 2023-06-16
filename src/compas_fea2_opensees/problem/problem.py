@@ -158,5 +158,3 @@ loadConst -time 0.0
         for step in self.steps:
             for field_output in step.field_outputs:
                 read_results_file(database_path, database_name, field_output)
-        # create_database(results)
-        # return Path(database_path).joinpath('{}-results.db'.format(database_name))

@@ -107,7 +107,7 @@ class OpenseesShellElement(ShellElement):
             if len(nodes)==3:
                 self._implementation = 'shelldkgt'#'Tri31'
             elif len(nodes)==4:
-                self._implementaiton = 'asdshellq4'
+                self._implementaiton = 'shellMIT4'
             else:
                 raise NotImplementedError('An element with {} nodes is not supported'.format(len(nodes)))
         self._mat_behaviour = mat_behaviour
@@ -133,7 +133,7 @@ class OpenseesShellElement(ShellElement):
         ----
         The optional arguments are not implemented.
         """
-        return 'element tri31 {} {} {} {} {}'.format(self.key,
+        return 'element tri31 {} {} {} {} {} 10'.format(self.key,
                                                     ' '.join(str(node.key) for node in self.nodes),
                                                     self.section.t,
                                                     self._mat_behaviour,
@@ -141,7 +141,7 @@ class OpenseesShellElement(ShellElement):
 
     def _shelldkgt(self):
         """Construct a ShellDKGT element object, which is a triangular shell
-        element based on the theory of generalized conforming element..
+        element based on the theory of generalized conforming element.
 
         For more information about this element in OpenSees check
         `here <https://opensees.berkeley.edu/wiki/index.php/ShellDKGT>`_
@@ -151,6 +151,30 @@ class OpenseesShellElement(ShellElement):
         The optional arguments are not implemented.
         """
         return 'element ShellDKGT {} {} {}'.format(self.key,
+                                                    ' '.join(str(node.key) for node in self.nodes),
+                                                    self.section.key)
+
+
+    def _shelldkgq(self):
+        """Construct a ShellDKGQ element object, which is a quadrilateral shell element based on the theory of generalized conforming element.
+
+        For more information about this element in OpenSees check
+        `here <https://opensees.berkeley.edu/wiki/index.php/ShellDKGQ>`_
+
+        Note
+        ----
+        The optional arguments are not implemented.
+        """
+        return 'element ShellDKGQ {} {} {}'.format(self.key,
+                                                    ' '.join(str(node.key) for node in self.nodes),
+                                                    self.section.key)
+
+    def _shellmit4(self):
+        """Construct a ShellMITC4 element object, which uses a bilinear
+        isoparametric formulation in combination with a modified shear
+        interpolation to improve thin-plate bending performance.
+        """
+        return 'element ShellMITC4 {} {} {}'.format(self.key,
                                                     ' '.join(str(node.key) for node in self.nodes),
                                                     self.section.key)
 
