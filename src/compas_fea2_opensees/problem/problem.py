@@ -55,9 +55,10 @@ class OpenseesProblem(Problem):
         self.write_input_file()
         filepath=os.path.join(self.path, self.name+'.tcl')
 
+        opensees_version = '3.3.0'
         if not exe:
-            if os.name.lower() == 'windows':
-                exe='C:/OpenSees3.3.0/bin/OpenSees.exe'
+            if os.name.lower() == 'nt':
+                exe='C:/OpenSees3.2.0/bin/OpenSees.exe'
             elif os.name.lower() == 'posix':
                 exe = '/Applications/OpenSees3.3.0/bin/OpenSees'
             else:

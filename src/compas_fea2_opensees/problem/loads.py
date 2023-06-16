@@ -61,7 +61,19 @@ class OpenseesGravityLoad(GravityLoad):
 
     def __init__(self, g=9.81, x=0., y=0., z=-1., name=None, **kwargs):
         super(OpenseesGravityLoad, self).__init__(g, x, y, z, name=name, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self, distribution):
+        if not distribution:
+            distribution=self.model.parts
+        if not isinstance(distribution, Iterable):
+            distribution = [distribution]
+        jobdata = []
+        for part in distribution:
+            for element in part.elements:
+                sw_node = [element.volume*self.g*element.section.material.density/len(element.nodes)*c for c in [self.x, self.y, self.z]]+[0., 0., 0.]
+                for n in element.nodes:
+                    jobdata.append('\tload {} {}'.format(n.key, ' '.join([str(c) for c in sw_node])))
+        return '\n'.join(jobdata)
 
 
 class OpenseesPrestressLoad(PrestressLoad):
@@ -82,7 +94,11 @@ class OpenseesTributaryLoad(TributaryLoad):
     def __init__(self, components, axes='global', name=None, **kwargs):
         super(OpenseesTributaryLoad, self).__init__(components, axes, name, **kwargs)
         raise NotImplementedError
-
+        # for v in self.model.discretized_boudary_mesh.vertices():
+        #     n = self.model.find_node_by_location(self.model.discretized_boudary_mesh.vertex_coordinates(v))
+        #     gravity_load = GravityLoad(g, x, y, z)
+        #     tributary_area = self.model.discretized_boudary_mesh.vertex_area(v)
+        #     tributary_volume = tributary_area
 
 class OpenseesHarmonicPointLoad(HarmonicPointLoad):
     """OpenSees implementation of :class:`compas_fea2.problem.HarmonicPointLoad`.\n
