@@ -118,7 +118,6 @@ class OpenseesShellElement(ShellElement):
         return self._mat_behaviour
 
     def jobdata(self):
-        return getattr(self, '_'+self._implementation.lower())()
         try:
             return getattr(self, '_'+self._implementation.lower())()
         except:

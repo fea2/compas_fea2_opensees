@@ -192,6 +192,9 @@ def read_results_file(database_path, database_name, field_output):
         "s": {"num_of_comp": 6,
               "description_table": [['Stresses', 'S11 S22 S12 M11 M22 M12'], ['magnitude']],
               "field_table": ['S11', 'S22', 'S12', 'M11', 'M22', 'M12']},
+        "sf": {"num_of_comp": 6,
+              "description_table": [['Section Forces', 'F11 F22 F33 M11 M22 M33'], ['magnitude']],
+              "field_table": ['F11', 'F22', 'F33', 'M11', 'M22', 'M33']},
     }
 
     if field_output.node_outputs:
