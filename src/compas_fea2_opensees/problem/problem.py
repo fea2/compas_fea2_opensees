@@ -31,7 +31,7 @@ class OpenseesProblem(Problem):
     # =========================================================================
 
     @timer(message='Analysis completed in')
-    def analyse(self, path, exe='C:/OpenSees3.2.0/bin/OpenSees.exe', verbose=False, *args, **kwargs):
+    def analyse(self, path, exe=None, verbose=False, *args, **kwargs):
         """Runs the analysis through the OpenSees solver.
 
         Parameters
@@ -52,14 +52,25 @@ class OpenseesProblem(Problem):
         """
         print('\nBegin the analysis...')
         self._check_analysis_path(path)
-        print(self.path, self.model.path)
         self.write_input_file()
         filepath=os.path.join(self.path, self.name+'.tcl')
+
+        if not exe:
+            if os.name.lower() == 'windows':
+                exe='C:/OpenSees3.3.0/bin/OpenSees.exe'
+            elif os.name.lower() == 'posix':
+                exe = '/Applications/OpenSees3.3.0/bin/OpenSees'
+            else:
+                raise ValueError('you must specify the location of the solver.')
+
+        if not os.path.exists(exe):
+            raise ValueError(f'backend not found at {exe}')
+
         cmd = 'cd {} && {} {}'.format(self.path, exe, filepath)
         for line in launch_process(cmd_args=cmd, cwd=self.path, verbose=verbose):
             print(line)
 
-    def analyse_and_extract(self, path, exe='C:/OpenSees3.2.0/bin/OpenSees.exe', verbose=False, *args, **kwargs):
+    def analyse_and_extract(self, path, exe=None, verbose=False, *args, **kwargs):
         """Runs the analysis through the OpenSees solver and extract the results
         from the native format into a SQLite database. The Model is also saved as
         .cfm file.
