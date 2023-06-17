@@ -157,6 +157,7 @@ from compas_fea2.problem.outputs import (
 from compas_fea2.results import (
     Results,
     StepResults,
+    NodeFieldResults,
 )
 
 # Input File
@@ -292,6 +293,7 @@ try:
     from .results import (
         OpenseesResults,
         OpenseesStepResults,
+        OpenseesNodeFieldResults,
     )
 
     # Opensees Input File
@@ -391,6 +393,7 @@ try:
 
         backend[Results] = OpenseesResults
         backend[StepResults] = OpenseesStepResults
+        backend[NodeFieldResults] = OpenseesNodeFieldResults
 
         backend[InputFile] = OpenseesInputFile
         backend[ParametersFile] = OpenseesParametersFile

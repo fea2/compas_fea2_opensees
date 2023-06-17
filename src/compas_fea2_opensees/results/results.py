@@ -9,29 +9,18 @@ from time import time
 from subprocess import Popen
 from subprocess import PIPE
 
-from compas_fea2.results import Results, StepResults
+from compas_fea2.results import Results, StepResults, NodeFieldResults
 
 class OpenseesResults(Results):
 
-    def __init__(self, database_name, database_path, fields='all', steps='all', sets=None, output=True, components=None, exe=None, license='research',):
-        super(OpenseesResults, self).__init__(database_name, database_path, fields, steps, sets, components, output)
-        raise NotImplementedError
-
-    # ==========================================================================
-    # Extract results
-    # ==========================================================================
-
-    def extract_data(self):
-        """Extract data from the Opensees .odb file.
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotADirectoryError()
-
+    def __init__(self, location, components, invariants, name=None, *kwargs):
+        super(OpenseesResults, self).__init__(location, components, invariants, name=name, *kwargs)
 
 class OpenseesStepResults(StepResults):
     def __init__(self, step, model, name=None):
         super(OpenseesStepResults, self).__init__(step, model, name)
+
+class OpenseesNodeFieldResults(NodeFieldResults):
+    def __init__(self, field_name,step, name=None, *args, **kwargs):
+        super(OpenseesNodeFieldResults, self).__init__(field_name, step, name, *args, **kwargs)
+
