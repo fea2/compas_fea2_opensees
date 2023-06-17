@@ -21,7 +21,6 @@ from __future__ import print_function
 # additional software-based classes
 from .results import (
     OpenseesResults,
-    OpenseesStepResults,
     OpenseesNodeFieldResults,
 )
 from .results_to_sql import read_results_file

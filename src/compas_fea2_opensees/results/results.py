@@ -9,16 +9,12 @@ from time import time
 from subprocess import Popen
 from subprocess import PIPE
 
-from compas_fea2.results import Results, StepResults, NodeFieldResults
+from compas_fea2.results import Results, NodeFieldResults
 
 class OpenseesResults(Results):
 
     def __init__(self, location, components, invariants, name=None, *kwargs):
         super(OpenseesResults, self).__init__(location, components, invariants, name=name, *kwargs)
-
-class OpenseesStepResults(StepResults):
-    def __init__(self, step, model, name=None):
-        super(OpenseesStepResults, self).__init__(step, model, name)
 
 class OpenseesNodeFieldResults(NodeFieldResults):
     def __init__(self, field_name,step, name=None, *args, **kwargs):

@@ -156,7 +156,6 @@ from compas_fea2.problem.outputs import (
 # Results
 from compas_fea2.results import (
     Results,
-    StepResults,
     NodeFieldResults,
 )
 
@@ -292,7 +291,6 @@ try:
     # Opensees Results
     from .results import (
         OpenseesResults,
-        OpenseesStepResults,
         OpenseesNodeFieldResults,
     )
 
@@ -392,7 +390,6 @@ try:
         backend[HistoryOutput] = OpenseesHistoryOutput
 
         backend[Results] = OpenseesResults
-        backend[StepResults] = OpenseesStepResults
         backend[NodeFieldResults] = OpenseesNodeFieldResults
 
         backend[InputFile] = OpenseesInputFile
