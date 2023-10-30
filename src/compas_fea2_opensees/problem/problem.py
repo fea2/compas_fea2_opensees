@@ -67,7 +67,7 @@ class OpenseesProblem(Problem):
         if not os.path.exists(exe):
             raise ValueError(f'backend not found at {exe}')
 
-        cmd = 'cd {} && {} {}'.format(self.path, exe, filepath)
+        cmd = 'cd "{}" && "{}" "{}"'.format(self.path, exe, filepath)
         for line in launch_process(cmd_args=cmd, cwd=self.path, verbose=verbose):
             print(line)
 
