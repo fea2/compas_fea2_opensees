@@ -44,6 +44,11 @@ def read_results_file(database_path, database_name, field_output):
     if not field_output.node_outputs and not field_output.element_outputs:
         print('WARNING - No field outputs found! Did you add an output request before running the analysis?')
 
+    if not field_output.node_outputs:
+        field_output._node_outputs = []
+    if not field_output.element_outputs:
+        field_output._element_outputs = []
+
     for field in field_output.node_outputs+field_output.element_outputs:
         field = field.lower()
         if field not in field_info:

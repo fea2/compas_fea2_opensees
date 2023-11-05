@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import os
 from pathlib import Path
+from sys import platform
 from compas_fea2.problem import Problem
 from compas_fea2.utilities._utils import timer
 from compas_fea2.utilities._utils import launch_process
@@ -55,17 +56,24 @@ class OpenseesProblem(Problem):
         self.write_input_file()
         filepath=os.path.join(self.path, self.name+'.tcl')
 
-        opensees_version = '3.3.0'
+        if exe and not os.path.exists(exe):
+            raise ValueError(f'backend not found at {exe}')
+
+        # opensees_version = '3.3.0'
         if not exe:
-            if os.name.lower() == 'nt':
-                exe='C:/OpenSees3.2.0/bin/OpenSees.exe'
-            elif os.name.lower() == 'posix':
+            if platform == "linux" or platform == "linux2":
+                # linux
+                exe = 'OpenSees'
+            elif platform == "darwin":
+                # OS X
                 exe = '/Applications/OpenSees3.3.0/bin/OpenSees'
+            elif platform == "win32":
+                # Windows
+                exe = 'C:/OpenSees3.2.0/bin/OpenSees.exe'
             else:
                 raise ValueError('you must specify the location of the solver.')
 
-        if not os.path.exists(exe):
-            raise ValueError(f'backend not found at {exe}')
+
 
         cmd = 'cd "{}" && "{}" "{}"'.format(self.path, exe, filepath)
         for line in launch_process(cmd_args=cmd, cwd=self.path, verbose=verbose):
