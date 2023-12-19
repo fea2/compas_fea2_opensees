@@ -38,19 +38,23 @@ from .sections import (
     OpenseesSolidSection,
 )
 
+
 # Opensees Materials
-from .materials import (
+from .materials.material import (
     OpenseesElasticIsotropic,
     OpenseesElasticOrthotropic,
     OpenseesElasticPlastic,
     OpenseesStiff,
     OpenseesUserMaterial,
+)
+
+from .materials.steel import OpenseesSteel  # noqa : F401
+
+from .materials.concrete import (
     OpenseesConcrete,
     OpenseesConcreteDamagedPlasticity,
     OpenseesConcreteSmearedCrack,
-    OpenseesSteel,
 )
-
 
 # Opensees Groups
 from .groups import (

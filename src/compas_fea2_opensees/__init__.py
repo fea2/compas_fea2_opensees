@@ -77,15 +77,19 @@ from compas_fea2.model.sections import (
     SolidSection,
 )
 # Materials
-from compas_fea2.model.materials import (
+from compas_fea2.model.materials.material import (
     ElasticIsotropic,
     ElasticOrthotropic,
     ElasticPlastic,
     Stiff,
     UserMaterial,
+)
+from compas_fea2.model.materials.concrete import (
     Concrete,
     ConcreteDamagedPlasticity,
     ConcreteSmearedCrack,
+)
+from compas_fea2.model.materials.steel import (
     Steel,
 )
 # Groups
@@ -207,18 +211,21 @@ try:
     )
 
     # Opensees Materials
-    from .model.materials import (
+    from .model.materials.material import (
         OpenseesElasticIsotropic,
         OpenseesElasticOrthotropic,
         OpenseesElasticPlastic,
         OpenseesStiff,
         OpenseesUserMaterial,
+    )
+    from .model.materials.concrete import (
         OpenseesConcrete,
         OpenseesConcreteDamagedPlasticity,
         OpenseesConcreteSmearedCrack,
+    )
+    from .model.materials.steel import (
         OpenseesSteel,
     )
-
     # Opensees Groups
     from .model.groups import (
         OpenseesNodesGroup,
