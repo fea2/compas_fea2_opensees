@@ -19,7 +19,7 @@ https://opensees.github.io/OpenSeesDocumentation/user/userManual.html
 from __future__ import print_function
 
 import os
-
+from dotenv import load_dotenv
 
 __author__ = ["Francesco Ranaudo"]
 __copyright__ = "Francesco Ranaudo"
@@ -405,3 +405,52 @@ try:
         print('Opensees implementations registered...')
 except:
     raise ErrorDuringImport()
+
+
+
+def init_fea2_opensees(exe):
+    """Create a default environment file if it doesn't exist and loads its variables.
+
+    Parameters
+    ----------
+    verbose : bool, optional
+        Be verbose when printing output, by default False
+    point_overlap : bool, optional
+        Allow two nodes to be at the same location, by default True
+    global_tolerance : int, optional
+        Tolerance for the model, by default 1
+    precision : str, optional
+        Values approximation, by default '3f'
+
+    """
+
+    env_path = os.path.abspath(os.path.join(HERE, ".env"))
+    with open(env_path, "x") as f:
+        f.write(
+            "\n".join(
+                [
+                    "EXE={}".format(exe),
+                ]
+            )
+        )
+    load_dotenv(env_path)
+
+
+if not load_dotenv():
+
+    from sys import platform
+
+    if platform == "linux" or platform == "linux2":
+        # linux
+        exe = 'OpenSees'
+    elif platform == "darwin":
+        # OS X
+        exe = '/Applications/OpenSees3.5.0/bin/OpenSees'
+    elif platform == "win32":
+        # Windows
+        exe = 'C:/OpenSees3.5.0/bin/OpenSees.exe'
+    else:
+        raise ValueError('you must specify the location of the solver.')
+    init_fea2_opensees(exe)
+
+EXE = os.getenv("EXE")

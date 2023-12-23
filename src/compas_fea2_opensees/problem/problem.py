@@ -10,7 +10,7 @@ from compas_fea2.utilities._utils import timer
 from compas_fea2.utilities._utils import launch_process
 
 from ..job.input_file import OpenseesInputFile
-
+import compas_fea2_opensees
 
 class OpenseesProblem(Problem):
     """OpenSees implementation of the :class:`Problem`.\n
@@ -56,24 +56,10 @@ class OpenseesProblem(Problem):
         self.write_input_file()
         filepath=os.path.join(self.path, self.name+'.tcl')
 
-        if exe and not os.path.exists(exe):
+        exe = exe or compas_fea2_opensees.EXE
+
+        if not os.path.exists(exe):
             raise ValueError(f'backend not found at {exe}')
-
-        # opensees_version = '3.3.0'
-        if not exe:
-            if platform == "linux" or platform == "linux2":
-                # linux
-                exe = 'OpenSees'
-            elif platform == "darwin":
-                # OS X
-                exe = '/Applications/OpenSees3.3.0/bin/OpenSees'
-            elif platform == "win32":
-                # Windows
-                exe = 'C:/OpenSees3.2.0/bin/OpenSees.exe'
-            else:
-                raise ValueError('you must specify the location of the solver.')
-
-
 
         cmd = 'cd "{}" && "{}" "{}"'.format(self.path, exe, filepath)
         for line in launch_process(cmd_args=cmd, cwd=self.path, verbose=verbose):
@@ -101,7 +87,8 @@ class OpenseesProblem(Problem):
 
         """
         self.analyse(path=path, exe=exe, verbose=verbose, *args, **kwargs)
-        self.model.to_cfm(self.model.path.joinpath(f'{self.model.name}.cfm'))
+        if kwargs.get("save", False):
+            self.model.to_cfm(self.model.path.joinpath(f'{self.model.name}.cfm'))
         return self.convert_results_to_sqlite()
     # =============================================================================
     #                               Job data
