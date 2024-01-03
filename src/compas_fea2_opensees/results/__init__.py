@@ -20,8 +20,11 @@ from __future__ import print_function
 
 # additional software-based classes
 from .results import (
-    OpenseesResults,
+    OpenseesResult,
+    OpenseesDisplacementResult,
+    OpenseesStressResult,
     OpenseesNodeFieldResults,
+    OpenseesElementFieldResults,
 )
 from .results_to_sql import read_results_file
 
