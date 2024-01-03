@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.geometry import Frame, Vector
+
 from compas_fea2.model import MassElement
 from compas_fea2.model import BeamElement
 from compas_fea2.model import TrussElement
@@ -97,12 +99,20 @@ class OpenseesShellElement(ShellElement):
     mat_behaviour : str
         String representing material behavior. It can be either “PlaneStrain” or “PlaneStress.”
 
+    Notes
+    -----
+    The element's frame is set to have one axis parallel to the segment connecting the first
+    and the second node and the third axis peperdicular to the plane of the element.
+
     """
     # TODO maybe move mat_behavior to the material or section
 
     def __init__(self, nodes, section, implementation=None, mat_behaviour='PlaneStress', name=None, **kwargs):
         super(OpenseesShellElement, self).__init__(nodes=nodes, section=section,
                                                    implementation=implementation, name=name, **kwargs)
+
+        self._frame = Frame.from_points(nodes[0].xyz, nodes[1].xyz, nodes[2].xyz)
+
         if not self.implementation:
             if len(nodes)==3:
                 self._implementation = 'shelldkgt'#'Tri31'
