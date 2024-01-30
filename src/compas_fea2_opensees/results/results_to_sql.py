@@ -8,6 +8,7 @@ from compas_fea2.results.sql_wrapper import (
     insert_field_results_sqlite3,
 )
 
+import compas_fea2
 
 def read_results_file(database_path, database_name, field_output):
     """Read the .out results file and convert it to an SQLite db.
@@ -102,7 +103,8 @@ def read_results_file(database_path, database_name, field_output):
 
             results[field].append(object_properties+components_results+invariants)
 
-        print('***** {0}.out data loaded *****'.format(filepath))
+        if compas_fea2.VERBOSE:
+            print('***** {0}.out data loaded *****'.format(filepath))
 
 
 

@@ -11,53 +11,62 @@ class OpenseesStaticStep(StaticStep):
     """
     __doc__ += StaticStep.__doc__
 
-    def __init__(self, max_increments=100, initial_inc_size=1, min_inc_size=0.00001, NormDispIncr=[1.0e-6, 10], time=1, nlgeom=False, modify=True, name=None, **kwargs):
-        super(OpenseesStaticStep, self).__init__(max_increments, initial_inc_size,
-                                                 min_inc_size, time, nlgeom, modify, name=name, **kwargs)
-        self.NormDispIncr=NormDispIncr
+    def __init__(self, *,
+                 max_increments=1,
+                 initial_inc_size=1,
+                 min_inc_size=0.00001,
+                 NormDispIncr=[1.0e-6, 10],
+                 time=1,
+                 nlgeom=False,
+                 modify=True,
+                 algorithm = 'Newton',
+                 name=None,
+                 **kwargs):
+        super(OpenseesStaticStep, self).__init__(max_increments,
+                                                 initial_inc_size,
+                                                 min_inc_size,
+                                                 time,
+                                                 nlgeom,
+                                                 modify,
+                                                 name=name,
+                                                 **kwargs)
+        self.NormDispIncr = NormDispIncr
+        self.algorithm = algorithm
 
     def jobdata(self):
-        return """#
-{}
+        return f"""#
+{self._generate_header_section()}
 # - Displacements
 #   -------------
-{}
+{self._generate_displacements_section()}
 #
 # - Loads
 #   -----
-{}
+{self._generate_loads_section()}
 #
 # - Predefined Fields
 #   -----------------
-{}
+{self._generate_fields_section()}
 #
 # - Output Requests
 #   ---------------
-{}
-
+{self._generate_output_section()}
+#
+# - Analysis Parameters
+#   -------------------
+#
 constraints Transformation
 numberer RCM
 system BandGeneral
-test NormDispIncr {} {}
-algorithm Newton
+test NormDispIncr {self.NormDispIncr[0]} {self.NormDispIncr[1]}
+algorithm {self.algorithm}
 integrator LoadControl 1
 
 analysis Static
 
-# analyze 10
-analyze 1
+analyze {self.max_increments}
 loadConst -time 0.0
-
-# set Results [open results.out "w"]]
-# foreach
-
-""".format(self._generate_header_section(),
-                    self._generate_displacements_section(),
-                    self._generate_loads_section(),
-                    self._generate_fields_section(),
-                    self._generate_output_section(),
-                    self.NormDispIncr[0], self.NormDispIncr[1],
-                    )
+"""
 
     def _generate_header_section(self):
         return """#

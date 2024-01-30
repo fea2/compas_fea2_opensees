@@ -10,6 +10,8 @@ from compas_fea2.utilities._utils import timer
 from compas_fea2.utilities._utils import launch_process
 
 from ..job.input_file import OpenseesInputFile
+
+import compas_fea2
 import compas_fea2_opensees
 
 class OpenseesProblem(Problem):
@@ -63,7 +65,12 @@ class OpenseesProblem(Problem):
 
         cmd = 'cd "{}" && "{}" "{}"'.format(self.path, exe, filepath)
         for line in launch_process(cmd_args=cmd, cwd=self.path, verbose=verbose):
-            print(line)
+            line = line.strip().decode()
+            if "error" in line.split(" "):
+                raise Exception("ERROR! - Analysis failed to converge!\nSet VERBOSE=True to check the error.")
+            if compas_fea2.VERBOSE:
+                print(line)
+        print("Analysis completed!")
 
     def analyse_and_extract(self, path, exe=None, verbose=False, *args, **kwargs):
         """Runs the analysis through the OpenSees solver and extract the results
@@ -145,7 +152,7 @@ loadConst -time 0.0
         None
 
         """
-        print('\nExtracting data from Opensees .out files...')
+        print('Extracting data from Opensees .out files...')
         database_path = database_path or self.path
         database_name = database_name or self.name
         from ..results.results_to_sql import read_results_file #, create_database
@@ -153,3 +160,4 @@ loadConst -time 0.0
         for step in self.steps:
             for field_output in step.field_outputs:
                 read_results_file(database_path, database_name, field_output)
+        print('Results extraction completed!')

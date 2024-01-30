@@ -20,9 +20,9 @@ class OpenseesMassElement(MassElement):
     """"""
     __doc__ += MassElement.__doc__
 
-    def __init__(self, *, node, section, name=None, **kwargs):
+    def __init__(self, *, node, section, **kwargs):
         super(OpenseesMassElement, self).__init__(nodes=[node],
-                                                  section=section, name=name, **kwargs)
+                                                  section=section, **kwargs)
         raise NotImplementedError
 
 
@@ -34,9 +34,9 @@ class OpenseesBeamElement(BeamElement):
     """
     __doc__ += BeamElement.__doc__
 
-    def __init__(self, nodes, section, implementation='elasticBeamColumn', frame=[0.0, 0.0, -1.0], name=None, **kwargs):
+    def __init__(self, nodes, section, implementation='elasticBeamColumn', frame=[0.0, 0.0, -1.0], **kwargs):
         super(OpenseesBeamElement, self).__init__(nodes=nodes, section=section, frame=frame, implementation=implementation,
-                                                name=name, **kwargs)
+                                                    **kwargs)
 
         # self._implementation = BeamElement.from_name(implementation)
 
@@ -79,8 +79,8 @@ class OpenseesTrussElement(TrussElement):
     """
     __doc__ += TrussElement.__doc__
 
-    def __init__(self, nodes, section, name=None, **kwargs):
-        super(OpenseesTrussElement, self).__init__(nodes=nodes, section=section, name=name, **kwargs)
+    def __init__(self, nodes, section, **kwargs):
+        super(OpenseesTrussElement, self).__init__(nodes=nodes, section=section, **kwargs)
         raise NotImplementedError
 
 
@@ -107,11 +107,10 @@ class OpenseesShellElement(ShellElement):
     """
     # TODO maybe move mat_behavior to the material or section
 
-    def __init__(self, nodes, section, implementation=None, mat_behaviour='PlaneStress', name=None, **kwargs):
+    def __init__(self, nodes, section, implementation=None, mat_behaviour='PlaneStress', **kwargs):
         super(OpenseesShellElement, self).__init__(nodes=nodes, section=section,
-                                                   implementation=implementation, name=name, **kwargs)
+                                                   implementation=implementation, **kwargs)
 
-        self._frame = Frame.from_points(nodes[0].xyz, nodes[1].xyz, nodes[2].xyz)
 
         if not self.implementation:
             if len(nodes)==3:
@@ -121,7 +120,10 @@ class OpenseesShellElement(ShellElement):
             else:
                 raise NotImplementedError('An element with {} nodes is not supported'.format(len(nodes)))
         self._mat_behaviour = mat_behaviour
-        self._job_data = None
+
+    @property
+    def frame(self):
+        return self._frame
 
     @property
     def mat_behaviour(self):
@@ -143,7 +145,7 @@ class OpenseesShellElement(ShellElement):
         ----
         The optional arguments are not implemented.
         """
-        return 'element tri31 {} {} {} {} {} 10'.format(self.key,
+        return 'element tri31 {} {} {} {} {}'.format(self.key,
                                                     ' '.join(str(node.key) for node in self.nodes),
                                                     self.section.t,
                                                     self._mat_behaviour,
@@ -160,6 +162,8 @@ class OpenseesShellElement(ShellElement):
         ----
         The optional arguments are not implemented.
         """
+        self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
+        self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
         return 'element ShellDKGT {} {} {}'.format(self.key,
                                                     ' '.join(str(node.key) for node in self.nodes),
                                                     self.section.key)
@@ -175,6 +179,8 @@ class OpenseesShellElement(ShellElement):
         ----
         The optional arguments are not implemented.
         """
+        self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
+        self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
         return 'element ShellDKGQ {} {} {}'.format(self.key,
                                                     ' '.join(str(node.key) for node in self.nodes),
                                                     self.section.key)
@@ -184,6 +190,8 @@ class OpenseesShellElement(ShellElement):
         isoparametric formulation in combination with a modified shear
         interpolation to improve thin-plate bending performance.
         """
+        self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
+        self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
         return 'element ShellMITC4 {} {} {}'.format(self.key,
                                                     ' '.join(str(node.key) for node in self.nodes),
                                                     self.section.key)
@@ -194,6 +202,8 @@ class OpenseesShellElement(ShellElement):
         For more information about this element in OpenSees check
         `here <https://opensees.github.io/OpenSeesDocumentation/user/manual/model/elements/ASDShellQ4.html>`_
         """
+        self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
+        self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
         return 'element ASDShellQ4  {}  {}'.format(self.key,
                                                    ' '.join(str(node.key) for node in self.nodes),
                                                    self.section.key)
@@ -209,6 +219,8 @@ class OpenseesShellElement(ShellElement):
         The optional arguments are not implemented.
 
         """
+        self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
+        self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
         return 'element quad {} {} {} {}'.format(self.key,
                                                  ' '.join(str(node.key) for node in self.nodes),
                                                  self.section.t,
@@ -226,6 +238,8 @@ class OpenseesShellElement(ShellElement):
         The optional arguments are not implemented.
 
         """
+        self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
+        self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
         return 'element SSPquad {} {} {} {}'.format(self.key,
                                                     ' '.join(node.key for node in self.nodes),
                                                     self.section.material.key,

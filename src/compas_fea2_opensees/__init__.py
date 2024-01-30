@@ -159,8 +159,11 @@ from compas_fea2.problem.outputs import (
 
 # Results
 from compas_fea2.results import (
-    Results,
+    Result,
+    DisplacementResult,
+    StressResult,
     NodeFieldResults,
+    ElementFieldResults,
 )
 
 # Input File
@@ -297,8 +300,11 @@ try:
 
     # Opensees Results
     from .results import (
-        OpenseesResults,
+        OpenseesResult,
+        OpenseesDisplacementResult,
+        OpenseesStressResult,
         OpenseesNodeFieldResults,
+        OpenseesElementFieldResults,
     )
 
     # Opensees Input File
@@ -396,8 +402,11 @@ try:
         backend[FieldOutput] = OpenseesFieldOutput
         backend[HistoryOutput] = OpenseesHistoryOutput
 
-        backend[Results] = OpenseesResults
+        backend[Result] = OpenseesResult
+        backend[DisplacementResult] = OpenseesDisplacementResult
+        backend[StressResult] = OpenseesStressResult
         backend[NodeFieldResults] = OpenseesNodeFieldResults
+        backend[ElementFieldResults] = OpenseesElementFieldResults
 
         backend[InputFile] = OpenseesInputFile
         backend[ParametersFile] = OpenseesParametersFile

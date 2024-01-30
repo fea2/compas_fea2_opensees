@@ -14,8 +14,8 @@ class OpenseesResult(Result):
 
 class OpenseesDisplacementResult(DisplacementResult):
 
-    def __init__(self, location, x, y, z, name=None, *args, **kwargs):
-        super(OpenseesDisplacementResult, self).__init__(location, x, y, z, name=name, *args, **kwargs)
+    def __init__(self, location, u1, u2, u3, name=None, *args, **kwargs):
+        super(OpenseesDisplacementResult, self).__init__(location, u1, u2, u3, name=name, *args, **kwargs)
 
 
 class OpenseesStressResult(StressResult):

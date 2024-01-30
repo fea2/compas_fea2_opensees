@@ -35,7 +35,8 @@ elements_set : set
 
         element_outputs = {
             "sf": '1 2 3 4 5 6 force',
-            "s": '1 2 3 4 5 6 stresses'
+            "s2d": '1 2 3 4 5 6 stresses',
+            "s3d": '1 2 3 4 5 6 stresses',
         }
         data = ['#']
         if not self.node_outputs and not self.element_outputs:
