@@ -70,7 +70,7 @@ class OpenseesGravityLoad(GravityLoad):
         jobdata = []
         for part in distribution:
             for element in part.elements:
-                sw_node = [element.volume*self.g*element.section.material.density/len(element.nodes)*c for c in [self.x, self.y, self.z]]+[0., 0., 0.]
+                sw_node = [element.volume*self.g*element.section.material.density/len(element.nodes)*c for c in [self.x, self.y, self.z]]+[0.]*(part.ndm-3) #TODO check if ndm or ndof
                 for n in element.nodes:
                     jobdata.append('\tload {} {}'.format(n.key, ' '.join([str(c) for c in sw_node])))
         return '\n'.join(jobdata)

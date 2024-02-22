@@ -13,6 +13,8 @@ class OpenseesNodesGroup(NodesGroup):
 
     def __init__(self, nodes, name=None, **kwargs):
         super(OpenseesNodesGroup, self).__init__(nodes=nodes, name=name, **kwargs)
+
+    def jobdata(self):
         raise NotImplementedError
 
 
@@ -22,8 +24,9 @@ class OpenseesElementsGroup(ElementsGroup):
 
     def __init__(self, *, elements, name=None, **kwargs):
         super(OpenseesElementsGroup, self).__init__(elements=elements, name=name, **kwargs)
-        raise NotImplementedError
 
+    def jobdata(self):
+        raise NotImplementedError
 
 class OpenseesFacesGroup(FacesGroup):
     """Opensees implementation of the :class:`compas_fea2.model.FacesGroup`.\n
@@ -32,8 +35,9 @@ class OpenseesFacesGroup(FacesGroup):
 
     def __init__(self, *, part, element_face, name=None, **kwargs):
         super(FacesGroup, self).__init__(part=part, element_face=element_face, name=name, **kwargs)
-        raise NotImplementedError
 
+    def jobdata(self):
+        raise NotImplementedError
 
 class OpenseesPartsGroup(PartsGroup):
     """Opensees implementation of the :class:`compas_fea2.model.PartsGroup`.\n
@@ -42,4 +46,6 @@ class OpenseesPartsGroup(PartsGroup):
 
     def __init__(self, *, parts, name=None, **kwargs):
         super(OpenseesPartsGroup, self).__init__(parts=parts, name=name, **kwargs)
+
+    def jobdata(self):
         raise NotImplementedError
