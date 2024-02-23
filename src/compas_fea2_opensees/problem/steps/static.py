@@ -70,21 +70,18 @@ loadConst -time 0.0
 
     def _generate_header_section(self):
         return """#
-# {0}
+# STEP {0}
 #
 #
 timeSeries Constant {1} -factor 1.0
-""".format(self.name, self.problem._steps_order.index(self))
+#""".format(self.name, self.problem._steps_order.index(self))
 
     def _generate_displacements_section(self):
+        return '#'
         return '\n'.join([pattern.load.jobdata(pattern.distribution) for pattern in self.displacements]) or '#'
 
     def _generate_loads_section(self):
-        if self.loads:
-            return "pattern Plain {0} {0} -fact 1 {{\n{1}\n}}".format(self.problem._steps_order.index(self),
-                                                                    '\n'.join([pattern.load.jobdata(pattern.distribution) for pattern in self.loads]))
-        else:
-            return '#'
+        return self.combination.jobdata()
 
     def _generate_fields_section(self):
         return '#'

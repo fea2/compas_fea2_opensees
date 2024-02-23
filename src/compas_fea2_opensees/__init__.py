@@ -138,9 +138,9 @@ from compas_fea2.problem.steps import (
 )
 # Loads
 from compas_fea2.problem.loads import (
-    PointLoad,
-    LineLoad,
-    AreaLoad,
+    NodeLoad,
+    EdgeLoad,
+    FaceLoad,
     TributaryLoad,
     PrestressLoad,
     GravityLoad,
@@ -150,6 +150,10 @@ from compas_fea2.problem.loads import (
 # Displacements
 from compas_fea2.problem.displacements import (
     GeneralDisplacement,
+)
+# Displacements
+from compas_fea2.problem.combinations import (
+    LoadCombination,
 )
 # Outputs
 from compas_fea2.problem.outputs import (
@@ -292,6 +296,11 @@ try:
         OpenseesGeneralDisplacement,
     )
 
+    # Opensees Displacements
+    from .problem.combinations import (
+        OpenseesLoadCombination,
+    )
+
     # Opensees outputs
     from .problem.outputs import (
         OpenseesFieldOutput,
@@ -389,15 +398,17 @@ try:
         backend[DirectCyclicStep] = OpenseesDirectCyclicStep
 
         backend[GravityLoad] = OpenseesGravityLoad
-        backend[PointLoad] = OpenseesPointLoad
-        backend[LineLoad] = OpenseesLineLoad
-        backend[AreaLoad] = OpenseesAreaLoad
+        backend[NodeLoad] = OpenseesPointLoad
+        backend[EdgeLoad] = OpenseesLineLoad
+        backend[FaceLoad] = OpenseesAreaLoad
         backend[TributaryLoad] = OpenseesTributaryLoad
         backend[PrestressLoad] = OpenseesPrestressLoad
         backend[HarmonicPointLoad] = OpenseesHarmonicPointLoad
         backend[HarmonicPressureLoad] = OpenseesHarmonicPressureLoad
 
         backend[GeneralDisplacement] = OpenseesGeneralDisplacement
+
+        backend[LoadCombination] = OpenseesLoadCombination
 
         backend[FieldOutput] = OpenseesFieldOutput
         backend[HistoryOutput] = OpenseesHistoryOutput

@@ -33,6 +33,11 @@ from .displacements import (
     OpenseesGeneralDisplacement,
 )
 
+# Opensees Displacements
+from .combinations import (
+    OpenseesLoadCombination,
+)
+
 # Opensees outputs
 from .outputs import (
     OpenseesFieldOutput,
