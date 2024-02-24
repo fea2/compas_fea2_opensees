@@ -24,7 +24,7 @@ from .results import (
     OpenseesDisplacementResult,
     OpenseesStressResult,
     OpenseesDisplacementFieldResults,
-    OpenseesElementFieldResults,
+    OpenseesStressFieldResults,
 )
 from .results_to_sql import read_results_file
 
