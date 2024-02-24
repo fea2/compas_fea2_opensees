@@ -33,6 +33,7 @@ elements_set : set
             'rm': '4 5 6 reaction',
         }
 
+        'recorder Node -file nodeDisp.out -node <nodeID> -dof 1 2 3 disp'
         element_outputs = {
             "sf": '1 2 3 4 5 6 force',
             "s2d": '1 2 3 4 5 6 stresses',

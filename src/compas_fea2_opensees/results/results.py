@@ -4,7 +4,7 @@ from __future__ import print_function
 
 
 from compas_fea2.results import Result, DisplacementResult, StressResult
-from compas_fea2.results import NodeFieldResults, ElementFieldResults
+from compas_fea2.results import DisplacementFieldResults, ElementFieldResults
 
 class OpenseesResult(Result):
 
@@ -14,7 +14,7 @@ class OpenseesResult(Result):
 
 class OpenseesDisplacementResult(DisplacementResult):
 
-    def __init__(self, location, u1, u2, u3, name=None, *args, **kwargs):
+    def __init__(self, location, u1=0., u2=0., u3=0., name=None, *args, **kwargs):
         super(OpenseesDisplacementResult, self).__init__(location, u1, u2, u3, name=name, *args, **kwargs)
 
 
@@ -24,9 +24,9 @@ class OpenseesStressResult(StressResult):
         super(OpenseesStressResult, self).__init__(location, local_stress_tensor, name=name, *args, **kwargs)
 
 
-class OpenseesNodeFieldResults(NodeFieldResults):
-    def __init__(self, field_name,step, name=None, *args, **kwargs):
-        super(OpenseesNodeFieldResults, self).__init__(field_name, step, name, *args, **kwargs)
+class OpenseesDisplacementFieldResults(DisplacementFieldResults):
+    def __init__(self, name=None, *args, **kwargs):
+        super(OpenseesDisplacementFieldResults, self).__init__(name=name, *args, **kwargs)
 
 class OpenseesElementFieldResults(ElementFieldResults):
     def __init__(self, field_name,step, name=None, *args, **kwargs):

@@ -166,7 +166,7 @@ from compas_fea2.results import (
     Result,
     DisplacementResult,
     StressResult,
-    NodeFieldResults,
+    DisplacementFieldResults,
     ElementFieldResults,
 )
 
@@ -312,7 +312,7 @@ try:
         OpenseesResult,
         OpenseesDisplacementResult,
         OpenseesStressResult,
-        OpenseesNodeFieldResults,
+        OpenseesDisplacementFieldResults,
         OpenseesElementFieldResults,
     )
 
@@ -416,7 +416,7 @@ try:
         backend[Result] = OpenseesResult
         backend[DisplacementResult] = OpenseesDisplacementResult
         backend[StressResult] = OpenseesStressResult
-        backend[NodeFieldResults] = OpenseesNodeFieldResults
+        backend[DisplacementFieldResults] = OpenseesDisplacementFieldResults
         backend[ElementFieldResults] = OpenseesElementFieldResults
 
         backend[InputFile] = OpenseesInputFile
