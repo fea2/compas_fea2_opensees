@@ -40,7 +40,7 @@ def read_results_file(database_path, database_name, field_output):
         "s3d": {"num_of_comp": 6,
               "description_table": [['Stresses', 'S11 S22 S33 S12 S23 S13'], [None]],
               "field_table": ['S11', 'S22', 'S33', 'S12', 'S23', 'S13', 'None']},
-        "sf2d": {"num_of_comp": 6,
+        "sf": {"num_of_comp": 6,
               "description_table": [['Section Forces', 'F11 F22 F33 M11 M22 M33'], [None]],
               "field_table": ['F11', 'F22', 'F33', 'M11', 'M22', 'M33', 'None']},
     }

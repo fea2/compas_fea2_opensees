@@ -111,8 +111,8 @@ class OpenseesISection(ISection):
     """"""
     __doc__ += ISection.__doc__
 
-    def __init__(self,  w, h, t, material, l=0, name=None, **kwargs):
-        super(OpenseesISection, self).__init__(w, h, t, t, material, name=name, **kwargs)
+    def __init__(self,  w, h, tw, tf, material, l=0, name=None, **kwargs):
+        super(OpenseesISection, self).__init__(w, h, tw, tf, material, name=name, **kwargs)
         raise NotImplementedError
 
 

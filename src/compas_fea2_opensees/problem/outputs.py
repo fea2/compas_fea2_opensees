@@ -36,6 +36,8 @@ elements_set : set
         'recorder Node -file nodeDisp.out -node <nodeID> -dof 1 2 3 disp'
         element_outputs = {
             "sf": '1 2 3 4 5 6 force',
+            "sf2d": '1 2 3 4 5 6 force',
+            "sf3d": '1 2 3 4 5 6 force',
             "s2d": '1 2 3 4 5 6 stresses',
             "s3d": '1 2 3 4 5 6 stresses',
         }
@@ -51,7 +53,7 @@ elements_set : set
                     if not self.nodes_set:
                         key_range = f"0 {list(self.model.parts)[0].nodes_count}" #NOTE There is no support for parts atm
                         data.append(f'recorder Node -file {field}.out -time -nodeRange {key_range} -dof {output}')
-                        data.append(f'recorder Node -xml {field}.xml -time -nodeRange {key_range} -dof {output}')
+                        # data.append(f'recorder Node -xml {field}.xml -time -nodeRange {key_range} -dof {output}')
 
                     elif isinstance(self.nodes_set, range) and self.nodes_set.step == 1: #NOTE this is not really a range because the step is always 1
                         key_range = f"{self.nodes_set[0]} {self.nodes_set[-1]}"
@@ -69,7 +71,7 @@ elements_set : set
                     key_range = f"0 {list(self.model.parts)[0].elements_count}" #NOTE There is no support for parts atm
                     output = element_outputs[field]
                     data.append(f'recorder Element -file {field}.out -time -eleRange {key_range} -dof {output}')
-                    data.append(f'recorder Element -xml {field}.xml -time -eleRange {key_range} -dof {output}')
+                    # data.append(f'recorder Element -xml {field}.xml -time -eleRange {key_range} -dof {output}')
 
         return '\n'.join(data)
 

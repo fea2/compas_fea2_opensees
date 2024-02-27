@@ -17,7 +17,7 @@ class OpenseesPart(DeformablePart):
     Additional Parameters
     ---------------------
     ndm : int
-        Dimensionality of the model. Can be from 1, 2, or 3 3, by default
+        Dimensionality of the model. Can be from 1, 2, or 3, by default
         3 (3d model).
     ndof : int
         number of degree of freedom at the nodes. It can be 1, 3 or 6, by default
