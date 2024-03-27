@@ -5,6 +5,7 @@ from __future__ import print_function
 from compas.geometry import Frame, Vector
 
 from compas_fea2.model import MassElement
+from compas_fea2.model import LinkElement
 from compas_fea2.model import BeamElement
 from compas_fea2.model import TrussElement
 from compas_fea2.model import ShellElement
@@ -24,6 +25,15 @@ class OpenseesMassElement(MassElement):
         super(OpenseesMassElement, self).__init__(nodes=[node],
                                                   section=section, **kwargs)
         raise NotImplementedError
+
+class OpenseesLinkElement(LinkElement):
+    """https://opensees.berkeley.edu/wiki/index.php/ZeroLengthContact_Element
+    """
+    __doc__ += LinkElement.__doc__
+
+    def __init__(self, *, node, **kwargs):
+        super(OpenseesLinkElement, self).__init__(nodes=[node], **kwargs)
+        self._job_data = f"element zeroLengthContact3D {self.key} {self.nodes[0].key} {self.nodes[1].key} 30000 30000 0.9 0.1 1"
 
 
 # ==============================================================================
