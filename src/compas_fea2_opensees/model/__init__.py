@@ -71,9 +71,12 @@ from .constraints import (
 # Opensees Boundary Conditions
 from .bcs import (
     OpenseesFixedBC,
-    OpenseesFixedBCXX,
-    OpenseesFixedBCYY,
-    OpenseesFixedBCZZ,
+    OpenseesFixedBCX,
+    OpenseesFixedBCY,
+    OpenseesFixedBCZ,
+    OpenseesClampBCXX,
+    OpenseesClampBCYY,
+    OpenseesClampBCZZ,
     OpenseesPinnedBC,
     OpenseesRollerBCX,
     OpenseesRollerBCXY,

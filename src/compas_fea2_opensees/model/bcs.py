@@ -2,7 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas_fea2.model import GeneralBC
 from compas_fea2.model import FixedBC
+from compas_fea2.model import FixedBCX
+from compas_fea2.model import FixedBCY
+from compas_fea2.model import FixedBCZ
 from compas_fea2.model import PinnedBC
 from compas_fea2.model import ClampBCXX
 from compas_fea2.model import ClampBCYY
@@ -22,6 +26,18 @@ def _jobdata(bc, nodes):
     return '\n'.join(['fix {} {}'.format(node.key, ' '.join([str(int(getattr(bc, dof))) for dof in dofs[:node.part.ndf]])) for node in nodes])
 
 
+class OpenseesGeneralBC(GeneralBC):
+    """OpenSees implementation of :class:`compas_fea2.model.GeneralBC`.\n
+    """
+    __doc__ += GeneralBC.__doc__
+
+    def __init__(self, name=None, **kwargs):
+        super(OpenseesGeneralBC, self).__init__(name=name, **kwargs)
+
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
+
+
 class OpenseesFixedBC(FixedBC):
     """OpenSees implementation of :class:`compas_fea2.model.FixedBC`.\n
     """
@@ -33,6 +49,38 @@ class OpenseesFixedBC(FixedBC):
     def jobdata(self, nodes):
         return _jobdata(self, nodes)
 
+class OpenseesFixedBCX(FixedBCX):
+    """OpenSees implementation of :class:`compas_fea2.model.FixedBCX`.\n
+    """
+    __doc__ += FixedBCX.__doc__
+
+    def __init__(self, name=None, **kwargs):
+        super(OpenseesFixedBCX, self).__init__(name=name, **kwargs)
+
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
+
+class OpenseesFixedBCY(FixedBCY):
+    """OpenSees implementation of :class:`compas_fea2.model.FixedBCY`.\n
+    """
+    __doc__ += FixedBCY.__doc__
+
+    def __init__(self, name=None, **kwargs):
+        super(OpenseesFixedBCY, self).__init__(name=name, **kwargs)
+
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
+
+class OpenseesFixedBCZ(FixedBCZ):
+    """OpenSees implementation of :class:`compas_fea2.model.FixedBCZ`.\n
+    """
+    __doc__ += FixedBCZ.__doc__
+
+    def __init__(self, name=None, **kwargs):
+        super(OpenseesFixedBCZ, self).__init__(name=name, **kwargs)
+
+    def jobdata(self, nodes):
+        return _jobdata(self, nodes)
 
 class OpenseesPinnedBC(PinnedBC):
     """OpenSees implementation of :class:`compas_fea2.model.PinnedBC`.\n
@@ -46,36 +94,36 @@ class OpenseesPinnedBC(PinnedBC):
         return _jobdata(self, nodes)
 
 
-class OpenseesFixedBCXX(ClampBCXX):
-    """OpenSees implementation of :class:`compas_fea2.model.FixedBCXX`.\n
+class OpenseesClampBCXX(ClampBCXX):
+    """OpenSees implementation of :class:`compas_fea2.model.ClampBCXX`.\n
     """
     __doc__ += ClampBCXX.__doc__
 
     def __init__(self, name=None, **kwargs):
-        super(OpenseesFixedBCXX, self).__init__(name=name, **kwargs)
+        super(OpenseesClampBCXX, self).__init__(name=name, **kwargs)
 
     def jobdata(self, nodes):
         return _jobdata(self, nodes)
 
 
-class OpenseesFixedBCYY(ClampBCYY):
-    """OpenSees implementation of :class:`compas_fea2.model.FixedBCYY`.\n
+class OpenseesClampBCYY(ClampBCYY):
+    """OpenSees implementation of :class:`compas_fea2.model.ClampBCYY`.\n
     """
     __doc__ += ClampBCYY.__doc__
 
     def __init__(self, name=None, **kwargs):
-        super(OpenseesFixedBCYY, self).__init__(name=name, **kwargs)
+        super(OpenseesClampBCYY, self).__init__(name=name, **kwargs)
 
     def jobdata(self, nodes):
         return _jobdata(self, nodes)
 
-class OpenseesFixedBCZZ(ClampBCZZ):
-    """OpenSees implementation of :class:`FixedBCZZ`.\n
+class OpenseesClampBCZZ(ClampBCZZ):
+    """OpenSees implementation of :class:`ClampBCZZ`.\n
     """
     __doc__ += ClampBCZZ.__doc__
 
     def __init__(self, name=None, **kwargs):
-        super(OpenseesFixedBCZZ, self).__init__(name=name, **kwargs)
+        super(OpenseesClampBCZZ, self).__init__(name=name, **kwargs)
 
     def jobdata(self, nodes):
         return _jobdata(self, nodes)

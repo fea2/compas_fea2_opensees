@@ -111,6 +111,9 @@ from compas_fea2.model.releases import (
 # Boundary Conditions
 from compas_fea2.model.bcs import (
     FixedBC,
+    FixedBCX,
+    FixedBCY,
+    FixedBCZ,
     ClampBCXX,
     ClampBCYY,
     ClampBCZZ,
@@ -253,9 +256,12 @@ try:
     # Opensees Boundary Conditions
     from .model.bcs import (
         OpenseesFixedBC,
-        OpenseesFixedBCXX,
-        OpenseesFixedBCYY,
-        OpenseesFixedBCZZ,
+        OpenseesFixedBCX,
+        OpenseesFixedBCY,
+        OpenseesFixedBCZ,
+        OpenseesClampBCXX,
+        OpenseesClampBCYY,
+        OpenseesClampBCZZ,
         OpenseesPinnedBC,
         OpenseesRollerBCX,
         OpenseesRollerBCXY,
@@ -375,9 +381,12 @@ try:
         backend[BeamEndPinRelease] = OpenseesBeamEndPinRelease
 
         backend[FixedBC] = OpenseesFixedBC
-        backend[ClampBCXX] = OpenseesFixedBCXX
-        backend[ClampBCYY] = OpenseesFixedBCYY
-        backend[ClampBCZZ] = OpenseesFixedBCZZ
+        backend[FixedBCX] = OpenseesFixedBCX
+        backend[FixedBCY] = OpenseesFixedBCY
+        backend[FixedBCZ] = OpenseesFixedBCZ
+        backend[ClampBCXX] = OpenseesClampBCXX
+        backend[ClampBCYY] = OpenseesClampBCYY
+        backend[ClampBCZZ] = OpenseesClampBCZZ
         backend[PinnedBC] = OpenseesPinnedBC
         backend[RollerBCX] = OpenseesRollerBCX
         backend[RollerBCXY] = OpenseesRollerBCXY
