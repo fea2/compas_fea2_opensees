@@ -46,6 +46,7 @@ from compas.plugins import plugin
 from compas_fea2.model import Model
 from compas_fea2.model import DeformablePart
 from compas_fea2.model import Node
+
 # Elements
 from compas_fea2.model.elements import (
     MassElement,
@@ -57,6 +58,7 @@ from compas_fea2.model.elements import (
     _Element3D,
     TetrahedronElement,
 )
+
 # Sections
 from compas_fea2.model.sections import (
     AngleSection,
@@ -77,6 +79,7 @@ from compas_fea2.model.sections import (
     ShellSection,
     SolidSection,
 )
+
 # Materials
 from compas_fea2.model.materials.material import (
     ElasticIsotropic,
@@ -93,6 +96,7 @@ from compas_fea2.model.materials.concrete import (
 from compas_fea2.model.materials.steel import (
     Steel,
 )
+
 # Groups
 from compas_fea2.model.groups import (
     NodesGroup,
@@ -104,6 +108,7 @@ from compas_fea2.model.groups import (
 from compas_fea2.model.constraints import (
     TieConstraint,
 )
+
 # Releases
 from compas_fea2.model.releases import (
     BeamEndPinRelease,
@@ -129,6 +134,7 @@ from compas_fea2.model.bcs import (
 
 # Problem
 from compas_fea2.problem import Problem
+
 # Steps
 from compas_fea2.problem.steps import (
     ModalAnalysis,
@@ -140,6 +146,7 @@ from compas_fea2.problem.steps import (
     QuasiStaticStep,
     DirectCyclicStep,
 )
+
 # Loads
 from compas_fea2.problem.loads import (
     NodeLoad,
@@ -151,14 +158,17 @@ from compas_fea2.problem.loads import (
     HarmonicPointLoad,
     HarmonicPressureLoad,
 )
+
 # Displacements
 from compas_fea2.problem.displacements import (
     GeneralDisplacement,
 )
+
 # Displacements
 from compas_fea2.problem.combinations import (
     LoadCombination,
 )
+
 # Outputs
 from compas_fea2.problem.outputs import (
     FieldOutput,
@@ -179,6 +189,7 @@ from compas_fea2.job import (
     InputFile,
     ParametersFile,
 )
+
 # =========================================================================
 #                           OPENSEES CLASSES
 # =========================================================================
@@ -238,6 +249,7 @@ try:
     from .model.materials.steel import (
         OpenseesSteel,
     )
+
     # Opensees Groups
     from .model.groups import (
         OpenseesNodesGroup,
@@ -287,6 +299,7 @@ try:
         OpenseesQuasiStaticStep,
         OpenseesDirectCyclicStep,
     )
+
     # Opensees Loads
     from .problem.loads import (
         OpenseesPointLoad,
@@ -325,14 +338,14 @@ try:
     )
 
     # Opensees Input File
-    from .job import(
+    from .job import (
         OpenseesInputFile,
         OpenseesParametersFile,
     )
 
     # build the plugin registry
     def _register_backend():
-        backend = compas_fea2.BACKENDS['compas_fea2_opensees']
+        backend = compas_fea2.BACKENDS["compas_fea2_opensees"]
 
         backend[Model] = OpenseesModel
         backend[DeformablePart] = OpenseesPart
@@ -434,10 +447,10 @@ try:
         backend[InputFile] = OpenseesInputFile
         backend[ParametersFile] = OpenseesParametersFile
 
-        print('Opensees implementations registered...')
+        print("Opensees implementations registered...")
+
 except:
     raise ErrorDuringImport()
-
 
 
 def init_fea2_opensees(exe):
@@ -474,15 +487,15 @@ if not load_dotenv():
 
     if platform == "linux" or platform == "linux2":
         # linux
-        exe = 'OpenSees'
+        exe = "OpenSees"
     elif platform == "darwin":
         # OS X
-        exe = '/Applications/OpenSees3.5.0/bin/OpenSees'
+        exe = "/Applications/OpenSees3.5.0/bin/OpenSees"
     elif platform == "win32":
         # Windows
-        exe = 'C:/OpenSees3.5.0/bin/OpenSees.exe'
+        exe = "C:/OpenSees3.5.0/bin/OpenSees.exe"
     else:
-        raise ValueError('you must specify the location of the solver.')
+        raise ValueError("you must specify the location of the solver.")
     init_fea2_opensees(exe)
 
 EXE = os.getenv("EXE")
