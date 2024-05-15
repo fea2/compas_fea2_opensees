@@ -103,6 +103,6 @@ model Basic -ndm {} -ndf {}
     '\n'.join([node.jobdata() for node in self.nodes]),
     '\n'.join([material.jobdata() for material in self.materials]),
     '\n'.join([section.jobdata() for section in self.sections if not isinstance(section, SolidSection)]),
-    '\n'.join([section.jobdata() for section in self.elements]),
+    '\n'.join([element.jobdata() for element in self.elements]),
     '\n'.join([bc.jobdata(nodes) for bc, nodes in self.model.bcs.items()])
 )

@@ -10,6 +10,7 @@ from .nodes import OpenseesNode
 # Opensees Elements
 from .elements import (
     OpenseesMassElement,
+    OpenseesLinkElement,
     OpenseesBeamElement,
     OpenseesTrussElement,
     OpenseesMembraneElement,

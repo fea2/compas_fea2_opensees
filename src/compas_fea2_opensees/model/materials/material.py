@@ -35,12 +35,16 @@ class OpenseesElasticIsotropic(ElasticIsotropic):
     """
     __doc__ += ElasticIsotropic.__doc__
 
-    def __init__(self, *, E, v, density, name=None, **kwargs):
+    def __init__(self, E, v, density, name=None, notension=False, **kwargs):
         super(OpenseesElasticIsotropic, self).__init__(E=E, v=v, density=density, name=name, **kwargs)
+        self.notension= notension
 
     def jobdata(self):
-        line = ['uniaxialMaterial Elastic {} {}\n'.format(self.key, self.E),
-                'nDMaterial ElasticIsotropic {} {} {} {}'.format(self.key + 1000, self.E, self.v, self.density)]
+        if not self.notension:
+            line = ['uniaxialMaterial Elastic {} {}\n'.format(self.key, self.E),
+                    'nDMaterial ElasticIsotropic {} {} {} {}'.format(self.key + 1000, self.E, self.v, self.density)] #FIXME Remove one of the two
+        else:
+            line = ['uniaxialMaterial ENT {} {}\n'.format(self.key, self.E)]
         return ''.join(line)
 
 

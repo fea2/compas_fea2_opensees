@@ -49,6 +49,7 @@ from compas_fea2.model import Node
 # Elements
 from compas_fea2.model.elements import (
     MassElement,
+    LinkElement,
     BeamElement,
     TrussElement,
     MembraneElement,
@@ -191,6 +192,7 @@ try:
     # Opensees Elements
     from .model.elements import (
         OpenseesMassElement,
+        OpenseesLinkElement,
         OpenseesBeamElement,
         OpenseesTrussElement,
         OpenseesMembraneElement,
@@ -337,6 +339,7 @@ try:
         backend[Node] = OpenseesNode
 
         backend[MassElement] = OpenseesMassElement
+        backend[LinkElement] = OpenseesLinkElement
         backend[BeamElement] = OpenseesBeamElement
         backend[TrussElement] = OpenseesTrussElement
         backend[MembraneElement] = OpenseesMembraneElement

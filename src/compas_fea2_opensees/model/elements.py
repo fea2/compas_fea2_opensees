@@ -31,9 +31,14 @@ class OpenseesLinkElement(LinkElement):
     """
     __doc__ += LinkElement.__doc__
 
-    def __init__(self, *, node, **kwargs):
-        super(OpenseesLinkElement, self).__init__(nodes=[node], **kwargs)
-        self._job_data = f"element zeroLengthContact3D {self.key} {self.nodes[0].key} {self.nodes[1].key} 30000 30000 0.9 0.1 1"
+    def __init__(self, *, nodes, **kwargs):
+        super(OpenseesLinkElement, self).__init__(nodes=nodes, **kwargs)
+        # self._job_data = f"element zeroLengthContact3D {self.key} {self.nodes[0].key} {self.nodes[1].key} 30000 30000 0.9 0.1 1"
+
+    def jobdata(self):
+        # return f"element twoNodeLink {self.key} {self.nodes[0].key} {self.nodes[-1].key} -mat {self.section.material.key} -dir 1"
+        # return  f"element twoNodeLink {self.key} {self.nodes[0].key} {self.nodes[-1].key} -mat 1 2 3 -dir 1 2 6"
+        return  f"element twoNodeLink {self.key} {self.nodes[0].key} {self.nodes[-1].key} -mat {self.section.material.key} {self.section.material.key} {self.section.material.key} -dir 1 2 3 4 5 6"
 
 
 # ==============================================================================
