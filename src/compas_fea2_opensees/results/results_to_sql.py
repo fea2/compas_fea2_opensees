@@ -88,7 +88,10 @@ def read_results_file(database_path, database_name, field_output):
                 object_properties = [step.name, part.name, 'element', 'nodal', value]
 
             components_results = data[c*number_of_components:c*number_of_components+number_of_components]
-
+            if not components_results:
+                if compas_fea2.VERBOSE:
+                    print(f"WARNING: Empty entry in {field} field. Results Skipped!")
+                continue
             #TODO change this to account for different invariants (Mieses, PSmax/min, etc)
             invariants=[]
             if not field_info[field]['description_table'][1][0]:

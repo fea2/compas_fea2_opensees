@@ -26,7 +26,7 @@ class OpenseesPointLoad(NodeLoad):
         super(OpenseesPointLoad, self).__init__(x=x, y=y, z=z, xx=xx, yy=yy, zz=zz, axes=axes, name=name, **kwargs)
 
     def jobdata(self, node):
-        return '\tload {} {}'.format(node.key, ' '.join([str(self.components[dof] or 0.0) for dof in dofs[:node.part.ndf]]))
+        return '\tload {} {}'.format(node.input_key, ' '.join([str(self.components[dof] or 0.0) for dof in dofs[:node.part.ndf]]))
 
 
 class OpenseesLineLoad(EdgeLoad):
