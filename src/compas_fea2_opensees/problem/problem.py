@@ -68,7 +68,7 @@ class OpenseesProblem(Problem):
             line = line.strip().decode()
             if "error" in line.split(" "):
                 raise Exception("ERROR! - Analysis failed to converge!\nSet VERBOSE=True to check the error.")
-            if compas_fea2.VERBOSE:
+            if compas_fea2.VERBOSE or verbose:
                 print(line)
         print("Analysis completed!")
 
