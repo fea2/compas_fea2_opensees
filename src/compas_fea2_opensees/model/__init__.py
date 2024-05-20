@@ -69,6 +69,12 @@ from .constraints import (
     OpenseesTieConstraint,
 )
 
+# Opensees Connectors
+from .connectors import (
+    OpenseesSpringConnector,
+    OpenseesZeroLengthSpringConnector,
+)
+
 # Opensees Boundary Conditions
 from .bcs import (
     OpenseesFixedBC,

@@ -55,17 +55,21 @@ class OpenseesStaticStep(StaticStep):
 # - Analysis Parameters
 #   -------------------
 #
-constraints Transformation
+# constraints Transformation
+constraints Plain
 numberer RCM
 system BandGeneral
-test NormDispIncr {self.NormDispIncr[0]} {self.NormDispIncr[1]}
-algorithm {self.algorithm}
+# test NormDispIncr {self.NormDispIncr[0]} {self.NormDispIncr[1]}
+test NormDispIncr 1.0e-4 20 1
+# algorithm {self.algorithm}
+algorithm Newton
 integrator LoadControl 1
 
 analysis Static
 
-analyze {self.max_increments}
-loadConst -time 0.0
+# analyze {self.max_increments}
+analyze 1
+# loadConst -time 0.0
 """
 
     def _generate_header_section(self):
@@ -73,7 +77,8 @@ loadConst -time 0.0
 # STEP {0}
 #
 #
-timeSeries Constant {1} -factor 1.0
+# timeSeries Constant {1} -factor 1.0
+timeSeries Linear 0
 #""".format(self.name, self.problem._steps_order.index(self))
 
     def _generate_displacements_section(self):

@@ -109,6 +109,12 @@ from compas_fea2.model.constraints import (
     TieConstraint,
 )
 
+# Connectors
+from compas_fea2.model.connectors import (
+    SpringConnector,
+    ZeroLengthSpringConnector,
+)
+
 # Releases
 from compas_fea2.model.releases import (
     BeamEndPinRelease,
@@ -262,6 +268,12 @@ try:
         OpenseesTieConstraint,
     )
 
+    # Opensees Connectors
+    from .model.connectors import (
+    OpenseesSpringConnector,
+    OpenseesZeroLengthSpringConnector,
+    )
+
     # Opensees release
     from .model.releases import (
         OpenseesBeamEndPinRelease,
@@ -393,6 +405,9 @@ try:
         backend[FacesGroup] = OpenseesFacesGroup
 
         backend[TieConstraint] = OpenseesTieConstraint
+
+        backend[SpringConnector] = OpenseesSpringConnector
+        backend[ZeroLengthSpringConnector] = OpenseesZeroLengthSpringConnector
 
         backend[BeamEndPinRelease] = OpenseesBeamEndPinRelease
 

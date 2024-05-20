@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas_fea2.model import Model
-
+from compas_fea2.model import SolidSection
 
 class OpenseesModel(Model):
     """ OpenSees implementation of the :class::`Model`.
@@ -22,7 +22,47 @@ class OpenseesModel(Model):
         super(OpenseesModel, self).__init__(name=name, description=description, author=author, **kwargs)
 
     def jobdata(self):
-        data = [f'#\nwipe\n#']
-        for part in self.parts:
-            data.append(part.jobdata())
-        return '\n'.join(data)
+        return """#
+model Basic -ndm 3 -ndf 3
+#
+#==================================================================
+# Materials
+#==================================================================
+#
+{}
+#
+#==================================================================
+# Sections
+#==================================================================
+#
+{}
+#
+#==================================================================
+# Parts
+#==================================================================
+#
+{}
+#
+#
+#------------------------------------------------------------------
+# Initial conditions
+#------------------------------------------------------------------
+#
+#    tag   DX   DY   RZ   MX   MY   MZ
+{}
+#
+#
+#------------------------------------------------------------------
+# Connectors
+#------------------------------------------------------------------
+#
+{}
+#
+#""".format(
+    '\n'.join([material.jobdata() for material in self.materials]),
+    '\n'.join([section.jobdata() for section in self.sections if not isinstance(section, SolidSection)]),
+    '\n'.join([part.jobdata() for part in self.parts]),
+    '\n'.join([bc.jobdata(nodes) for bc, nodes in self.bcs.items()]),
+    '\n'.join([connector.jobdata() for connector in self.connectors]),
+
+)

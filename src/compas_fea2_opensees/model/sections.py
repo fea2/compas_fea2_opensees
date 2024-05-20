@@ -47,9 +47,8 @@ class OpenseesSpringSection(SpringSection):
 
     """
 
-    def __init__(self, forces=None, displacements=None, stiffness=None, name=None, **kwargs):
-        super(OpenseesSpringSection, self).__init__(forces, displacements, stiffness, name, **kwargs)
-        raise NotImplementedError('{self.__class__.__name__} is not available in Opensees')
+    def __init__(self, axial, lateral, rotational, **kwargs):
+        super(OpenseesSpringSection, self).__init__(axial, lateral, rotational, **kwargs)
 
 # ==============================================================================
 # 1D
@@ -210,7 +209,7 @@ class OpenseesShellSection(ShellSection):
         super(OpenseesShellSection, self).__init__(t, material, name=name, **kwargs)
 
     def jobdata(self):
-        return 'section ElasticMembranePlateSection {} {} {} {} {}'.format(self.key, self.material.E, self.material.v, self.t, self.material.density)
+        return 'section ElasticMembranePlateSection {} {} {} {} {}'.format(self.input_key, self.material.E, self.material.v, self.t, self.material.density)
 
 
 class OpenseesMembraneSection(MembraneSection):
