@@ -505,10 +505,10 @@ if not load_dotenv():
         exe = "OpenSees"
     elif platform == "darwin":
         # OS X
-        exe = "/Applications/OpenSees3.5.0/bin/OpenSees"
+        exe = "/Applications/OpenSees3.7.0/bin/OpenSees"
     elif platform == "win32":
         # Windows
-        exe = "C:/OpenSees3.5.0/bin/OpenSees.exe"
+        exe = "C:/OpenSees3.7.0/bin/OpenSees.exe"
     else:
         raise ValueError("you must specify the location of the solver.")
     init_fea2_opensees(exe)

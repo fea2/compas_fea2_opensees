@@ -50,6 +50,8 @@ class OpenseesBeamElement(BeamElement):
     __doc__ += BeamElement.__doc__
 
     def __init__(self, nodes, section, implementation='elasticBeamColumn', frame=[0.0, 0.0, -1.0], **kwargs):
+        if not implementation:
+            implementation='elasticBeamColumn'
         super(OpenseesBeamElement, self).__init__(nodes=nodes, section=section, frame=frame, implementation=implementation,
                                                     **kwargs)
 
