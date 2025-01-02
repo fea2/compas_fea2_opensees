@@ -26,6 +26,9 @@ from compas_fea2.model import PipeSection
 # NOTE in opensees the sectional properties are assigned directly to the element UNLESS it is a nonliner thing...
 # in that case there is a tag for the section....aaaaarrrrhhhh
 
+def beam_jobdata(self):
+        return 'section Elastic {} {} {} {} {} {} {}'.format(self.key, self.material.E, self.A, self.Iyy, self.Ixx, self.material.G, self.J)
+
 # ==============================================================================
 # 0D
 # ==============================================================================
@@ -69,6 +72,10 @@ class OpenseesBeamSection(BeamSection):
         super().__init__(A=A, Ixx=Ixx, Iyy=Iyy, Ixy=Ixy, Avx=Avx, Avy=Avy, J=J, g0=g0, gw=gw, material=material, name=name, **kwargs)
         raise NotImplementedError('{self.__class__.__name__} is not available in Opensees')
 
+    def jobdata(self):
+        return beam_jobdata(self)
+
+
 
 class OpenseesAngleSection(AngleSection):
     """"""
@@ -76,7 +83,9 @@ class OpenseesAngleSection(AngleSection):
 
     def __init__(self, w, h, t, material, name=None, **kwargs):
         super(OpenseesAngleSection, self).__init__(w, h, t, material, name=name, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self):
+        return beam_jobdata(self)
 
 
 class OpenseesBoxSection(BoxSection):
@@ -85,7 +94,9 @@ class OpenseesBoxSection(BoxSection):
 
     def __init__(self, w, h, t, material, **kwargs):
         super(OpenseesBoxSection, self).__init__(self, w, h, t, material, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self):
+        return beam_jobdata(self)
 
 
 class OpenseesCircularSection(CircularSection):
@@ -94,7 +105,9 @@ class OpenseesCircularSection(CircularSection):
 
     def __init__(self, r, material, name=None, **kwargs):
         super(OpenseesCircularSection, self).__init__(r, material, name=name, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self):
+        return beam_jobdata(self)
 
 
 class OpenseesHexSection(HexSection):
@@ -103,8 +116,9 @@ class OpenseesHexSection(HexSection):
 
     def __init__(self, r, t, material, name=None, **kwargs):
         super(OpenseesHexSection, self).__init__(r, t, material, name=name, **kwargs)
-        raise NotImplementedError
 
+    def jobdata(self):
+        return beam_jobdata(self)
 
 class OpenseesISection(ISection):
     """"""
@@ -112,8 +126,9 @@ class OpenseesISection(ISection):
 
     def __init__(self,  w, h, tw, tf, material, l=0, name=None, **kwargs):
         super(OpenseesISection, self).__init__(w, h, tw, tf, material, name=name, **kwargs)
-        raise NotImplementedError
 
+    def jobdata(self):
+        return beam_jobdata(self)
 
 class OpenseesPipeSection(PipeSection):
     """"""
@@ -121,7 +136,9 @@ class OpenseesPipeSection(PipeSection):
 
     def __init__(self, r, t, material, name=None, **kwarg):
         super(OpenseesPipeSection, self).__init__(r, t, material, name=name, **kwarg)
-        raise NotImplementedError
+
+    def jobdata(self):
+        return beam_jobdata(self)
 
 
 class OpenseesRectangularSection(RectangularSection):
@@ -133,8 +150,7 @@ class OpenseesRectangularSection(RectangularSection):
         super(OpenseesRectangularSection, self).__init__(w=w, h=h, material=material, name=name, **kwargs)
 
     def jobdata(self):
-        return 'section Elastic {} {} {} {} {} {} {}'.format(self.key, self.material.E, self.A, self.Iyy, self.Ixx, self.material.G, self.J)
-
+        return beam_jobdata(self)
 
 class OpenseesTrapezoidalSection(TrapezoidalSection):
     """"""
@@ -151,7 +167,6 @@ class OpenseesTrapezoidalSection(TrapezoidalSection):
         raise NotImplementedError('{self.__class__.__name__} is not available in Opensees')
 
 
-# TODO -> check how these sections are implemented in ABAQUS
 class OpenseesTrussSection(TrussSection):
     """"""
     __doc__ += TrussSection.__doc__

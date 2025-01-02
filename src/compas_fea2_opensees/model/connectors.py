@@ -22,4 +22,4 @@ class OpenseesZeroLengthSpringConnector(ZeroLengthSpringConnector):
         super(OpenseesZeroLengthSpringConnector, self).__init__(nodes, section, directions, yielding, failure, **kwargs)
 
     def jobdata(self):
-        return f"element zeroLength {self.input_key+len(self.model.parts)*10000000} {self.nodes[0].input_key} {self.nodes[1].input_key} -mat 0 -dir 1 2 3"
+        return f"element zeroLength {self.input_key+len(self.model.parts)*10000000} {self.nodes[0].input_key} {self.nodes[1].input_key} -mat 1 -dir 1 2 3"

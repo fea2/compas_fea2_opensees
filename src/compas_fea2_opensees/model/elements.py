@@ -61,10 +61,9 @@ class OpenseesBeamElement(BeamElement):
             raise ValueError('{} is not a valid implementation model'.format(implementation))
 
     def jobdata(self):
-        return '\n'.join(['geomTransf Corotational {} {}'.format(self.input_key, ' '.join([str(i) for i in self.frame])),
+        return '\n'.join(['geomTransf Corotational {} {}'.format(self.input_key, ' '.join([str(i) for i in self.frame.zaxis])),
                           self._job_data()
                           ])
-
     def _elasticBeamColumn(self):
         """Construct an elasticBeamColumn element object.
 

@@ -22,8 +22,8 @@ from compas_fea2.utilities._utils import launch_process
 
 print('\nBegin the analysis...')
 
-file_path = "/Users/frankie/code/FEA2/compas_fea2_opensees/temp/test_gpt"
-file_name = "contact_3d_copy"
+file_path = "/Users/frankie/code/FEA2/examples/temp/stacked_boxes/SLS"
+file_name = "SLS"
 verbose = True
 exe ="/Applications/OpenSees3.5.0/bin/OpenSees"
 
