@@ -16,10 +16,20 @@ class OpenseesModalAnalysis(ModalAnalysis):
 
     def __init__(self, modes=1, name=None, **kwargs):
         super(OpenseesModalAnalysis, self).__init__(modes, name=name, **kwargs)
-        raise NotImplementedError
-    # def jobdata(self):
-    #     'timeSeries Constant {0} -factor 1.0'.format(s_index)
-    #     'pattern Plain {0} {0} -fact {1} {2}'.format(s_index, 1, '{')
+        self.modes = modes
+
+    def jobdata(self):
+        return f"""#
+{self._generate_header_section()}
+recorder Node -file eigenvalues.out -nodeRange 1 10 -dof 1 2 3 eigen {self.modes}
+eigen {self.modes}
+"""
+
+    def _generate_header_section(self):
+        return """#
+# STEP {0}
+#
+#""".format(self.name)
 
 
 class OpenseesComplexEigenValue(ComplexEigenValue):
@@ -28,7 +38,18 @@ class OpenseesComplexEigenValue(ComplexEigenValue):
 
     def __init__(self, name=None, **kwargs):
         super(OpenseesComplexEigenValue, self).__init__(name, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self):
+        return f"""#
+{self._generate_header_section()}
+complexEigen
+"""
+
+    def _generate_header_section(self):
+        return """#
+# STEP {0}
+#
+#""".format(self.name)
 
 
 class OpenseesBucklingAnalysis(BucklingAnalysis):
@@ -37,7 +58,18 @@ class OpenseesBucklingAnalysis(BucklingAnalysis):
 
     def __init__(self, name=None, **kwargs):
         super(OpenseesBucklingAnalysis, self).__init__(name, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self):
+        return f"""#
+{self._generate_header_section()}
+buckling
+"""
+
+    def _generate_header_section(self):
+        return """#
+# STEP {0}
+#
+#""".format(self.name)
 
 
 class OpenseesLinearStaticPerturbation(LinearStaticPerturbation):
@@ -46,7 +78,18 @@ class OpenseesLinearStaticPerturbation(LinearStaticPerturbation):
 
     def __init__(self, name=None, **kwargs):
         super(OpenseesLinearStaticPerturbation, self).__init__(name=name, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self):
+        return f"""#
+{self._generate_header_section()}
+linearStaticPerturbation
+"""
+
+    def _generate_header_section(self):
+        return """#
+# STEP {0}
+#
+#""".format(self.name)
 
 
 class OpenseesStedyStateDynamic(StedyStateDynamic):
@@ -55,7 +98,18 @@ class OpenseesStedyStateDynamic(StedyStateDynamic):
 
     def __init__(self, name=None, **kwargs):
         super().__init__(name, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self):
+        return f"""#
+{self._generate_header_section()}
+steadyStateDynamic
+"""
+
+    def _generate_header_section(self):
+        return """#
+# STEP {0}
+#
+#""".format(self.name)
 
 
 class OpenseesSubstructureGeneration(SubstructureGeneration):
@@ -64,4 +118,15 @@ class OpenseesSubstructureGeneration(SubstructureGeneration):
 
     def __init__(self, name=None, **kwargs):
         super().__init__(name, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self):
+        return f"""#
+{self._generate_header_section()}
+substructureGeneration
+"""
+
+    def _generate_header_section(self):
+        return """#
+# STEP {0}
+#
+#""".format(self.name)

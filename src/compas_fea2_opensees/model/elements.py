@@ -124,22 +124,17 @@ class OpenseesShellElement(ShellElement):
     # TODO maybe move mat_behavior to the material or section
 
     def __init__(self, nodes, section, implementation=None, mat_behaviour='PlaneStress', **kwargs):
+        self._mat_behaviour = mat_behaviour
         super(OpenseesShellElement, self).__init__(nodes=nodes, section=section,
                                                    implementation=implementation, **kwargs)
-
-
         if not self.implementation:
             if len(nodes)==3:
                 self._implementation = 'shelldkgt'#'Tri31'
             elif len(nodes)==4:
-                self._implementaiton = 'shellMIT4'
+                self._implementation = 'shellMIT4'
             else:
                 raise NotImplementedError('An element with {} nodes is not supported'.format(len(nodes)))
-        self._mat_behaviour = mat_behaviour
 
-    @property
-    def frame(self):
-        return self._frame
 
     @property
     def mat_behaviour(self):

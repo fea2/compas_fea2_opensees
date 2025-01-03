@@ -100,6 +100,68 @@ timeSeries Constant {1} -factor 1.0
 
 
 class OpenseesStaticRiksStep(StaticRiksStep):
-    def __init__(self, max_increments=100, initial_inc_size=1, min_inc_size=0.00001, time=1, nlgeom=False, modify=True, name=None, **kwargs):
+    def __init__(self, max_increments=100, initial_inc_size=1, min_inc_size=0.00001, ArcLength=[1.0e-2, 1.0e-4, 10], time=1, nlgeom=False, modify=True, name=None, **kwargs):
         super().__init__(max_increments, initial_inc_size, min_inc_size, time, nlgeom, modify, name, **kwargs)
-        raise NotImplementedError
+        self.ArcLength = ArcLength
+
+    def jobdata(self):
+        return f"""#
+{self._generate_header_section()}
+# - Displacements
+#   -------------
+{self._generate_displacements_section()}
+#
+# - Loads
+#   -----
+{self._generate_loads_section()}
+#
+# - Predefined Fields
+#   -----------------
+{self._generate_fields_section()}
+#
+# - Output Requests
+#   ---------------
+{self._generate_output_section()}
+#
+# - Analysis Parameters
+#   -------------------
+#
+constraints Transformation
+numberer RCM
+system BandGeneral
+test NormDispIncr {self.ArcLength[0]} {self.ArcLength[1]} {self.ArcLength[2]}
+algorithm Newton
+integrator ArcLength {self.ArcLength[0]}
+
+analysis Static
+
+analyze {self.max_increments}
+loadConst -time 0.0
+"""
+
+    def _generate_header_section(self):
+        return """#
+# STEP {0}
+#
+#
+timeSeries Constant {1} -factor 1.0
+#""".format(self.name, self.problem._steps_order.index(self))
+
+    def _generate_displacements_section(self):
+        return '\n'.join([pattern.load.jobdata(pattern.distribution) for pattern in self.displacements]) or '#'
+
+    def _generate_loads_section(self):
+        return self.combination.jobdata()
+
+    def _generate_fields_section(self):
+        return '#'
+
+    def _generate_output_section(self):
+        data_section=['#']
+        if self._field_outputs:
+            for foutput in self._field_outputs:
+                data_section.append(foutput.jobdata())
+        if self._history_outputs:
+            for houtput in self._history_outputs:
+                data_section.append(houtput.jobdata())
+        return '\n'.join(data_section)
