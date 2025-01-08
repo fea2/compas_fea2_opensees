@@ -97,7 +97,9 @@ class OpenseesTrussElement(TrussElement):
 
     def __init__(self, nodes, section, **kwargs):
         super(OpenseesTrussElement, self).__init__(nodes=nodes, section=section, **kwargs)
-        raise NotImplementedError
+    
+    def jobdata(self):
+        return f"element Truss {self.input_key} {self.nodes[0].input_key} {self.nodes[1].input_key} {self.section.A} {self.section.material.input_key}"
 
 
 # ==============================================================================
@@ -131,7 +133,7 @@ class OpenseesShellElement(ShellElement):
             if len(nodes)==3:
                 self._implementation = 'shelldkgt'#'Tri31'
             elif len(nodes)==4:
-                self._implementation = 'shellMIT4'
+                self._implementation = 'shellMITC4'
             else:
                 raise NotImplementedError('An element with {} nodes is not supported'.format(len(nodes)))
 
@@ -196,7 +198,7 @@ class OpenseesShellElement(ShellElement):
                                                     ' '.join(str(node.input_key) for node in self.nodes),
                                                     self.section.input_key)
 
-    def _shellmit4(self):
+    def _shellmitc4(self):
         """Construct a ShellMITC4 element object, which uses a bilinear
         isoparametric formulation in combination with a modified shear
         interpolation to improve thin-plate bending performance.
@@ -215,7 +217,7 @@ class OpenseesShellElement(ShellElement):
         """
         self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
         self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
-        return 'element ASDShellQ4  {}  {}'.format(self.input_key,
+        return 'element ASDShellQ4 {} {}  {}'.format(self.input_key,
                                                    ' '.join(str(node.input_key) for node in self.nodes),
                                                    self.section.input_key)
 

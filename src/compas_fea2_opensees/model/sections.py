@@ -179,7 +179,6 @@ class OpenseesTrussSection(TrussSection):
 
     def __init__(self, A, material, name=None, **kwargs):
         super(OpenseesTrussSection, self).__init__(A, material, name=name, **kwargs)
-        raise NotImplementedError('{self.__class__.__name__} is not available in Opensees')
 
 
 class OpenseesStrutSection(StrutSection):

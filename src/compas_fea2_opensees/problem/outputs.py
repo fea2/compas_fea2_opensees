@@ -2,8 +2,35 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas_fea2.problem.outputs import FieldOutput, HistoryOutput
+from compas_fea2.problem.outputs import (
+    FieldOutput, 
+    HistoryOutput, 
+    DisplacementFieldOutput
+    )
 from typing import Iterable
+
+class OpenseesDisplacementFieldOutput(DisplacementFieldOutput):
+    """"""
+    __doc__ += DisplacementFieldOutput.__doc__
+
+    def __init__(self, **kwargs):
+        super(OpenseesDisplacementFieldOutput, self).__init__(**kwargs)
+    
+    def jobdata(self):
+        return """
+# ---------------------------------------------
+# Custom Displacement Export Script
+# ---------------------------------------------
+set dispFile [open "u.out" "w"]
+set allNodes [getNodeTags]
+foreach nodeTag $allNodes {
+    set disp [nodeDisp $nodeTag]
+    puts $dispFile "$nodeTag $disp"
+}
+close $dispFile
+puts "Displacements have been exported to u.out"
+"""
+        
 
 class OpenseesFieldOutput(FieldOutput):
     """"""
@@ -72,7 +99,46 @@ elements_set : set
                     output = element_outputs[field]
                     data.append(f'recorder Element -file {field}.out -time -eleRange {key_range} -dof {output}')
                     # data.append(f'recorder Element -xml {field}.xml -time -eleRange {key_range} -dof {output}')
+        
+        
+        data.append("""
+# ---------------------------------------------
+# Custom Displacement Export Script
+# ---------------------------------------------
+set dispFile [open "u.out" "w"]
+set allNodes [getNodeTags]
+foreach nodeTag $allNodes {
+    set disp [nodeDisp $nodeTag]
+    puts $dispFile "$nodeTag $disp"
+}
+close $dispFile
+puts "Displacements have been exported to u.out"
 
+
+# ---------------------------------------------
+# Custom Element Forces Export Script
+# ---------------------------------------------
+set forceFile [open "sf.out" "w"]
+set allElements [getEleTags]
+foreach eleTag $allElements {
+    set eleForces [eleForce $eleTag]
+    puts $forceFile "$eleTag $eleForces"
+}
+close $forceFile
+puts "Element forces have been exported to sf.out"
+
+# ---------------------------------------------
+# Custom Element Stress Export Script
+# ---------------------------------------------
+set stressFile [open "s.out" "w"]
+set allElements [getEleTags]
+foreach eleTag $allElements {
+    set eleStresses [eleResponse $eleTag "stresses"]
+    puts $stressFile "$eleTag $eleStresses"
+}
+close $stressFile
+puts "ShellDKGT element stresses have been exported to s.out"
+""")
         return '\n'.join(data)
 
 #     """recorder Node -file Node3.out -time -node 3 -dof 1 2 disp

@@ -18,9 +18,8 @@ from .steps import (
 )
 # Opensees Loads
 from .loads import (
-    OpenseesPointLoad,
-    OpenseesLineLoad,
-    OpenseesAreaLoad,
+    OpenseesConcentratedLoad,
+    OpenseesPressureLoad,
     OpenseesGravityLoad,
     OpenseesPrestressLoad,
     OpenseesHarmonicPointLoad,
@@ -40,6 +39,7 @@ from .combinations import (
 
 # Opensees outputs
 from .outputs import (
+    OpenseesDisplacementFieldOutput,
     OpenseesFieldOutput,
     OpenseesHistoryOutput,
 )

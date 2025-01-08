@@ -113,6 +113,7 @@ from compas_fea2.model.constraints import (
 from compas_fea2.model.connectors import (
     SpringConnector,
     ZeroLengthSpringConnector,
+    RigidLinkConnector,
 )
 
 # Releases
@@ -155,9 +156,8 @@ from compas_fea2.problem.steps import (
 
 # Loads
 from compas_fea2.problem.loads import (
-    NodeLoad,
-    EdgeLoad,
-    FaceLoad,
+    ConcentratedLoad,
+    PressureLoad,
     TributaryLoad,
     PrestressLoad,
     GravityLoad,
@@ -177,6 +177,7 @@ from compas_fea2.problem.combinations import (
 
 # Outputs
 from compas_fea2.problem.outputs import (
+    DisplacementFieldOutput,
     FieldOutput,
     HistoryOutput,
 )
@@ -272,6 +273,7 @@ try:
     from .model.connectors import (
     OpenseesSpringConnector,
     OpenseesZeroLengthSpringConnector,
+    OpenseesRigidLinkConnector,
     )
 
     # Opensees release
@@ -314,9 +316,8 @@ try:
 
     # Opensees Loads
     from .problem.loads import (
-        OpenseesPointLoad,
-        OpenseesLineLoad,
-        OpenseesAreaLoad,
+        OpenseesConcentratedLoad,
+        OpenseesPressureLoad,
         OpenseesTributaryLoad,
         OpenseesPrestressLoad,
         OpenseesGravityLoad,
@@ -336,6 +337,7 @@ try:
 
     # Opensees outputs
     from .problem.outputs import (
+        OpenseesDisplacementFieldOutput,
         OpenseesFieldOutput,
         OpenseesHistoryOutput,
     )
@@ -408,6 +410,7 @@ try:
 
         backend[SpringConnector] = OpenseesSpringConnector
         backend[ZeroLengthSpringConnector] = OpenseesZeroLengthSpringConnector
+        backend[RigidLinkConnector] = OpenseesRigidLinkConnector
 
         backend[BeamEndPinRelease] = OpenseesBeamEndPinRelease
 
@@ -438,9 +441,8 @@ try:
         backend[DirectCyclicStep] = OpenseesDirectCyclicStep
 
         backend[GravityLoad] = OpenseesGravityLoad
-        backend[NodeLoad] = OpenseesPointLoad
-        backend[EdgeLoad] = OpenseesLineLoad
-        backend[FaceLoad] = OpenseesAreaLoad
+        backend[ConcentratedLoad] = OpenseesConcentratedLoad
+        backend[PressureLoad] = OpenseesPressureLoad
         backend[TributaryLoad] = OpenseesTributaryLoad
         backend[PrestressLoad] = OpenseesPrestressLoad
         backend[HarmonicPointLoad] = OpenseesHarmonicPointLoad
@@ -450,6 +452,7 @@ try:
 
         backend[LoadCombination] = OpenseesLoadCombination
 
+        backend[DisplacementFieldOutput] = OpenseesDisplacementFieldOutput
         backend[FieldOutput] = OpenseesFieldOutput
         backend[HistoryOutput] = OpenseesHistoryOutput
 

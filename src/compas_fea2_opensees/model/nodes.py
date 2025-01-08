@@ -13,11 +13,13 @@ class OpenseesNode(Node):
 
     def __init__(self, xyz, mass=None, name=None, **kwargs):
         super(OpenseesNode, self).__init__(xyz=xyz, mass=mass, name=name, **kwargs)
-        # self.ndf=3
 
     def jobdata(self):
         # FIXME: the approximation on the floating point is not correct because it depends on the units
         x, y, z = self.xyz
-        coordinates = '{0}{1}{2}{3:>10.3f}{2}{4:>10.3f}{2}{5:>10.3f}'.format('node ', self.input_key, ' ', x, y, z)
-        mass = ' -mass {:>10.3f} {:>10.3f} {:>10.3f}'.format(*self.mass) if not any(v is None for v in self.mass) else ''
-        return coordinates+mass
+        coordinates = '{0}{1}{2}{3:>15.8f}{2}{4:>15.8f}{2}{5:>15.8f}'.format('node ', self.input_key, ' ', x, y, z)
+        if any(self.mass):
+            mass = ' -mass ' + ' '.join(['{:>15.8f}'.format(m) for m in self.mass])
+        else:
+            mass = ''
+        return coordinates + mass

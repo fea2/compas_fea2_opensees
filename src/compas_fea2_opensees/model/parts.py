@@ -76,6 +76,6 @@ model Basic -ndm {} -ndf {}
     self.name,
     self._ndm,
     self._ndf,
-    '\n'.join([node.jobdata() for node in self.nodes]),
-    '\n'.join([element.jobdata() for element in self.elements]),
+    '\n'.join([node.jobdata() for node in sorted(self.nodes, key=lambda x: x.key)]),
+    '\n'.join([element.jobdata() for element in sorted(self.elements, key=lambda x: x.key)]),
 )

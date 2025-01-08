@@ -73,6 +73,7 @@ from .constraints import (
 from .connectors import (
     OpenseesSpringConnector,
     OpenseesZeroLengthSpringConnector,
+    OpenseesRigidLinkConnector,
 )
 
 # Opensees Boundary Conditions

@@ -2,9 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas_fea2.problem import NodeLoad
-from compas_fea2.problem import EdgeLoad
-from compas_fea2.problem import FaceLoad
+from compas_fea2.problem import ConcentratedLoad
+from compas_fea2.problem import PressureLoad
 from compas_fea2.problem import GravityLoad
 from compas_fea2.problem import TributaryLoad
 from compas_fea2.problem import PrestressLoad
@@ -17,35 +16,25 @@ from typing import Iterable
 dofs = ['x',  'y',  'z',  'xx', 'yy', 'zz']
 
 
-class OpenseesPointLoad(NodeLoad):
+class OpenseesConcentratedLoad(ConcentratedLoad):
     """OpenSees implementation of :class:`compas_fea2.problem.PointLoad`.\n
     """
-    __doc__ += NodeLoad.__doc__
+    __doc__ += ConcentratedLoad.__doc__
 
     def __init__(self, x=None, y=None, z=None, xx=None, yy=None, zz=None, axes='global', name=None, **kwargs):
-        super(OpenseesPointLoad, self).__init__(x=x, y=y, z=z, xx=xx, yy=yy, zz=zz, axes=axes, name=name, **kwargs)
+        super(OpenseesConcentratedLoad, self).__init__(x=x, y=y, z=z, xx=xx, yy=yy, zz=zz, axes=axes, name=name, **kwargs)
 
     def jobdata(self, node):
         return '\tload {} {}'.format(node.input_key, ' '.join([str(self.components[dof] or 0.0) for dof in dofs[:node.part.ndf]]))
 
 
-class OpenseesLineLoad(EdgeLoad):
-    """OpenSees implementation of :class:`compas_fea2.problem.LineLoad`.\n
-    """
-    __doc__ += EdgeLoad.__doc__
-
-    def __init__(self, elements, x, y, z, xx, yy, zz, axes, name=None, **kwargs):
-        super(OpenseesLineLoad, self).__init__(elements, x, y, z, xx, yy, zz, axes, name=name, **kwargs)
-        raise NotImplementedError
-
-
-class OpenseesAreaLoad(FaceLoad):
+class OpenseesPressureLoad(PressureLoad):
     """OpenSees implementation of :class:`compas_fea2.problem.AreaLoad`.\n
     """
-    __doc__ += FaceLoad.__doc__
+    __doc__ += PressureLoad.__doc__
 
     def __init__(self, elements, x, y, z, axes, name=None, **kwargs):
-        super(OpenseesAreaLoad, self).__init__(elements, x, y, z, axes, name=name, **kwargs)
+        super(OpenseesPressureLoad, self).__init__(elements, x, y, z, axes, name=name, **kwargs)
         raise NotImplementedError
 
 

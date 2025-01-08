@@ -15,18 +15,18 @@ class OpenseesNodesGroup(NodesGroup):
         super(OpenseesNodesGroup, self).__init__(nodes=nodes, name=name, **kwargs)
 
     def jobdata(self):
-        raise NotImplementedError
+        return f"region {self.input_key} -nodeOnly {' '.join([str(node.input_key) for node in self.nodes])}"
 
 
 class OpenseesElementsGroup(ElementsGroup):
     """"""
     __doc__ += ElementsGroup.__doc__
 
-    def __init__(self, *, elements, name=None, **kwargs):
+    def __init__(self, elements, name=None, **kwargs):
         super(OpenseesElementsGroup, self).__init__(elements=elements, name=name, **kwargs)
 
     def jobdata(self):
-        raise NotImplementedError
+        return f"region {self.input_key} -eleOnly {' '.join([str(element.input_key) for element in self.elements])}"
 
 class OpenseesFacesGroup(FacesGroup):
     """Opensees implementation of the :class:`compas_fea2.model.FacesGroup`.\n

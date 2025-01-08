@@ -18,7 +18,16 @@ class OpenseesConcrete(Concrete):
 
     def __init__(self, *, fck, v=0.2, density=2400, fr=None,  name=None, **kwargs):
         super(OpenseesConcrete, self).__init__(fck=fck, v=v, density=density, fr=fr, name=name, **kwargs)
-        raise NotImplementedError
+
+    def jobdata(self):
+        #FIXME: This is a standard material, not a concrete material
+        self.notension = False
+        if not self.notension:
+            line = ['uniaxialMaterial Elastic {} {}\n'.format(self.key, self.E),
+                    'nDMaterial ElasticIsotropic {} {} {} {}'.format(self.key + 1000, self.E, self.v, self.density)] #FIXME Remove one of the two
+        else:
+            line = ['uniaxialMaterial ENT {} {}\n'.format(self.key, self.E)]
+        return ''.join(line)
 
 
 class OpenseesConcreteSmearedCrack(ConcreteSmearedCrack):

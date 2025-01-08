@@ -155,7 +155,7 @@ loadConst -time 0.0
         print('Extracting data from Opensees .out files...')
         database_path = database_path or self.path
         database_name = database_name or self.name
-        from ..results.results_to_sql import read_results_file #, create_database
+        from ..results.results_to_sql import read_results_file
 
         for step in self.steps:
             for field_output in step.field_outputs:
