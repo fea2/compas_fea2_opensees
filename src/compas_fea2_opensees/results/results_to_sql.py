@@ -4,10 +4,8 @@ It supports various types of field outputs such as displacements, reaction force
 The script creates tables in the SQLite database to store these results and their descriptions.
 """
 import os
-import sqlite3
-from compas_fea2.results.sql_wrapper import create_table_for_output_class
 
-def read_results_file(database_path, database_name, field_output):
+def read_results_file(connection, field_output):
     """
     Read the .out results file and convert it to a dictionary.
 
@@ -20,31 +18,34 @@ def read_results_file(database_path, database_name, field_output):
     field_output : :class:`compas_fea2.problem.FieldOutput`
         FieldOutput object containing the nodes and/or element outputs to extract.
     """
-    import os
-    
     
     model = field_output.model
     step = field_output.step
-    title = field_output.title
+    field_name = field_output.field_name
+    database_path = field_output.problem.database_path
 
     results = []
-    with open(os.path.join(database_path, f'{title}.out'), 'r') as f:
+    with open(os.path.join(database_path, f'{field_name}.out'), 'r') as f:
         lines = f.readlines()
         for line in lines:
             columns = line.split()
             
             key = int(columns[0])  # Convert the first column to int
-            node = model.find_node_by_inputkey(key)[0]
+            member = getattr(model, field_output._results_func)(key)[0]
             
-            #FIXME: this should be linked to the elemnt
+            #FIXME: this does not take into account the integration points
+            # which can be different from element implementation to element implementation
             values = list(map(float, columns[1:]))
-            ext_values = [0.]*len(field_output.components)
-            for i, val in enumerate(values):
-                ext_values[i] = val
+            if len(values) < len(field_output.components_names):
+                values = values + [0.]*(len(field_output.components_names) - len(values))
+            elif len(values) > len(field_output.components_names):
+                values = values[:len(field_output.components_names)]
+            else:
+                values = values
             
-            results.append([key] + [step.name, node.part.name] + ext_values)
-    # print(results)
-    create_table_for_output_class(results, database_path, database_name+'-results.db', field_output)
+            results.append([member.key] + [step.name, member.part.name] + values)
+    
+    field_output.create_table_for_output_class(connection, results)
     
 
 

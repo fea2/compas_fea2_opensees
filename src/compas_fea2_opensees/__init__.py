@@ -178,6 +178,8 @@ from compas_fea2.problem.combinations import (
 # Outputs
 from compas_fea2.problem.outputs import (
     DisplacementFieldOutput,
+    ReactionFieldOutput,
+    Stress2DFieldOutput,
     FieldOutput,
     HistoryOutput,
 )
@@ -338,6 +340,8 @@ try:
     # Opensees outputs
     from .problem.outputs import (
         OpenseesDisplacementFieldOutput,
+        OpenseesReactionFieldOutput,
+        OpenseesStress2DFieldOutput,
         OpenseesFieldOutput,
         OpenseesHistoryOutput,
     )
@@ -453,6 +457,9 @@ try:
         backend[LoadCombination] = OpenseesLoadCombination
 
         backend[DisplacementFieldOutput] = OpenseesDisplacementFieldOutput
+        backend[ReactionFieldOutput] = OpenseesReactionFieldOutput
+        backend[Stress2DFieldOutput] = OpenseesStress2DFieldOutput
+        
         backend[FieldOutput] = OpenseesFieldOutput
         backend[HistoryOutput] = OpenseesHistoryOutput
 

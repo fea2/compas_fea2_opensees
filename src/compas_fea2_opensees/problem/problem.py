@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+import sqlite3
 from pathlib import Path
 from sys import platform
 from compas_fea2.problem import Problem
@@ -153,11 +154,19 @@ loadConst -time 0.0
 
         """
         print('Extracting data from Opensees .out files...')
-        database_path = database_path or self.path
-        database_name = database_name or self.name
+        self.database_path = database_path or self.path
+        self.database_name = database_name or self.name+'-results.db'
         from ..results.results_to_sql import read_results_file
+
+        db_file = os.path.join(self.database_path, self.database_name)
+        
+        if os.path.exists(db_file):
+            os.remove(db_file)
+        connection = sqlite3.connect(db_file)
 
         for step in self.steps:
             for field_output in step.field_outputs:
-                read_results_file(database_path, database_name, field_output)
+                read_results_file(connection, field_output)
+        
+        connection.close()
         print('Results extraction completed!')

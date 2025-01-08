@@ -40,6 +40,8 @@ from .combinations import (
 # Opensees outputs
 from .outputs import (
     OpenseesDisplacementFieldOutput,
+    OpenseesReactionFieldOutput,
     OpenseesFieldOutput,
     OpenseesHistoryOutput,
+    OpenseesStress2DFieldOutput,
 )
