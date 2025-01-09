@@ -11,8 +11,8 @@ class OpenseesNode(Node):
     """
     __doc__ += Node.__doc__
 
-    def __init__(self, xyz, mass=None, name=None, **kwargs):
-        super(OpenseesNode, self).__init__(xyz=xyz, mass=mass, name=name, **kwargs)
+    def __init__(self, xyz, mass=None, **kwargs):
+        super(OpenseesNode, self).__init__(xyz=xyz, mass=mass,  **kwargs)
 
     def jobdata(self):
         # FIXME: the approximation on the floating point is not correct because it depends on the units

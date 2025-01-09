@@ -4,13 +4,10 @@ from __future__ import print_function
 
 import os
 import sqlite3
-from pathlib import Path
-from sys import platform
 from compas_fea2.problem import Problem
 from compas_fea2.utilities._utils import timer
 from compas_fea2.utilities._utils import launch_process
 
-from ..job.input_file import OpenseesInputFile
 
 import compas_fea2
 import compas_fea2_opensees
@@ -20,15 +17,8 @@ class OpenseesProblem(Problem):
     """
     __doc__ += Problem.__doc__
 
-    def __init__(self, name=None, description=None, **kwargs):
-        super(OpenseesProblem, self).__init__(name=name, description=description, **kwargs)
-        # FIXME move these to the Steps
-        self.tolerance = None
-        self.iterations = None
-        self.increments = None  # self.increments =1./increments
-    # =========================================================================
-    #                           Optimisation methods
-    # =========================================================================
+    def __init__(self,  description=None, **kwargs):
+        super(OpenseesProblem, self).__init__(description=description, **kwargs)
 
     # =========================================================================
     #                         Analysis methods
@@ -98,6 +88,7 @@ class OpenseesProblem(Problem):
         if kwargs.get("save", False):
             self.model.to_cfm(self.model.path.joinpath(f'{self.model.name}.cfm'))
         return self.convert_results_to_sqlite()
+    
     # =============================================================================
     #                               Job data
     # =============================================================================
@@ -115,26 +106,11 @@ class OpenseesProblem(Problem):
         input file data line (str).
         """
         return '\n'.join([step.jobdata() for step in self._steps_order])
-        """recorder Node -file Node3.out -time -node 3 -dof 1 2 disp
-recorder Element -file Element1.out -time -ele 1 force
 
-pattern Plain 1 Linear {chr(123)}
-    load 2 0.0 -2000.0 0.0 0.0 0.0 0.0
-{chr(125)}
-
-constraints Transformation
-numberer RCM
-system BandGeneral
-test NormDispIncr 1.0e-6 6
-algorithm Newton
-integrator LoadControl 0.1
-
-analysis Static
-
-analyze 10
-loadConst -time 0.0
-        """
-
+    # =========================================================================
+    #                           Optimisation methods
+    # =========================================================================
+    
     # ==========================================================================
     # Extract results
     # ==========================================================================

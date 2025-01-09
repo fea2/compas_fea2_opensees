@@ -9,8 +9,8 @@ from compas_fea2.model import RigidLinkConnector
 
 
 class OpenseesSpringConnector(SpringConnector):
-    def __init__(self, master, slave, name=None, **kwargs):
-        super(OpenseesSpringConnector, self).__init__(master, slave, tol=None, name=name, **kwargs)
+    def __init__(self, master, slave, **kwargs):
+        super(OpenseesSpringConnector, self).__init__(master, slave, tol=None, **kwargs)
         raise NotImplementedError
 
 

@@ -36,8 +36,8 @@ class OpenseesMassSection(MassSection):
     """"""
     __doc__ += MassSection.__doc__
 
-    def __init__(self, mass, name=None, **kwargs):
-        super(OpenseesMassSection, self).__init__(mass, name=name, **kwargs)
+    def __init__(self, mass,  **kwargs):
+        super(OpenseesMassSection, self).__init__(mass,  **kwargs)
 
 
 class OpenseesSpringSection(SpringSection):
@@ -68,8 +68,8 @@ class OpenseesBeamSection(BeamSection):
 
     """
 
-    def __init__(self, *, A, Ixx, Iyy, Ixy, Avx, Avy, J, g0, gw, material, name=None, **kwargs):
-        super().__init__(A=A, Ixx=Ixx, Iyy=Iyy, Ixy=Ixy, Avx=Avx, Avy=Avy, J=J, g0=g0, gw=gw, material=material, name=name, **kwargs)
+    def __init__(self, *, A, Ixx, Iyy, Ixy, Avx, Avy, J, g0, gw, material,  **kwargs):
+        super().__init__(A=A, Ixx=Ixx, Iyy=Iyy, Ixy=Ixy, Avx=Avx, Avy=Avy, J=J, g0=g0, gw=gw, material=material,  **kwargs)
         raise NotImplementedError('{self.__class__.__name__} is not available in Opensees')
 
     def jobdata(self):
@@ -81,8 +81,8 @@ class OpenseesAngleSection(AngleSection):
     """"""
     __doc__ += AngleSection.__doc__
 
-    def __init__(self, w, h, t, material, name=None, **kwargs):
-        super(OpenseesAngleSection, self).__init__(w, h, t, material, name=name, **kwargs)
+    def __init__(self, w, h, t, material,  **kwargs):
+        super(OpenseesAngleSection, self).__init__(w, h, t, material,  **kwargs)
 
     def jobdata(self):
         return beam_jobdata(self)
@@ -103,8 +103,8 @@ class OpenseesCircularSection(CircularSection):
     """"""
     __doc__ += CircularSection.__doc__
 
-    def __init__(self, r, material, name=None, **kwargs):
-        super(OpenseesCircularSection, self).__init__(r, material, name=name, **kwargs)
+    def __init__(self, r, material,  **kwargs):
+        super(OpenseesCircularSection, self).__init__(r, material,  **kwargs)
 
     def jobdata(self):
         return beam_jobdata(self)
@@ -114,8 +114,8 @@ class OpenseesHexSection(HexSection):
     """"""
     __doc__ += HexSection.__doc__
 
-    def __init__(self, r, t, material, name=None, **kwargs):
-        super(OpenseesHexSection, self).__init__(r, t, material, name=name, **kwargs)
+    def __init__(self, r, t, material,  **kwargs):
+        super(OpenseesHexSection, self).__init__(r, t, material,  **kwargs)
 
     def jobdata(self):
         return beam_jobdata(self)
@@ -124,8 +124,8 @@ class OpenseesISection(ISection):
     """"""
     __doc__ += ISection.__doc__
 
-    def __init__(self,  w, h, tw, tf, material, l=0, name=None, **kwargs):
-        super(OpenseesISection, self).__init__(w, h, tw, tf, material, name=name, **kwargs)
+    def __init__(self,  w, h, tw, tf, material, l=0,  **kwargs):
+        super(OpenseesISection, self).__init__(w, h, tw, tf, material,  **kwargs)
 
     def jobdata(self):
         return beam_jobdata(self)
@@ -134,8 +134,8 @@ class OpenseesPipeSection(PipeSection):
     """"""
     __doc__ += PipeSection.__doc__
 
-    def __init__(self, r, t, material, name=None, **kwarg):
-        super(OpenseesPipeSection, self).__init__(r, t, material, name=name, **kwarg)
+    def __init__(self, r, t, material,  **kwarg):
+        super(OpenseesPipeSection, self).__init__(r, t, material,  **kwarg)
 
     def jobdata(self):
         return beam_jobdata(self)
@@ -146,8 +146,8 @@ class OpenseesRectangularSection(RectangularSection):
     """
     __doc__ += RectangularSection.__doc__
 
-    def __init__(self, w, h, material, name=None, **kwargs):
-        super(OpenseesRectangularSection, self).__init__(w=w, h=h, material=material, name=name, **kwargs)
+    def __init__(self, w, h, material,  **kwargs):
+        super(OpenseesRectangularSection, self).__init__(w=w, h=h, material=material,  **kwargs)
 
     def jobdata(self):
         return beam_jobdata(self)
@@ -162,8 +162,8 @@ class OpenseesTrapezoidalSection(TrapezoidalSection):
 
     """
 
-    def __init__(self, w1, w2, h, material, name=None, **kwargs):
-        super(OpenseesTrapezoidalSection, self).__init__(w1, w2, h, material, name=name, **kwargs)
+    def __init__(self, w1, w2, h, material,  **kwargs):
+        super(OpenseesTrapezoidalSection, self).__init__(w1, w2, h, material,  **kwargs)
         raise NotImplementedError('{self.__class__.__name__} is not available in Opensees')
 
 
@@ -177,8 +177,8 @@ class OpenseesTrussSection(TrussSection):
 
     """
 
-    def __init__(self, A, material, name=None, **kwargs):
-        super(OpenseesTrussSection, self).__init__(A, material, name=name, **kwargs)
+    def __init__(self, A, material,  **kwargs):
+        super(OpenseesTrussSection, self).__init__(A, material,  **kwargs)
 
 
 class OpenseesStrutSection(StrutSection):
@@ -191,8 +191,8 @@ class OpenseesStrutSection(StrutSection):
 
     """
 
-    def __init__(self, A, material, name=None, **kwargs):
-        super(OpenseesStrutSection, self).__init__(A, material, name=name, **kwargs)
+    def __init__(self, A, material,  **kwargs):
+        super(OpenseesStrutSection, self).__init__(A, material,  **kwargs)
         raise NotImplementedError('{self.__class__.__name__} is not available in Opensees')
 
 
@@ -206,8 +206,8 @@ class OpenseesTieSection(TieSection):
 
     """
 
-    def __init__(self, A, material, name=None, **kwargs):
-        super(OpenseesTieSection, self).__init__(A, material, name=name, **kwargs)
+    def __init__(self, A, material,  **kwargs):
+        super(OpenseesTieSection, self).__init__(A, material,  **kwargs)
         raise NotImplementedError('{self.__class__.__name__} is not available in Opensees')
 
 
@@ -219,8 +219,8 @@ class OpenseesShellSection(ShellSection):
     """"""
     __doc__ += ShellSection.__doc__
 
-    def __init__(self, t, material, name=None, **kwargs):
-        super(OpenseesShellSection, self).__init__(t, material, name=name, **kwargs)
+    def __init__(self, t, material,  **kwargs):
+        super(OpenseesShellSection, self).__init__(t, material,  **kwargs)
 
     def jobdata(self):
         return 'section ElasticMembranePlateSection {} {} {} {} {}'.format(self.input_key, self.material.E, self.material.v, self.t, self.material.density)
@@ -230,8 +230,8 @@ class OpenseesMembraneSection(MembraneSection):
     """"""
     __doc__ += MembraneSection.__doc__
 
-    def __init__(self, t, material, name=None, **kwargs):
-        super(OpenseesMembraneSection, self).__init__(t, material, name=name, **kwargs)
+    def __init__(self, t, material,  **kwargs):
+        super(OpenseesMembraneSection, self).__init__(t, material,  **kwargs)
         raise NotImplementedError
 
 # ==============================================================================

@@ -20,13 +20,12 @@ from compas_fea2.model import TrussSection
 from compas_fea2.model import ElasticIsotropic
 from compas_fea2.model import TrussElement
 from compas_fea2.problem import Problem
-from compas_fea2.problem import LoadCombination, FieldOutput, DisplacementFieldOutput, ReactionFieldOutput
+from compas_fea2.problem import LoadCombination, DisplacementFieldOutput, ReactionFieldOutput
+
+from compas_fea2_opensees import TEMP
 
 # Set the backend implementation
 compas_fea2.set_backend('compas_fea2_opensees')
-
-HERE = os.path.dirname(__file__)
-TEMP = os.path.join(HERE, 'results')
 
 # =============================================================================
 # 2. Create the Model
@@ -110,6 +109,7 @@ assert round(disp.get_results(members=[n4], steps=[step])[step][0].vector.x, 3) 
 assert round(disp.get_results(members=[n4], steps=[step])[step][0].vector.y, 3) == -0.178
 print("Results match OpenSees example!")
 
+# Show results
 # prb.show_displacements(step, show_bcs=0.1)
 # prb.show_reactions(step, show_bcs=0.1)
-prb.show_deformed(scale_results=100, show_original=0.2, show_bcs=0.01)
+# prb.show_deformed(scale_results=100, show_original=0.2, show_bcs=0.01)

@@ -41,7 +41,7 @@ class OpenseesModalAnalysis(ModalAnalysis):
         numberer="RCM",
         system="BandGeneral",
         test="NormUnbalance 1.0e-12 100",
-        integrator= "NewmarkExplicit 0",#"Newmark 0.5 0.25",
+        integrator="NewmarkExplicit 0",  # "Newmark 0.5 0.25",
         analysis="Transient",
         time=1,
         algorithm="Linear",
@@ -113,7 +113,7 @@ for {{set iMode 1}} {{$iMode <= $numModes}} {{incr iMode}} {{
 puts "------------------------------------------------------------"
 
 #"""
-    
+
     def _generate_output_section(self):
         massMatrix = [f"[lindex $massMatrix {i}]" for i in range(6)]
         return f"""# Write the modal shapes to a file
@@ -185,8 +185,8 @@ class OpenseesComplexEigenValue(ComplexEigenValue):
 
     __doc__ += ComplexEigenValue.__doc__
 
-    def __init__(self, name=None, **kwargs):
-        super(OpenseesComplexEigenValue, self).__init__(name, **kwargs)
+    def __init__(self, **kwargs):
+        super(OpenseesComplexEigenValue, self).__init__(**kwargs)
 
     def jobdata(self):
         return f"""#
@@ -208,8 +208,8 @@ class OpenseesBucklingAnalysis(BucklingAnalysis):
 
     __doc__ += BucklingAnalysis.__doc__
 
-    def __init__(self, name=None, **kwargs):
-        super(OpenseesBucklingAnalysis, self).__init__(name, **kwargs)
+    def __init__(self, **kwargs):
+        super(OpenseesBucklingAnalysis, self).__init__(**kwargs)
 
     def jobdata(self):
         return f"""#
@@ -231,8 +231,8 @@ class OpenseesLinearStaticPerturbation(LinearStaticPerturbation):
 
     __doc__ += LinearStaticPerturbation.__doc__
 
-    def __init__(self, name=None, **kwargs):
-        super(OpenseesLinearStaticPerturbation, self).__init__(name=name, **kwargs)
+    def __init__(self, **kwargs):
+        super(OpenseesLinearStaticPerturbation, self).__init__(**kwargs)
 
     def jobdata(self):
         return f"""#
@@ -254,8 +254,8 @@ class OpenseesStedyStateDynamic(StedyStateDynamic):
 
     __doc__ += StedyStateDynamic.__doc__
 
-    def __init__(self, name=None, **kwargs):
-        super().__init__(name, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def jobdata(self):
         return f"""#
@@ -277,8 +277,8 @@ class OpenseesSubstructureGeneration(SubstructureGeneration):
 
     __doc__ += SubstructureGeneration.__doc__
 
-    def __init__(self, name=None, **kwargs):
-        super().__init__(name, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def jobdata(self):
         return f"""#

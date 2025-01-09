@@ -6,6 +6,6 @@ from compas_fea2.problem import DynamicStep
 
 
 class OpenseesDynamicStep(DynamicStep):
-    def __init__(self, name=None, **kwargs):
-        super(OpenseesDynamicStep, self).__init__(name=name, **kwargs)
+    def __init__(self, **kwargs):
+        super(OpenseesDynamicStep, self).__init__(**kwargs)
         raise NotImplementedError

@@ -18,8 +18,8 @@ class OpenseesModel(Model):
     __doc__ += Model.__doc__
 
 
-    def __init__(self, name=None, description=None, author=None, **kwargs):
-        super(OpenseesModel, self).__init__(name=name, description=description, author=author, **kwargs)
+    def __init__(self, description=None, author=None, **kwargs):
+        super(OpenseesModel, self).__init__( description=description, author=author, **kwargs)
 
     def jobdata(self):
         return """#

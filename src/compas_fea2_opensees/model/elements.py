@@ -19,16 +19,17 @@ from compas_fea2.model import TetrahedronElement
 # ==============================================================================
 class OpenseesMassElement(MassElement):
     """"""
+
     __doc__ += MassElement.__doc__
 
     def __init__(self, *, node, section, **kwargs):
-        super(OpenseesMassElement, self).__init__(nodes=[node],
-                                                  section=section, **kwargs)
+        super(OpenseesMassElement, self).__init__(nodes=[node], section=section, **kwargs)
         raise NotImplementedError
 
+
 class OpenseesLinkElement(LinkElement):
-    """https://opensees.berkeley.edu/wiki/index.php/ZeroLengthContact_Element
-    """
+    """https://opensees.berkeley.edu/wiki/index.php/ZeroLengthContact_Element"""
+
     __doc__ += LinkElement.__doc__
 
     def __init__(self, *, nodes, **kwargs):
@@ -38,66 +39,73 @@ class OpenseesLinkElement(LinkElement):
     def jobdata(self):
         # return f"element twoNodeLink {self.key} {self.nodes[0].key} {self.nodes[-1].key} -mat {self.section.material.key} -dir 1"
         # return  f"element twoNodeLink {self.key} {self.nodes[0].key} {self.nodes[-1].key} -mat 1 2 3 -dir 1 2 6"
-        return  f"element twoNodeLink {self.input_key} {self.nodes[0].key} {self.nodes[-1].key} -mat {self.section.material.key} {self.section.material.key} {self.section.material.key} -dir 1 2 3 4 5 6"
+        return f"element twoNodeLink {self.input_key} {self.nodes[0].key} {self.nodes[-1].key} -mat {self.section.material.key} {self.section.material.key} {self.section.material.key} -dir 1 2 3 4 5 6"
 
 
 # ==============================================================================
 # 1D elements
 # ==============================================================================
 class OpenseesBeamElement(BeamElement):
-    """OpenSees implementation of :class:`compas_fea2.model.BeamElement`.\n
-    """
+    """OpenSees implementation of :class:`compas_fea2.model.BeamElement`.\n"""
+
     __doc__ += BeamElement.__doc__
 
-    def __init__(self, nodes, section, implementation='elasticBeamColumn', frame=[0.0, 0.0, -1.0], **kwargs):
+    def __init__(self, nodes, section, implementation="elasticBeamColumn", frame=[0.0, 0.0, -1.0], **kwargs):
         if not implementation:
-            implementation='elasticBeamColumn'
-        super(OpenseesBeamElement, self).__init__(nodes=nodes, section=section, frame=frame, implementation=implementation,
-                                                    **kwargs)
+            implementation = "elasticBeamColumn"
+        super(OpenseesBeamElement, self).__init__(
+            nodes=nodes, section=section, frame=frame, implementation=implementation, **kwargs
+        )
 
         # self._implementation = BeamElement.from_name(implementation)
 
         try:
-            self._job_data = getattr(self, '_'+implementation)
+            self._job_data = getattr(self, "_" + implementation)
         except:
-            raise ValueError('{} is not a valid implementation model'.format(implementation))
+            raise ValueError("{} is not a valid implementation model".format(implementation))
 
     def jobdata(self):
-        return '\n'.join(['geomTransf Corotational {} {}'.format(self.input_key, ' '.join([str(i) for i in self.frame.zaxis])),
-                          self._job_data()
-                          ])
+        return "\n".join(
+            [
+                "geomTransf Corotational {} {}".format(self.input_key, " ".join([str(i) for i in self.frame.zaxis])),
+                self._job_data(),
+            ]
+        )
+
     def _elasticBeamColumn(self):
         """Construct an elasticBeamColumn element object.
 
         For more information about this element in OpenSees check
         `here <https://opensees.github.io/OpenSeesDocumentation/user/manual/model/elements/gradientInelasticBeamColumn.html>`_
         """
-        return 'element {} {} {} {} {} {} {} {} {} {}'.format(self._implementation,
-                                                           self.input_key,
-                                                           ' '.join(str(node.input_key) for node in self.nodes),
-                                                           self.section.A,
-                                                           self.section.material.E,
-                                                           self.section.material.G,
-                                                           self.section.J,
-                                                           self.section.Ixx,
-                                                           self.section.Iyy,
-                                                           self.input_key)
+        return "element {} {} {} {} {} {} {} {} {} {}".format(
+            self._implementation,
+            self.input_key,
+            " ".join(str(node.input_key) for node in self.nodes),
+            self.section.A,
+            self.section.material.E,
+            self.section.material.G,
+            self.section.J,
+            self.section.Ixx,
+            self.section.Iyy,
+            self.input_key,
+        )
 
     def _inelasticBeamColum(self):
-        raise NotImplementedError('Currently under development')
-        return 'element  {} {} {} $numIntgrPts $endSecTag1 $intSecTag $endSecTag2 $lambda1 $lambda2 $lc $transfTag <-integration integrType> <-iter $maxIter $minTol $maxTol>'. format(self._implementation,
-                                                                                                                                                                                       self.input_key,
-                                                                                                                                                                                       ' '.join(node.input_key for node in self.nodes))
+        raise NotImplementedError("Currently under development")
+        return "element  {} {} {} $numIntgrPts $endSecTag1 $intSecTag $endSecTag2 $lambda1 $lambda2 $lc $transfTag <-integration integrType> <-iter $maxIter $minTol $maxTol>".format(
+            self._implementation, self.input_key, " ".join(node.input_key for node in self.nodes)
+        )
 
 
 class OpenseesTrussElement(TrussElement):
-    """A 1D element that resists axial loads.
-    """
+    """A 1D element that resists axial loads."""
+
     __doc__ += TrussElement.__doc__
 
     def __init__(self, nodes, section, **kwargs):
         super(OpenseesTrussElement, self).__init__(nodes=nodes, section=section, **kwargs)
-    
+
     def jobdata(self):
         return f"element Truss {self.input_key} {self.nodes[0].input_key} {self.nodes[1].input_key} {self.section.A} {self.section.material.input_key}"
 
@@ -106,10 +114,10 @@ class OpenseesTrussElement(TrussElement):
 # 2D elements
 # ==============================================================================
 
-class OpenseesShellElement(ShellElement):
-    """OpenSees implementation of a :class:`ShellElemnt`.
 
-    """
+class OpenseesShellElement(ShellElement):
+    """OpenSees implementation of a :class:`ShellElemnt`."""
+
     __doc__ += ShellElement.__doc__
     __doc__ += """
     Additional Parameters
@@ -125,18 +133,18 @@ class OpenseesShellElement(ShellElement):
     """
     # TODO maybe move mat_behavior to the material or section
 
-    def __init__(self, nodes, section, implementation=None, mat_behaviour='PlaneStress', **kwargs):
+    def __init__(self, nodes, section, implementation=None, mat_behaviour="PlaneStress", **kwargs):
         self._mat_behaviour = mat_behaviour
-        super(OpenseesShellElement, self).__init__(nodes=nodes, section=section,
-                                                   implementation=implementation, **kwargs)
+        super(OpenseesShellElement, self).__init__(
+            nodes=nodes, section=section, implementation=implementation, **kwargs
+        )
         if not self.implementation:
-            if len(nodes)==3:
-                self._implementation = 'shelldkgt'#'Tri31'
-            elif len(nodes)==4:
-                self._implementation = 'shellMITC4'
+            if len(nodes) == 3:
+                self._implementation = "shelldkgt"  #'Tri31'
+            elif len(nodes) == 4:
+                self._implementation = "shellMITC4"
             else:
-                raise NotImplementedError('An element with {} nodes is not supported'.format(len(nodes)))
-
+                raise NotImplementedError("An element with {} nodes is not supported".format(len(nodes)))
 
     @property
     def mat_behaviour(self):
@@ -144,9 +152,9 @@ class OpenseesShellElement(ShellElement):
 
     def jobdata(self):
         try:
-            return getattr(self, '_'+self._implementation.lower())()
+            return getattr(self, "_" + self._implementation.lower())()
         except:
-            raise ValueError('{} is not a valid implementation.'.format(self._implementation))
+            raise ValueError("{} is not a valid implementation.".format(self._implementation))
 
     def _tri31(self):
         """Construct a Tri31 element objec.
@@ -158,11 +166,13 @@ class OpenseesShellElement(ShellElement):
         ----
         The optional arguments are not implemented.
         """
-        return 'element tri31 {} {} {} {} {}'.format(self.input_key,
-                                                    ' '.join(str(node.input_key) for node in self.nodes),
-                                                    self.section.t,
-                                                    self._mat_behaviour,
-                                                    self.section.material.input_key+1000)
+        return "element tri31 {} {} {} {} {}".format(
+            self.input_key,
+            " ".join(str(node.input_key) for node in self.nodes),
+            self.section.t,
+            self._mat_behaviour,
+            self.section.material.input_key + 1000,
+        )
 
     def _shelldkgt(self):
         """Construct a ShellDKGT element object, which is a triangular shell
@@ -177,10 +187,9 @@ class OpenseesShellElement(ShellElement):
         """
         self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
         self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
-        return 'element ShellDKGT {} {} {}'.format(self.input_key,
-                                                    ' '.join(str(node.input_key) for node in self.nodes),
-                                                    self.section.input_key)
-
+        return "element ShellDKGT {} {} {}".format(
+            self.input_key, " ".join(str(node.input_key) for node in self.nodes), self.section.input_key
+        )
 
     def _shelldkgq(self):
         """Construct a ShellDKGQ element object, which is a quadrilateral shell element based on the theory of generalized conforming element.
@@ -194,9 +203,9 @@ class OpenseesShellElement(ShellElement):
         """
         self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
         self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
-        return 'element ShellDKGQ {} {} {}'.format(self.input_key,
-                                                    ' '.join(str(node.input_key) for node in self.nodes),
-                                                    self.section.input_key)
+        return "element ShellDKGQ {} {} {}".format(
+            self.input_key, " ".join(str(node.input_key) for node in self.nodes), self.section.input_key
+        )
 
     def _shellmitc4(self):
         """Construct a ShellMITC4 element object, which uses a bilinear
@@ -205,9 +214,9 @@ class OpenseesShellElement(ShellElement):
         """
         self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
         self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
-        return 'element ShellMITC4 {} {} {}'.format(self.input_key,
-                                                    ' '.join(str(node.input_key) for node in self.nodes),
-                                                    self.section.input_key)
+        return "element ShellMITC4 {} {} {}".format(
+            self.input_key, " ".join(str(node.input_key) for node in self.nodes), self.section.input_key
+        )
 
     def _asdshellq4(self):
         """Construct an ASDShellQ4 element object.
@@ -217,9 +226,9 @@ class OpenseesShellElement(ShellElement):
         """
         self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
         self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
-        return 'element ASDShellQ4 {} {}  {}'.format(self.input_key,
-                                                   ' '.join(str(node.input_key) for node in self.nodes),
-                                                   self.section.input_key)
+        return "element ASDShellQ4 {} {}  {}".format(
+            self.input_key, " ".join(str(node.input_key) for node in self.nodes), self.section.input_key
+        )
 
     def _fournodequad(self):
         """Construct a FourNodeQuad element object which uses a bilinear isoparametric formulation.
@@ -234,11 +243,13 @@ class OpenseesShellElement(ShellElement):
         """
         self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
         self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
-        return 'element quad {} {} {} {}'.format(self.input_key,
-                                                 ' '.join(str(node.input_key) for node in self.nodes),
-                                                 self.section.t,
-                                                 self.mat_behaviour,
-                                                 self.section.material.input_key)
+        return "element quad {} {} {} {}".format(
+            self.input_key,
+            " ".join(str(node.input_key) for node in self.nodes),
+            self.section.t,
+            self.mat_behaviour,
+            self.section.material.input_key,
+        )
 
     def _sspquad(self):
         """Construct a SSPquad (SSP –> Stabilized Single Point) element.
@@ -253,21 +264,25 @@ class OpenseesShellElement(ShellElement):
         """
         self._frame = Frame.from_points(self.nodes[0].xyz, self.nodes[1].xyz, self.nodes[2].xyz)
         self._results_format = ("S11", "S22", "S12", "M11", "M22", "M12")
-        return 'element SSPquad {} {} {} {}'.format(self.input_key,
-                                                    ' '.join(node.input_key for node in self.nodes),
-                                                    self.section.material.input_key,
-                                                    self.section.material.input_key,
-                                                    self.mat_behaviour,
-                                                    self.section.thickness)
+        return "element SSPquad {} {} {} {}".format(
+            self.input_key,
+            " ".join(node.input_key for node in self.nodes),
+            self.section.material.input_key,
+            self.section.material.input_key,
+            self.mat_behaviour,
+            self.section.thickness,
+        )
 
 
 class OpenseesMembraneElement(MembraneElement):
     """"""
+
     __doc__ += MembraneElement.__doc__
 
-    def __init__(self, nodes, section, name=None, **kwargs):
-        super(OpenseesMembraneElement, self).__init__(nodes=nodes, section=section, name=name, **kwargs)
+    def __init__(self, nodes, section, **kwargs):
+        super(OpenseesMembraneElement, self).__init__(nodes=nodes, section=section, **kwargs)
         raise NotImplementedError
+
 
 # ==============================================================================
 # 3D elements
@@ -276,6 +291,7 @@ class OpenseesMembraneElement(MembraneElement):
 
 class _OpenseesElement3D(_Element3D):
     """"""
+
     __doc__ += _Element3D.__doc__
     __doc__ += """
     Additional Parameters
@@ -285,21 +301,22 @@ class _OpenseesElement3D(_Element3D):
 
     """
 
-    def __init__(self, nodes, section, implementation='stdBrick', name=None, **kwargs):
-        super(_OpenseesElement3D, self).__init__(nodes=nodes, section=section,
-                                                 implementation=implementation, name=name, **kwargs)
+    def __init__(self, nodes, section, implementation="stdBrick", **kwargs):
+        super(_OpenseesElement3D, self).__init__(nodes=nodes, section=section, implementation=implementation, **kwargs)
 
     def _get_implementation(self):
         try:
-            return getattr(self, '_'+self._type.lower())
+            return getattr(self, "_" + self._type.lower())
         except:
-            raise ValueError('{} is not a valid implementation.'.format(self._implementation))
+            raise ValueError("{} is not a valid implementation.".format(self._implementation))
 
     def jobdata(self):
-        return 'element {}  {}  {}'.format(self.input_key,
-                                           self._implementation,
-                                           ' '.join(node.input_key for node in self.nodes),
-                                           self.section.material.input_key)
+        return "element {}  {}  {}".format(
+            self.input_key,
+            self._implementation,
+            " ".join(node.input_key for node in self.nodes),
+            self.section.material.input_key,
+        )
 
     # TODO complete implementations: for now it is all done in jobdata
     def _stdbrick(self):
@@ -345,7 +362,6 @@ class _OpenseesElement3D(_Element3D):
         return
 
 
-
 # TODO double inheritance from _OpenseesElement3D
 class OpenseesTetrahedronElement(TetrahedronElement):
     """Opensees implementation of :class:`TetrahedronElement`
@@ -358,6 +374,7 @@ class OpenseesTetrahedronElement(TetrahedronElement):
         - https://opensees.github.io/OpenSeesDocumentation/user/manual/model/elements/TenNodeTetrahedron.html#tennodetetrahedron
 
     """
+
     __doc__ += TetrahedronElement.__doc__
     __doc__ += """
     Additional Parameters
@@ -376,17 +393,18 @@ class OpenseesTetrahedronElement(TetrahedronElement):
 
     """
 
-    def __init__(self, nodes, section=None, implementation='FourNode', name=None, **kwargs):
-        super(OpenseesTetrahedronElement, self).__init__(nodes=nodes, section=section, implementation=implementation,
-                                                       name=name, **kwargs)
+    def __init__(self, nodes, section=None, implementation="FourNode", **kwargs):
+        super(OpenseesTetrahedronElement, self).__init__(
+            nodes=nodes, section=section, implementation=implementation, **kwargs
+        )
         if len(self._nodes) not in [4]:
-            raise ValueError('A solid element with {} nodes cannot be created.'.format(len(nodes)))
+            raise ValueError("A solid element with {} nodes cannot be created.".format(len(nodes)))
 
     def jobdata(self):
         try:
-            return getattr(self, '_'+self.implementation)()
+            return getattr(self, "_" + self.implementation)()
         except:
-            raise ValueError('{} is not a valid implementation.'.format(self._implementation))
+            raise ValueError("{} is not a valid implementation.".format(self._implementation))
 
     def _FourNode(self):
         return f"element FourNodeTetrahedron {self.input_key} {' '.join(str(n.input_key) for n in self.nodes)} {self.section.material.input_key+1000}"

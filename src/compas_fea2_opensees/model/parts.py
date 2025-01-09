@@ -24,8 +24,8 @@ class OpenseesPart(DeformablePart):
         6.
 
     """
-    def __init__(self, ndm=None, ndf=None, name=None, **kwargs):
-        super(OpenseesPart, self).__init__(name=name, **kwargs)
+    def __init__(self, ndm=None, ndf=None, **kwargs):
+        super(OpenseesPart, self).__init__(**kwargs)
         self._ndm = ndm or 3
         self._ndf = ndf or {1: 1, 2: 3, 3: 6}[self._ndm]
 
