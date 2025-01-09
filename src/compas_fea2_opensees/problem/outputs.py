@@ -86,9 +86,9 @@ class OpenseesFieldOutput(FieldOutput):
 Additional Parameters
 ---------------------
 nodes_set : set
-    __description
+    A set of node IDs for which the output is requested.
 elements_set : set
-    __descriptions
+    A set of elements for which the field output is requested.
 """
 
     def __init__(self, node_outputs=None, element_outputs=None, nodes_set=None, elements_set=None, frequency=1, name=None, **kwargs):
