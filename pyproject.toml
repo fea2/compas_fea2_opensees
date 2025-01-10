@@ -8,9 +8,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "compas_fea2_opensees"
-description = "This package is the 2nd generation of Finite element Analysis tools for COMPAS."
+description = "This package is the OpenSees implementation for compas_fea2."
 keywords = []
-authors = [{ name = "Francesco Ranaudo", email = "ranaudo@arch.ethz.ch" }]
+authors = [{ name = "Francesco Ranaudo", email = "francesco.ranaudo@gmail.com" }]
 license = { file = "LICENSE" }
 readme = "README.md"
 requires-python = ">=3.9"
@@ -73,7 +73,7 @@ doctest_optionflags = [
 # ============================================================================
 
 [tool.bumpversion]
-current_version = "0.3.1"
+current_version = "0.1.0"
 message = "Bump version to {new_version}"
 commit = true
 tag = true
