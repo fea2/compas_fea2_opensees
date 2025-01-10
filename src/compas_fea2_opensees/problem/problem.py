@@ -144,7 +144,7 @@ class OpenseesProblem(Problem):
 
         for step in self.steps:
             if isinstance(step, compas_fea2_opensees.OpenseesModalAnalysis):
-                process_modal_shapes(connection, self)
+                process_modal_shapes(connection, step)
             else:
                 for field_output in step.field_outputs:
                     read_results_file(connection, field_output)

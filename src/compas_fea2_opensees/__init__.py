@@ -46,6 +46,7 @@ from compas_fea2.model.elements import (
 from compas_fea2.model.sections import (
     AngleSection,
     BeamSection,
+    GenericBeamSection,
     BoxSection,
     CircularSection,
     HexSection,
@@ -202,6 +203,7 @@ try:
     from .model.sections import (
         OpenseesAngleSection,
         OpenseesBeamSection,
+        OpenseesGenericBeamSection,
         OpenseesBoxSection,
         OpenseesCircularSection,
         OpenseesHexSection,
@@ -351,6 +353,7 @@ try:
 
         backend[AngleSection] = OpenseesAngleSection
         backend[BeamSection] = OpenseesBeamSection
+        backend[GenericBeamSection] = OpenseesGenericBeamSection
         backend[BoxSection] = OpenseesBoxSection
         backend[CircularSection] = OpenseesCircularSection
         backend[HexSection] = OpenseesHexSection

@@ -21,6 +21,7 @@ from .elements import (
 # Opensees Sections
 from .sections import (
     OpenseesBeamSection,
+    OpenseesGenericBeamSection,
     OpenseesAngleSection,
     OpenseesBoxSection,
     OpenseesCircularSection,
@@ -109,6 +110,7 @@ __all__ = [
     "OpenseesShellElement",
     "_OpenseesElement3D",
     "OpenseesBeamSection",
+    "OpenseesGenericBeamSection",
     "OpenseesAngleSection",
     "OpenseesBoxSection",
     "OpenseesCircularSection",

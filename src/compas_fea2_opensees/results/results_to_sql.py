@@ -50,8 +50,9 @@ def read_results_file(connection, field_output):
     field_output.create_table_for_output_class(connection, results)
 
 
-def process_modal_shapes(connection, problem):
-    database_path = problem.database_path
+def process_modal_shapes(connection, step):
+    database_path = step.problem.database_path
+    model = step.model
 
     eigenvalues = []
     with open(os.path.join(database_path, "eigenvalues.out"), "r") as f:
@@ -71,7 +72,9 @@ def process_modal_shapes(connection, problem):
     cursor.execute(
         """
     CREATE TABLE IF NOT EXISTS eigenvalues (
-        mode INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
+        step TEXT,
+        mode INTEGER,
         lambda REAL,
         omega REAL,
         freq REAL,
@@ -84,21 +87,29 @@ def process_modal_shapes(connection, problem):
     for eigenvalue in eigenvalues:
         cursor.execute(
             """
-        INSERT INTO eigenvalues (mode, lambda, omega, freq, period)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO eigenvalues (step, mode, lambda, omega, freq, period)
+        VALUES (?, ?, ?, ?, ?, ?)
         """,
-            eigenvalue,
+            [step.name] + eigenvalue,
         )
     connection.commit()
+
+    for i, eigenvector in enumerate(eigenvectors):
+        if len(eigenvector) < 8:
+            eigenvector = eigenvector + [0.0] * (8 - len(eigenvector))
+        node = model.find_node_by_inputkey(int(eigenvector[1]))[0]
+        eigenvectors[i] = [eigenvector[0], step.name, node.part.name, node.input_key] + eigenvector[2:]
 
     # Create table for modal shapes
     cursor.execute(
         f"""
     CREATE TABLE IF NOT EXISTS eigenvectors (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         mode INTEGER,
-        node INTEGER,
-        {",\n".join([f"dof_{c} REAL" for c in range(1, len(eigenvectors[0])-1)])},
-        PRIMARY KEY (mode, node)
+        step TEXT,
+        part TEXT,
+        input_key INTEGER,
+        {",\n".join([f"dof_{c+1} REAL" for c in range(6)])}
         )
     """
     )
@@ -106,8 +117,8 @@ def process_modal_shapes(connection, problem):
     for eigenvector in eigenvectors:
         cursor.execute(
             f"""
-        INSERT INTO eigenvectors (mode, node, {", ".join([f"dof_{c}" for c in range(1, len(eigenvectors[0])-1)])})
-        VALUES (?, ?, {", ".join(["?"] * (len(eigenvectors[0])-2))})
+        INSERT INTO eigenvectors (mode, step, part, input_key, {", ".join([f"dof_{c+1}" for c in range(6)])})
+        VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?)
         """,
             eigenvector,
         )

@@ -4,6 +4,7 @@ from __future__ import print_function
 
 from compas_fea2.model import AngleSection
 from compas_fea2.model import BeamSection
+from compas_fea2.model import GenericBeamSection
 from compas_fea2.model import BoxSection
 from compas_fea2.model import CircularSection
 from compas_fea2.model import HexSection
@@ -64,6 +65,24 @@ class OpenseesBeamSection(BeamSection):
     """"""
 
     __doc__ += BeamSection.__doc__
+    __doc__ += """
+    Warning
+    -------
+    Currently not available in Opensees.
+
+    """
+
+    def __init__(self, *, A, Ixx, Iyy, Ixy, Avx, Avy, J, g0, gw, material, **kwargs):
+        super().__init__(A=A, Ixx=Ixx, Iyy=Iyy, Ixy=Ixy, Avx=Avx, Avy=Avy, J=J, g0=g0, gw=gw, material=material, **kwargs)
+
+    def jobdata(self):
+        return beam_jobdata(self)
+
+
+class OpenseesGenericBeamSection(GenericBeamSection):
+    """"""
+
+    __doc__ += GenericBeamSection.__doc__
     __doc__ += """
     Warning
     -------

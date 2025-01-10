@@ -1,4 +1,4 @@
-from compas_fea2.model import Model, DeformablePart, Node, BeamElement, ElasticIsotropic, BeamSection
+from compas_fea2.model import Model, DeformablePart, Node, BeamElement, ElasticIsotropic, GenericBeamSection
 from compas_fea2.problem import Problem, ModalAnalysis
 from compas_fea2_opensees import TEMP
 import os
@@ -34,28 +34,18 @@ prt.ndf = 3
 steel = ElasticIsotropic(name="Steel", E=29000.0, v=0.3, density=0.0)
 
 # Define cross-sectional properties
-section_col_small = BeamSection(
-    name="W14X257", A=75.6, Ixx=3400.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel
-)
-section_col_large = BeamSection(
-    name="W14X311", A=91.4, Ixx=4330.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel
-)
-section_beam1 = BeamSection(
-    name="W33X118", A=34.7, Ixx=5900.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel
-)
-section_beam2 = BeamSection(
-    name="W30X116", A=34.2, Ixx=4930.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel
-)
-section_beam3 = BeamSection(
-    name="W24X68", A=20.1, Ixx=1830.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel
-)
+section_col_small = GenericBeamSection(name="W14X257", A=75.6, Ixx=3400.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel)
+section_col_large = GenericBeamSection(name="W14X311", A=91.4, Ixx=4330.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel)
+section_beam1 = GenericBeamSection(name="W33X118", A=34.7, Ixx=5900.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel)
+section_beam2 = GenericBeamSection(name="W30X116", A=34.2, Ixx=4930.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel)
+section_beam3 = GenericBeamSection(name="W24X68", A=20.1, Ixx=1830.0, Iyy=0, Ixy=0, Avx=0, Avy=0, J=0, g0=0, gw=0, material=steel)
 
 # Create nodes
 nodes_data = {
-    1: [(0.0, 0.0, 0.0), (0., 0., 0.0)],
-    2: [(360.0, 0.0, 0.0), (0., 0., 0.0)],
-    3: [(720.0, 0.0, 0.0), (0., 0., 0.0)],
-    4: [(1080.0, 0.0, 0.0), (0., 0., 0.0)],
+    1: [(0.0, 0.0, 0.0), (0.0, 0.0, 0.0)],
+    2: [(360.0, 0.0, 0.0), (0.0, 0.0, 0.0)],
+    3: [(720.0, 0.0, 0.0), (0.0, 0.0, 0.0)],
+    4: [(1080.0, 0.0, 0.0), (0.0, 0.0, 0.0)],
     5: [(0.0, 162.0, 0.0), (m1, m1, 0.0)],
     6: [(360.0, 162.0, 0.0), (m1, m1, 0.0)],
     7: [(720.0, 162.0, 0.0), (m1, m1, 0.0)],
@@ -117,6 +107,8 @@ prb = mdl.add_problem(Problem(name="ModalAnalysis"))
 stp = prb.add_step(ModalAnalysis(modes=5))
 
 prb.analyse_and_extract(problems=[prb], path=os.path.join(TEMP, prb.name), verbose=True)
+
+prb.show_mode_shape(step=stp, mode=1, scale_results=100)
 
 T1 = 1.0255648890522602
 T2 = 0.349763251359163
