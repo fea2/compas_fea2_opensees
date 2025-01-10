@@ -478,7 +478,7 @@ __author__ = ["Francesco Ranaudo"]
 __copyright__ = "Francesco Ranaudo"
 __license__ = "MIT License"
 __email__ = "ranaudo@arch.ethz.ch"
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 HERE = os.path.dirname(__file__)
 
