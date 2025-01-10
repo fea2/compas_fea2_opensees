@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.geometry import Frame, Vector
+from compas.geometry import Frame
 
 from compas_fea2.model import MassElement
 from compas_fea2.model import LinkElement
@@ -61,13 +61,14 @@ class OpenseesBeamElement(BeamElement):
 
         try:
             self._job_data = getattr(self, "_" + implementation)
-        except:
+        except AttributeError:
             raise ValueError("{} is not a valid implementation model".format(implementation))
 
     def jobdata(self):
         return "\n".join(
             [
-                "geomTransf Corotational {} {}".format(self.input_key, " ".join([str(i) for i in self.frame.zaxis])),
+                f"geomTransf Linear {self.input_key}",
+                # "geomTransf Corotational {} {}".format(self.input_key, " ".join([str(i) for i in self.frame.zaxis])),
                 self._job_data(),
             ]
         )
@@ -78,18 +79,28 @@ class OpenseesBeamElement(BeamElement):
         For more information about this element in OpenSees check
         `here <https://opensees.github.io/OpenSeesDocumentation/user/manual/model/elements/gradientInelasticBeamColumn.html>`_
         """
-        return "element {} {} {} {} {} {} {} {} {} {}".format(
-            self._implementation,
-            self.input_key,
-            " ".join(str(node.input_key) for node in self.nodes),
-            self.section.A,
-            self.section.material.E,
-            self.section.material.G,
-            self.section.J,
-            self.section.Ixx,
-            self.section.Iyy,
-            self.input_key,
-        )
+        if self.part.ndm == 2:
+            return "element elasticBeamColumn {} {} {} {} {} {}".format(
+                self.input_key,
+                " ".join(str(node.input_key) for node in self.nodes),
+                self.section.A,
+                self.section.material.E,
+                self.section.Ixx,
+                self.input_key,
+            )
+        else:
+            return "element {} {} {} {} {} {} {} {} {} {}".format(
+                self._implementation,
+                self.input_key,
+                " ".join(str(node.input_key) for node in self.nodes),
+                self.section.A,
+                self.section.material.E,
+                self.section.material.G,
+                self.section.J,
+                self.section.Ixx,
+                self.section.Iyy,
+                self.input_key,
+            )
 
     def _inelasticBeamColum(self):
         raise NotImplementedError("Currently under development")
@@ -140,7 +151,7 @@ class OpenseesShellElement(ShellElement):
         )
         if not self.implementation:
             if len(nodes) == 3:
-                self._implementation = "shelldkgt"  #'Tri31'
+                self._implementation = "shelldkgt"  # 'Tri31'
             elif len(nodes) == 4:
                 self._implementation = "shellMITC4"
             else:
@@ -153,7 +164,7 @@ class OpenseesShellElement(ShellElement):
     def jobdata(self):
         try:
             return getattr(self, "_" + self._implementation.lower())()
-        except:
+        except AttributeError:
             raise ValueError("{} is not a valid implementation.".format(self._implementation))
 
     def _tri31(self):
@@ -307,7 +318,7 @@ class _OpenseesElement3D(_Element3D):
     def _get_implementation(self):
         try:
             return getattr(self, "_" + self._type.lower())
-        except:
+        except AttributeError:
             raise ValueError("{} is not a valid implementation.".format(self._implementation))
 
     def jobdata(self):
@@ -403,7 +414,7 @@ class OpenseesTetrahedronElement(TetrahedronElement):
     def jobdata(self):
         try:
             return getattr(self, "_" + self.implementation)()
-        except:
+        except AttributeError:
             raise ValueError("{} is not a valid implementation.".format(self._implementation))
 
     def _FourNode(self):

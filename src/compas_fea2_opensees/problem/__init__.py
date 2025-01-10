@@ -16,6 +16,7 @@ from .steps import (
     OpenseesQuasiStaticStep,
     OpenseesDirectCyclicStep,
 )
+
 # Opensees Loads
 from .loads import (
     OpenseesConcentratedLoad,
@@ -40,6 +41,8 @@ from .combinations import (
 # Opensees outputs
 from .outputs import (
     OpenseesDisplacementFieldOutput,
+    OpenseesAccelerationFieldOutput,
+    OpenseesVelocityFieldOutput,
     OpenseesReactionFieldOutput,
     OpenseesFieldOutput,
     OpenseesHistoryOutput,

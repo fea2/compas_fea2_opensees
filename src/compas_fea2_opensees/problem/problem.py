@@ -12,19 +12,20 @@ from compas_fea2.utilities._utils import launch_process
 import compas_fea2
 import compas_fea2_opensees
 
+
 class OpenseesProblem(Problem):
-    """OpenSees implementation of the :class:`Problem`.\n
-    """
+    """OpenSees implementation of the :class:`Problem`.\n"""
+
     __doc__ += Problem.__doc__
 
-    def __init__(self,  description=None, **kwargs):
+    def __init__(self, description=None, **kwargs):
         super(OpenseesProblem, self).__init__(description=description, **kwargs)
 
     # =========================================================================
     #                         Analysis methods
     # =========================================================================
 
-    @timer(message='Analysis completed in')
+    @timer(message="Analysis completed in")
     def analyse(self, path, exe=None, verbose=False, *args, **kwargs):
         """Runs the analysis through the OpenSees solver.
 
@@ -44,15 +45,15 @@ class OpenseesProblem(Problem):
         None
 
         """
-        print('\nBegin the analysis...')
+        print("\nBegin the analysis...")
         self._check_analysis_path(path)
         self.write_input_file()
-        filepath=os.path.join(self.path, self.name+'.tcl')
+        filepath = os.path.join(self.path, self.name + ".tcl")
 
         exe = exe or compas_fea2_opensees.EXE
 
         if not os.path.exists(exe):
-            raise ValueError(f'backend not found at {exe}')
+            raise ValueError(f"backend not found at {exe}")
 
         cmd = 'cd "{}" && "{}" "{}"'.format(self.path, exe, filepath)
         for line in launch_process(cmd_args=cmd, cwd=self.path, verbose=verbose):
@@ -86,14 +87,14 @@ class OpenseesProblem(Problem):
         """
         self.analyse(path=path, exe=exe, verbose=verbose, *args, **kwargs)
         if kwargs.get("save", False):
-            self.model.to_cfm(self.model.path.joinpath(f'{self.model.name}.cfm'))
+            self.model.to_cfm(self.model.path.joinpath(f"{self.model.name}.cfm"))
         return self.convert_results_to_sqlite()
-    
+
     # =============================================================================
     #                               Job data
     # =============================================================================
 
-    @timer(message='Problem generated in ')
+    @timer(message="Problem generated in ")
     def jobdata(self):
         """Generates the string information for the input file.
 
@@ -105,16 +106,16 @@ class OpenseesProblem(Problem):
         -------
         input file data line (str).
         """
-        return '\n'.join([step.jobdata() for step in self._steps_order])
+        return "\n".join([step.jobdata() for step in self._steps_order])
 
     # =========================================================================
     #                           Optimisation methods
     # =========================================================================
-    
+
     # ==========================================================================
     # Extract results
     # ==========================================================================
-    @timer(message='Data extracted from OpenSees .out files in')
+    @timer(message="Data extracted from OpenSees .out files in")
     def convert_results_to_sqlite(self, database_path=None, database_name=None, field_output=None):
         """Extract data from the Abaqus .odb file and store into a SQLite database.
 
@@ -129,20 +130,23 @@ class OpenseesProblem(Problem):
         None
 
         """
-        print('Extracting data from Opensees .out files...')
+        print("Extracting data from Opensees .out files...")
         self.database_path = database_path or self.path
-        self.database_name = database_name or self.name+'-results.db'
-        from ..results.results_to_sql import read_results_file
+        self.database_name = database_name or self.name + "-results.db"
+        from ..results.results_to_sql import read_results_file, process_modal_shapes
 
         db_file = os.path.join(self.database_path, self.database_name)
-        
+
         if os.path.exists(db_file):
             os.remove(db_file)
         connection = sqlite3.connect(db_file)
 
         for step in self.steps:
-            for field_output in step.field_outputs:
-                read_results_file(connection, field_output)
-        
+            if isinstance(step, compas_fea2_opensees.OpenseesModalAnalysis):
+                process_modal_shapes(connection, self)
+            else:
+                for field_output in step.field_outputs:
+                    read_results_file(connection, field_output)
+
         connection.close()
-        print('Results extraction completed!')
+        print("Results extraction completed!")

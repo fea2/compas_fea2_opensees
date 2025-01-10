@@ -45,18 +45,19 @@ class OpenseesGravityLoad(GravityLoad):
     def __init__(self, g=9.81, x=0.0, y=0.0, z=-1.0, **kwargs):
         super(OpenseesGravityLoad, self).__init__(g, x, y, z, **kwargs)
 
-    # def jobdata(self, distribution):
-    #     if not distribution:
-    #         distribution=self.model.parts
-    #     if not isinstance(distribution, Iterable):
-    #         distribution = [distribution]
-    #     jobdata = []
-    #     for part in distribution:
-    #         for element in part.elements:
-    #             sw_node = [element.volume*self.g*element.section.material.density/len(element.nodes)*c for c in [self.x, self.y, self.z]]+[0.]*(part.ndm-3) #TODO check if ndm or ndof
-    #             for n in element.nodes:
-    #                 jobdata.append('\tload {} {}'.format(n.key, ' '.join([str(c) for c in sw_node])))
-    #     return '\n'.join(jobdata)
+
+# def jobdata(self, distribution):
+#     if not distribution:
+#         distribution=self.model.parts
+#     if not isinstance(distribution, Iterable):
+#         distribution = [distribution]
+#     jobdata = []
+#     for part in distribution:
+#         for element in part.elements:
+#             sw_node = [element.volume*self.g*element.section.material.density/len(element.nodes)*c for c in [self.x, self.y, self.z]]+[0.]*(part.ndm-3) #TODO check if ndm or ndof
+#             for n in element.nodes:
+#                 jobdata.append('\tload {} {}'.format(n.key, ' '.join([str(c) for c in sw_node])))
+#     return '\n'.join(jobdata)
 
 
 class OpenseesPrestressLoad(PrestressLoad):
@@ -65,7 +66,7 @@ class OpenseesPrestressLoad(PrestressLoad):
     __doc__ += PrestressLoad.__doc__
 
     def __init__(self, components, axes="global", **kwargs):
-        super(OpenseesPrestressLoad, self).__init__(components, axes, name, **kwargs)
+        super(OpenseesPrestressLoad, self).__init__(components, axes, **kwargs)
         raise NotImplementedError
 
 
@@ -75,7 +76,7 @@ class OpenseesTributaryLoad(TributaryLoad):
     __doc__ += TributaryLoad.__doc__
 
     def __init__(self, components, axes="global", **kwargs):
-        super(OpenseesTributaryLoad, self).__init__(components, axes, name, **kwargs)
+        super(OpenseesTributaryLoad, self).__init__(components, axes, **kwargs)
         raise NotImplementedError
         # for v in self.model.discretized_boudary_mesh.vertices():
         #     n = self.model.find_node_by_location(self.model.discretized_boudary_mesh.vertex_coordinates(v))
@@ -90,7 +91,7 @@ class OpenseesHarmonicPointLoad(HarmonicPointLoad):
     __doc__ += HarmonicPointLoad.__doc__
 
     def __init__(self, components, axes="global", **kwargs):
-        super(OpenseesHarmonicPointLoad, self).__init__(components, axes, name, **kwargs)
+        super(OpenseesHarmonicPointLoad, self).__init__(components, axes, **kwargs)
         raise NotImplementedError
 
 
@@ -100,5 +101,5 @@ class OpenseesHarmonicPressureLoad(HarmonicPressureLoad):
     __doc__ += HarmonicPressureLoad.__doc__
 
     def __init__(self, components, axes="global", **kwargs):
-        super(OpenseesHarmonicPressureLoad, self).__init__(components, axes, name, **kwargs)
+        super(OpenseesHarmonicPressureLoad, self).__init__(components, axes, **kwargs)
         raise NotImplementedError

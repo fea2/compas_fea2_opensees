@@ -178,6 +178,8 @@ from compas_fea2.problem.combinations import (
 # Outputs
 from compas_fea2.problem.outputs import (
     DisplacementFieldOutput,
+    AccelerationFieldOutput,
+    VelocityFieldOutput,
     ReactionFieldOutput,
     Stress2DFieldOutput,
     FieldOutput,
@@ -188,6 +190,8 @@ from compas_fea2.problem.outputs import (
 from compas_fea2.results import (
     Result,
     DisplacementResult,
+    AccelerationResult,
+    VelocityResult,
     StressResult,
     DisplacementFieldResults,
     StressFieldResults,
@@ -273,9 +277,9 @@ try:
 
     # Opensees Connectors
     from .model.connectors import (
-    OpenseesSpringConnector,
-    OpenseesZeroLengthSpringConnector,
-    OpenseesRigidLinkConnector,
+        OpenseesSpringConnector,
+        OpenseesZeroLengthSpringConnector,
+        OpenseesRigidLinkConnector,
     )
 
     # Opensees release
@@ -340,19 +344,12 @@ try:
     # Opensees outputs
     from .problem.outputs import (
         OpenseesDisplacementFieldOutput,
+        OpenseesAccelerationFieldOutput,
+        OpenseesVelocityFieldOutput,
         OpenseesReactionFieldOutput,
         OpenseesStress2DFieldOutput,
         OpenseesFieldOutput,
         OpenseesHistoryOutput,
-    )
-
-    # Opensees Results
-    from .results import (
-        OpenseesResult,
-        OpenseesDisplacementResult,
-        OpenseesStressResult,
-        OpenseesDisplacementFieldResults,
-        OpenseesStressFieldResults,
     )
 
     # Opensees Input File
@@ -457,24 +454,20 @@ try:
         backend[LoadCombination] = OpenseesLoadCombination
 
         backend[DisplacementFieldOutput] = OpenseesDisplacementFieldOutput
+        backend[AccelerationFieldOutput] = OpenseesAccelerationFieldOutput
+        backend[VelocityFieldOutput] = OpenseesVelocityFieldOutput
         backend[ReactionFieldOutput] = OpenseesReactionFieldOutput
         backend[Stress2DFieldOutput] = OpenseesStress2DFieldOutput
-        
+
         backend[FieldOutput] = OpenseesFieldOutput
         backend[HistoryOutput] = OpenseesHistoryOutput
-
-        backend[Result] = OpenseesResult
-        backend[DisplacementResult] = OpenseesDisplacementResult
-        backend[StressResult] = OpenseesStressResult
-        backend[DisplacementFieldResults] = OpenseesDisplacementFieldResults
-        backend[StressFieldResults] = OpenseesStressFieldResults
 
         backend[InputFile] = OpenseesInputFile
         backend[ParametersFile] = OpenseesParametersFile
 
         print("Opensees implementations registered...")
 
-except:
+except ImportError:
     raise ErrorDuringImport()
 
 

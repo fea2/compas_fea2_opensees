@@ -11,7 +11,16 @@ from compas_fea2.problem.steps import SubstructureGeneration
 
 
 class OpenseesModalAnalysis(ModalAnalysis):
-    """
+    """Perform a modal analysis using OpenSees.
+    Check the OpenSees documentation for more information:
+    https://opensees.github.io/OpenSeesDocumentation/user/manual/analysis/eigen.html#eigen
+
+    Parameters
+    ----------
+    modes : int, optional
+        Number of modes to compute, by default 1.
+    solver : str, optional
+        Solver to use, by default -genBandArpack. Either optons are: "genBandArpack", "symmBandLapack", "fullGenLapack"
 
     Explanation
     -----------
@@ -34,31 +43,11 @@ class OpenseesModalAnalysis(ModalAnalysis):
         self,
         *,
         modes=1,
-        max_increments=1,
-        initial_inc_size=1,
-        min_inc_size=0.00001,
-        constraint="Plain",
-        numberer="RCM",
-        system="BandGeneral",
-        test="NormUnbalance 1.0e-12 100",
-        integrator="NewmarkExplicit 0",  # "Newmark 0.5 0.25",
-        analysis="Transient",
-        time=1,
-        algorithm="Linear",
+        solver="genBandArpack",
         **kwargs,
     ):
         super(OpenseesModalAnalysis, self).__init__(modes, **kwargs)
-        self.max_increments = max_increments
-        self.initial_inc_size = initial_inc_size
-        self.min_inc_size = min_inc_size
-        self.constraint = constraint
-        self.numberer = numberer
-        self.system = system
-        self.test = test
-        self.integrator = integrator
-        self.analysis = analysis
-        self.time = (time,)
-        self.algorithm = algorithm
+        self.solver = solver
 
     def jobdata(self):
         return f"""#
@@ -82,101 +71,60 @@ set numModes {self.modes}
 #"""
 
     def _generate_analysis_section(self):
-        return f"""# Define a simple system/analysis setup for the eigenvalue solver
-system {self.system}
-constraints {self.constraint}
-numberer {self.numberer}
-test {self.test}
-algorithm {self.algorithm}
-integrator {self.integrator}
-analysis {self.analysis}
-
+        return """
 # Compute eigenvalues (lambda) for the first 'numModes' modes
 set eigenValues [eigen $numModes]
-record 
+record
+"""
 
-puts "Eigenvalues found: $eigenValues"
+    def _generate_output_section(self):
+        return f"""
+set eigenFile [open "eigenvalues.out" "w"]
 
-puts "------------------------------------------------------------"
+puts "------------------------------------------------------------------"
 puts "Modal Analysis Results:"
-puts "  Mode :   Lambda        Omega (rad/s)    Freq (Hz)"
-puts "------------------------------------------------------------"
+puts "  Mode :   Lambda        Omega (rad/s)    Freq (Hz)   Period (s)"
+puts "------------------------------------------------------------------"
 
 for {{set iMode 1}} {{$iMode <= $numModes}} {{incr iMode}} {{
     # lambda = eigenvalue
     set lambda   [lindex $eigenValues [expr $iMode-1]]
     set omega    [expr sqrt($lambda)]            ;# rad/s
     set freqHz   [expr $omega/(2.0*3.14159265359)]
-    puts "   $iMode   :   $lambda   $omega   $freqHz"
+    set Period   [expr 1.0/$freqHz]
+    puts "   $iMode   :   $lambda   $omega   $freqHz  $Period"
+    puts $eigenFile "$iMode $lambda $omega $freqHz $Period"
 }}
-
-puts "------------------------------------------------------------"
-
-#"""
-
-    def _generate_output_section(self):
-        massMatrix = [f"[lindex $massMatrix {i}]" for i in range(6)]
-        return f"""# Write the modal shapes to a file
-
-recoreder -file modal_shapes_all_nodes.out 
-    
+puts "Modal analysis results have been exported to eigen.out"
+close $eigenFile
+#
 set nNodes {len(self.model.nodes)}
 
 # Open a file for all eigenvectors
-set shapeFile [open "modal_shapes_all_nodes.out" "w"]
+set shapeFile [open "eigenvectors.out" "w"]
 
-# Save all eigenvectors at once using OpenSees output
-puts $shapeFile "---------------------------------------------------"
-puts $shapeFile "Modal Shapes for All Nodes and All Modes"
-puts $shapeFile "---------------------------------------------------"
-
-puts $shapeFile "Eigenvalues: $eigenValues"
-
-# Use batch-style processing for eigenvectors
 for {{set iMode 1}} {{$iMode <= $numModes}} {{incr iMode}} {{
-    puts $shapeFile "\nMode $iMode:"
-    
-    # Add a custom 'print nodeEigenvector' script
     for {{set iNode 0}} {{$iNode < $nNodes}} {{incr iNode}} {{
-        puts $shapeFile [format "Node %d : %s" $iNode [nodeEigenvector $iNode $iMode]]
+        puts $shapeFile [format "%d %d %s" $iMode $iNode [nodeEigenvector $iNode $iMode]]
     }}
 }}
 close $shapeFile
 
 
-# set modalMassFile [open "modal_mass_6dof.out" w]
-# puts $modalMassFile "Mode   Modal Mass"
+modalProperties -print -file "ModalReport.out" -unorm
+set mode 1
+# ---------------------------------------------
+# Custom Displacement Export Script
+# ---------------------------------------------
+set dispFile [open "shape.out" "w"]
+set allNodes [getNodeTags]
+foreach nodeTag $allNodes {{
+    set disp [eigen $mode]
+    puts $dispFile "$nodeTag $disp"
+}}
+close $dispFile
+puts "Displacements have been exported to shape.out"
 
-# for {{set mode 1}} {{$mode <= $nNodes}} {{incr mode}} {{
-#     set modalMass 0.0
-
-#     for {{set node 1}} {{$node <= $nNodes}} {{incr node}} {{
-#         # Get eigenvector (modal shape) for the node and mode
-#         set eigenvector [nodeEigenvector $node $mode]
-
-#         # Get nodal mass matrix (6x6)
-#         set massMatrix [mass $node]
-
-#         # Extract eigenvector components
-#         set ux [lindex $eigenvector 0]
-#         set uy [lindex $eigenvector 1]
-#         set uz [lindex $eigenvector 2]
-#         set rx [lindex $eigenvector 3]
-#         set ry [lindex $eigenvector 4]
-#         set rz [lindex $eigenvector 5]
-
-#         # Compute contribution to modal mass
-#         set nodeMass [expr \
-#             $massMatrix(0,0)*$ux*$ux + $massMatrix(1,1)*$uy*$uy + $massMatrix(2,2)*$uz*$uz + \
-#             $massMatrix(3,3)*$rx*$rx + $massMatrix(4,4)*$ry*$ry + $massMatrix(5,5)*$rz*$rz]
-#         set modalMass [expr $modalMass + $nodeMass]
-#     }}
-
-#     # Output modal mass for the current mode
-#     puts $modalMassFile "$mode   $modalMass"
-# }}
-
-# close $modalMassFile
 """
 
 

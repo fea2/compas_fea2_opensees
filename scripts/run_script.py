@@ -20,16 +20,17 @@ None
 import os
 from compas_fea2.utilities._utils import launch_process
 
-print('\nBegin the analysis...')
+print("\nBegin the analysis...")
 
 file_path = "/Users/francesco/code/fea2/compas_fea2_opensees/scripts/tcl"
 file_name = "modal_analysis_beam"
-filepath=os.path.join(file_path, file_name+'.tcl')
-filepath ="/Users/francesco/code/fea2/compas_fea2_opensees/scripts/official_examples/test_contact.tcl"
-filepath ="/Users/francesco/code/fea2/compas_fea2_opensees/scripts/official_examples/ZeroLengthContactNTS2D_Example2.tcl"
+filepath = os.path.join(file_path, file_name + ".tcl")
+filepath = (
+    "/Users/francesco/code/fea2/compas_fea2_opensees/temp/ModalAnalysis/ElasticFrame/ModalAnalysis/ModalAnalysis.tcl"
+)
 
 verbose = True
-exe ="/Applications/OpenSees3.7.0/bin/OpenSees"
+exe = "/Applications/OpenSees3.7.0/bin/OpenSees"
 
 cmd = 'cd "{}" && "{}" "{}"'.format(file_path, exe, filepath)
 for line in launch_process(cmd_args=cmd, cwd=file_path, verbose=verbose):
@@ -41,7 +42,7 @@ print("Analysis completed!")
 
 
 # File path where the Node displacement data is saved
-results_file = os.path.join(file_path, 'Node_Disp.out')
+# results_file = os.path.join(file_path, "Node_Disp.out")
 # import matplotlib.pyplot as plt
 
 
