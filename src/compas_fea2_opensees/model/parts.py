@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas_fea2.model import DeformablePart
-from compas_fea2.model import SolidSection
+
 
 class OpenseesPart(DeformablePart):
     """OpenSees implementation of :class:`compas_fea2.model.DeformablePart`.
@@ -12,6 +12,7 @@ class OpenseesPart(DeformablePart):
     ----
     Models with multiple parts are not currently supported in Opensees.
     """
+
     __doc__ += DeformablePart.__doc__
     __doc__ += """
     Additional Parameters
@@ -24,6 +25,7 @@ class OpenseesPart(DeformablePart):
         6.
 
     """
+
     def __init__(self, ndm=None, ndf=None, **kwargs):
         super(OpenseesPart, self).__init__(**kwargs)
         self._ndm = ndm or 3
@@ -38,7 +40,7 @@ class OpenseesPart(DeformablePart):
     def ndm(self, value):
         value = int(value)
         if value < 1 or value > 3:
-            raise ValueError('The model dimension can be either 1,2 or 3.')
+            raise ValueError("The model dimension can be either 1,2 or 3.")
         self._ndm = value
 
     @property
@@ -49,8 +51,9 @@ class OpenseesPart(DeformablePart):
     def ndf(self, value):
         value = int(value)
         if value not in (1, 3, 6):
-            raise ValueError('The number of degree of freedom can be either 1,3 or 6.')
+            raise ValueError("The number of degree of freedom can be either 1,3 or 6.")
         self._ndf = value
+
     # =========================================================================
     #                       Generate input file data
     # =========================================================================
@@ -73,9 +76,9 @@ model Basic -ndm {} -ndf {}
 {}
 #
 #""".format(
-    self.name,
-    self._ndm,
-    self._ndf,
-    '\n'.join([node.jobdata() for node in sorted(self.nodes, key=lambda x: x.key)]),
-    '\n'.join([element.jobdata() for element in sorted(self.elements, key=lambda x: x.key)]),
-)
+            self.name,
+            self._ndm,
+            self._ndf,
+            "\n".join([node.jobdata() for node in sorted(self.nodes, key=lambda x: x.key)]),
+            "\n".join([element.jobdata() for element in sorted(self.elements, key=lambda x: x.key)]),
+        )

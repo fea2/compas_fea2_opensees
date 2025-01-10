@@ -2,10 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
 from compas_fea2.model import Concrete
-from compas_fea2.model import ConcreteSmearedCrack
 from compas_fea2.model import ConcreteDamagedPlasticity
+from compas_fea2.model import ConcreteSmearedCrack
 
 # ==============================================================================
 # non-linear concrete
@@ -39,9 +38,7 @@ class OpenseesConcreteSmearedCrack(ConcreteSmearedCrack):
     __doc__ += ConcreteSmearedCrack.__doc__
 
     def __init__(self, *, E, v, density, fc, ec, ft, et, fr=[1.16, 0.0836], **kwargs):
-        super(OpenseesConcreteSmearedCrack, self).__init__(
-            E=E, v=v, density=density, fc=fc, ec=ec, ft=ft, et=et, fr=fr, **kwargs
-        )
+        super(OpenseesConcreteSmearedCrack, self).__init__(E=E, v=v, density=density, fc=fc, ec=ec, ft=ft, et=et, fr=fr, **kwargs)
         raise NotImplementedError
 
 
@@ -51,7 +48,5 @@ class OpenseesConcreteDamagedPlasticity(ConcreteDamagedPlasticity):
     __doc__ += ConcreteDamagedPlasticity.__doc__
 
     def __init__(self, *, E, v, density, damage, hardening, stiffening, **kwargs):
-        super(OpenseesConcreteDamagedPlasticity, self).__init__(
-            E=E, v=v, density=density, damage=damage, hardening=hardening, stiffening=stiffening, **kwargs
-        )
+        super(OpenseesConcreteDamagedPlasticity, self).__init__(E=E, v=v, density=density, damage=damage, hardening=hardening, stiffening=stiffening, **kwargs)
         raise NotImplementedError

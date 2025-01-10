@@ -3,12 +3,12 @@ from __future__ import division
 from __future__ import print_function
 
 from compas_fea2.problem import ConcentratedLoad
-from compas_fea2.problem import PressureLoad
 from compas_fea2.problem import GravityLoad
-from compas_fea2.problem import TributaryLoad
-from compas_fea2.problem import PrestressLoad
 from compas_fea2.problem import HarmonicPointLoad
 from compas_fea2.problem import HarmonicPressureLoad
+from compas_fea2.problem import PressureLoad
+from compas_fea2.problem import PrestressLoad
+from compas_fea2.problem import TributaryLoad
 
 dofs = ["x", "y", "z", "xx", "yy", "zz"]
 
@@ -22,9 +22,7 @@ class OpenseesConcentratedLoad(ConcentratedLoad):
         super(OpenseesConcentratedLoad, self).__init__(x=x, y=y, z=z, xx=xx, yy=yy, zz=zz, axes=axes, **kwargs)
 
     def jobdata(self, node):
-        return "\tload {} {}".format(
-            node.input_key, " ".join([str(self.components[dof] or 0.0) for dof in dofs[: node.part.ndf]])
-        )
+        return "\tload {} {}".format(node.input_key, " ".join([str(self.components[dof] or 0.0) for dof in dofs[: node.part.ndf]]))
 
 
 class OpenseesPressureLoad(PressureLoad):
@@ -44,20 +42,6 @@ class OpenseesGravityLoad(GravityLoad):
 
     def __init__(self, g=9.81, x=0.0, y=0.0, z=-1.0, **kwargs):
         super(OpenseesGravityLoad, self).__init__(g, x, y, z, **kwargs)
-
-
-# def jobdata(self, distribution):
-#     if not distribution:
-#         distribution=self.model.parts
-#     if not isinstance(distribution, Iterable):
-#         distribution = [distribution]
-#     jobdata = []
-#     for part in distribution:
-#         for element in part.elements:
-#             sw_node = [element.volume*self.g*element.section.material.density/len(element.nodes)*c for c in [self.x, self.y, self.z]]+[0.]*(part.ndm-3) #TODO check if ndm or ndof
-#             for n in element.nodes:
-#                 jobdata.append('\tload {} {}'.format(n.key, ' '.join([str(c) for c in sw_node])))
-#     return '\n'.join(jobdata)
 
 
 class OpenseesPrestressLoad(PrestressLoad):

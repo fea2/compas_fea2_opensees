@@ -1,8 +1,11 @@
 ********************************************************************************
-API Reference
+job
 ********************************************************************************
 
-.. toctree::
-    :maxdepth: 1
+.. currentmodule:: compas_fea2_opensees.job
 
-    api/compas_fea2_opensees
+.. autosummary::
+    :toctree: generated/
+
+    OpenseesInputFile
+    OpenseesParametersFile

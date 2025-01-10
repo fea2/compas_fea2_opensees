@@ -2,34 +2,30 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
-from compas_fea2.model import BeamSection
 from compas_fea2.model import AngleSection
+from compas_fea2.model import BeamSection
 from compas_fea2.model import BoxSection
+from compas_fea2.model import CircularSection
 from compas_fea2.model import HexSection
 from compas_fea2.model import ISection
-from compas_fea2.model import CircularSection
-from compas_fea2.model import RectangularSection
 from compas_fea2.model import MassSection
-from compas_fea2.model import ShellSection
 from compas_fea2.model import MembraneSection
+from compas_fea2.model import PipeSection
+from compas_fea2.model import RectangularSection
+from compas_fea2.model import ShellSection
 from compas_fea2.model import SolidSection
-from compas_fea2.model import TrussSection
-from compas_fea2.model import TrapezoidalSection
+from compas_fea2.model import SpringSection
 from compas_fea2.model import StrutSection
 from compas_fea2.model import TieSection
-from compas_fea2.model import SpringSection
-from compas_fea2.model import PipeSection
-
+from compas_fea2.model import TrapezoidalSection
+from compas_fea2.model import TrussSection
 
 # NOTE in opensees the sectional properties are assigned directly to the element UNLESS it is a nonliner thing...
 # in that case there is a tag for the section....aaaaarrrrhhhh
 
 
 def beam_jobdata(self):
-    return "section Elastic {} {} {} {} {} {} {}".format(
-        self.key, self.material.E, self.A, self.Iyy, self.Ixx, self.material.G, self.J
-    )
+    return "section Elastic {} {} {} {} {} {} {}".format(self.key, self.material.E, self.A, self.Iyy, self.Ixx, self.material.G, self.J)
 
 
 # ==============================================================================
@@ -76,9 +72,7 @@ class OpenseesBeamSection(BeamSection):
     """
 
     def __init__(self, *, A, Ixx, Iyy, Ixy, Avx, Avy, J, g0, gw, material, **kwargs):
-        super().__init__(
-            A=A, Ixx=Ixx, Iyy=Iyy, Ixy=Ixy, Avx=Avx, Avy=Avy, J=J, g0=g0, gw=gw, material=material, **kwargs
-        )
+        super().__init__(A=A, Ixx=Ixx, Iyy=Iyy, Ixy=Ixy, Avx=Avx, Avy=Avy, J=J, g0=g0, gw=gw, material=material, **kwargs)
 
     def jobdata(self):
         return beam_jobdata(self)
@@ -137,7 +131,7 @@ class OpenseesISection(ISection):
 
     __doc__ += ISection.__doc__
 
-    def __init__(self, w, h, tw, tf, material, l=0, **kwargs):
+    def __init__(self, w, h, tw, tf, material, **kwargs):
         super(OpenseesISection, self).__init__(w, h, tw, tf, material, **kwargs)
 
     def jobdata(self):
@@ -245,9 +239,7 @@ class OpenseesShellSection(ShellSection):
         super(OpenseesShellSection, self).__init__(t, material, **kwargs)
 
     def jobdata(self):
-        return "section ElasticMembranePlateSection {} {} {} {} {}".format(
-            self.input_key, self.material.E, self.material.v, self.t, self.material.density
-        )
+        return "section ElasticMembranePlateSection {} {} {} {} {}".format(self.input_key, self.material.E, self.material.v, self.t, self.material.density)
 
 
 class OpenseesMembraneSection(MembraneSection):

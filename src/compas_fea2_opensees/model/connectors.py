@@ -4,8 +4,8 @@ from __future__ import print_function
 
 from compas_fea2.model import RigidLinkConnector
 from compas_fea2.model import SpringConnector
-from compas_fea2.model import ZeroLengthSpringConnector
 from compas_fea2.model import ZeroLengthContactConnector
+from compas_fea2.model import ZeroLengthSpringConnector
 
 
 class OpenseesRigidLinkConnector(RigidLinkConnector):
@@ -24,9 +24,7 @@ class OpenseesRigidLinkConnector(RigidLinkConnector):
         elif self.dofs == "bar":
             return f"rigidLink bar {rNode} {cNode}"
         else:
-            if not any(
-                [dof in list(range(1, min([self.nodes[0].part.ndf, self.nodes[1].part.ndf]) + 1)) for dof in self.dofs]
-            ):
+            if not any([dof in list(range(1, min([self.nodes[0].part.ndf, self.nodes[1].part.ndf]) + 1)) for dof in self.dofs]):
                 raise ValueError("Invalid DOF")
             return f"equalDOF {rNode} {cNode} {' '.join([str(dof) for dof in self.dofs])}"
 

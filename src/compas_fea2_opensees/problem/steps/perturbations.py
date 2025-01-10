@@ -2,10 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas_fea2.problem.steps import ModalAnalysis
 from compas_fea2.problem.steps import BucklingAnalysis
 from compas_fea2.problem.steps import ComplexEigenValue
 from compas_fea2.problem.steps import LinearStaticPerturbation
+from compas_fea2.problem.steps import ModalAnalysis
 from compas_fea2.problem.steps import StedyStateDynamic
 from compas_fea2.problem.steps import SubstructureGeneration
 
@@ -15,10 +15,8 @@ class OpenseesModalAnalysis(ModalAnalysis):
     Check the OpenSees documentation for more information:
     https://opensees.github.io/OpenSeesDocumentation/user/manual/analysis/eigen.html#eigen
 
-    Parameters
-    ----------
-    modes : int, optional
-        Number of modes to compute, by default 1.
+    Additional Parameters
+    ---------------------
     solver : str, optional
         Solver to use, by default -genBandArpack. Either optons are: "genBandArpack", "symmBandLapack", "fullGenLapack"
 
@@ -29,7 +27,7 @@ class OpenseesModalAnalysis(ModalAnalysis):
     nodeEigenvector <nodeTag> <mode> returns a list of the displacement
     eigenvector components (one for each DOF, 6 in 3D).
     For a typical 3D beam element, you have 6 DOFs per node:
-    [u_x,\, u_y,\, u_z,\, \theta_x,\, \theta_y,\, \theta_z].
+    [u_x,\\, u_y,\\, u_z,\\, \\theta_x,\\, \\theta_y,\\, \\theta_z].
 
     By default, OpenSees normalizes the mode shapes to unit values
     (or such that the sum of squares of the DOFs equals 1, depending on the solver).

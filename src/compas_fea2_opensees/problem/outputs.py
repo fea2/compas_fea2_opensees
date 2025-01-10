@@ -2,15 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas_fea2.problem.outputs import (
-    FieldOutput,
-    HistoryOutput,
-    DisplacementFieldOutput,
-    AccelerationFieldOutput,
-    VelocityFieldOutput,
-    ReactionFieldOutput,
-    Stress2DFieldOutput,
-)
+from compas_fea2.problem.outputs import AccelerationFieldOutput
+from compas_fea2.problem.outputs import DisplacementFieldOutput
+from compas_fea2.problem.outputs import FieldOutput
+from compas_fea2.problem.outputs import HistoryOutput
+from compas_fea2.problem.outputs import ReactionFieldOutput
+from compas_fea2.problem.outputs import Stress2DFieldOutput
+from compas_fea2.problem.outputs import VelocityFieldOutput
 
 
 def tcl_export_node_results(field_name, function_name):
@@ -116,9 +114,7 @@ class OpenseesFieldOutput(FieldOutput):
     __doc__ += FieldOutput.__doc__
 
     def __init__(self, node_outputs=None, element_outputs=None, **kwargs):
-        super(OpenseesFieldOutput, self).__init__(
-            node_outputs=node_outputs, element_outputs=element_outputs, contact_outputs=None, **kwargs
-        )
+        super(OpenseesFieldOutput, self).__init__(node_outputs=node_outputs, element_outputs=element_outputs, contact_outputs=None, **kwargs)
 
 
 class OpenseesHistoryOutput(HistoryOutput):

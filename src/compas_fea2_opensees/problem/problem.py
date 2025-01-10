@@ -4,12 +4,12 @@ from __future__ import print_function
 
 import os
 import sqlite3
-from compas_fea2.problem import Problem
-from compas_fea2.utilities._utils import timer
-from compas_fea2.utilities._utils import launch_process
-
 
 import compas_fea2
+from compas_fea2.problem import Problem
+from compas_fea2.utilities._utils import launch_process
+from compas_fea2.utilities._utils import timer
+
 import compas_fea2_opensees
 
 
@@ -133,7 +133,8 @@ class OpenseesProblem(Problem):
         print("Extracting data from Opensees .out files...")
         self.database_path = database_path or self.path
         self.database_name = database_name or self.name + "-results.db"
-        from ..results.results_to_sql import read_results_file, process_modal_shapes
+        from ..results.results_to_sql import process_modal_shapes
+        from ..results.results_to_sql import read_results_file
 
         db_file = os.path.join(self.database_path, self.database_name)
 

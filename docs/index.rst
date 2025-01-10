@@ -1,29 +1,52 @@
+:html_theme.sidebar_secondary.remove:
+
 ********************************************************************************
-compas_fea2_opensees
+COMPAS FEA2 OPENSEES Documentation
 ********************************************************************************
 
 .. rst-class:: lead
 
-opensees plugin for compas_fea2
-
-.. .. figure:: /_images/
-     :figclass: figure
-     :class: figure-img img-fluid
+COMPAS FEA2 OPESEES is the backend implementation of OpenSees for compas_fea2.
 
 
-Table of Contents
-=================
+User Guide
+==========
 
 .. toctree::
-   :maxdepth: 3
-   :titlesonly:
+    :maxdepth: 2
+    :titlesonly:
 
-   Introduction <self>
-   installation
-   tutorial
-   examples
-   api
-   license
+    userguide/index
+
+
+API Reference
+=============
+
+.. toctree::
+    :maxdepth: 2
+    :titlesonly:
+
+    api/index
+
+
+Backends
+========
+
+.. toctree::
+    :maxdepth: 2
+    :titlesonly:
+
+    backends/index
+
+
+Development
+===========
+
+.. toctree::
+    :maxdepth: 2
+    :titlesonly:
+
+    development/index
 
 
 Indices and tables
@@ -31,3 +54,4 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`modindex`
+* :ref:`search`

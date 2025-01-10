@@ -2,13 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
 from compas_fea2.model import ElasticIsotropic
-from compas_fea2.model import Stiff
 from compas_fea2.model import ElasticOrthotropic
 from compas_fea2.model import ElasticPlastic
+from compas_fea2.model import Stiff
 from compas_fea2.model import UserMaterial
-
 
 # ==============================================================================
 # linear elastic
@@ -27,9 +25,7 @@ class OpenseesElasticOrthotropic(ElasticOrthotropic):
     """
 
     def __init__(self, *, Ex, Ey, Ez, vxy, vyz, vzx, Gxy, Gyz, Gzx, density, **kwargs):
-        super(ElasticOrthotropic, self).__init__(
-            Ex=Ex, Ey=Ey, Ez=Ez, vxy=vxy, vyz=vyz, vzx=vzx, Gxy=Gxy, Gyz=Gyz, Gzx=Gzx, density=density, **kwargs
-        )
+        super(ElasticOrthotropic, self).__init__(Ex=Ex, Ey=Ey, Ez=Ez, vxy=vxy, vyz=vyz, vzx=vzx, Gxy=Gxy, Gyz=Gyz, Gzx=Gzx, density=density, **kwargs)
         raise NotImplementedError
 
 
@@ -59,7 +55,7 @@ class OpenseesStiff(Stiff):
     __doc__ += Stiff.__doc__
 
     def __init__(self, **kwargs):
-        super(OpenseesStiff, self).__init__(name, **kwargs)
+        super(OpenseesStiff, self).__init__(**kwargs)
         raise NotImplementedError
 
 

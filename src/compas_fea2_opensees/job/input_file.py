@@ -1,9 +1,10 @@
-import os.path
 from datetime import datetime
+
 import compas_fea2
-import compas_fea2_opensees
 from compas_fea2.job import InputFile
 from compas_fea2.job import ParametersFile
+
+import compas_fea2_opensees
 
 
 class OpenseesInputFile(InputFile):

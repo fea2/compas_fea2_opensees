@@ -2,16 +2,16 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas_fea2.problem.steps import StaticStep
 from compas_fea2.problem.steps import StaticRiksStep
+from compas_fea2.problem.steps import StaticStep
 
 
 class OpenseesStaticStep(StaticStep):
     """
     Opensees implementation of the :class:`LinearStaticStep`.
 
-    Parameters
-    ----------
+    Opensees Parameters
+    -------------------
     max_increments : int, optional
         Maximum number of increments (default is 1).
     initial_inc_size : float, optional
@@ -93,9 +93,7 @@ class OpenseesStaticStep(StaticStep):
         algorithm="Newton",
         **kwargs,
     ):
-        super(OpenseesStaticStep, self).__init__(
-            max_increments, initial_inc_size, min_inc_size, time, nlgeom, modify, **kwargs
-        )
+        super(OpenseesStaticStep, self).__init__(max_increments, initial_inc_size, min_inc_size, time, nlgeom, modify, **kwargs)
         self.constraint = constraint
         self.algorithm = algorithm
         self.numberer = numberer
@@ -123,9 +121,9 @@ class OpenseesStaticStep(StaticStep):
 # - Analysis Parameters
 #   -------------------
 #
-constraints {self.constraint} 
+constraints {self.constraint}
 numberer {self.numberer}
-system {self.system}    
+system {self.system}
 test {self.test}
 algorithm {self.algorithm}
 integrator LoadControl {self.time}
