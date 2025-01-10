@@ -71,9 +71,10 @@ from .constraints import (
 
 # Opensees Connectors
 from .connectors import (
+    OpenseesRigidLinkConnector,
     OpenseesSpringConnector,
     OpenseesZeroLengthSpringConnector,
-    OpenseesRigidLinkConnector,
+    OpenseesZeroLengthContactConnector,
 )
 
 # Opensees Boundary Conditions
@@ -94,6 +95,4 @@ from .bcs import (
     OpenseesRollerBCZ,
 )
 
-from .releases import (
-    OpenseesBeamEndPinRelease
-)
+from .releases import OpenseesBeamEndPinRelease

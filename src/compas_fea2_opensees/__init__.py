@@ -111,9 +111,10 @@ from compas_fea2.model.constraints import (
 
 # Connectors
 from compas_fea2.model.connectors import (
+    RigidLinkConnector,
     SpringConnector,
     ZeroLengthSpringConnector,
-    RigidLinkConnector,
+    ZeroLengthContactConnector,
 )
 
 # Releases
@@ -184,17 +185,6 @@ from compas_fea2.problem.outputs import (
     Stress2DFieldOutput,
     FieldOutput,
     HistoryOutput,
-)
-
-# Results
-from compas_fea2.results import (
-    Result,
-    DisplacementResult,
-    AccelerationResult,
-    VelocityResult,
-    StressResult,
-    DisplacementFieldResults,
-    StressFieldResults,
 )
 
 # Input File
@@ -277,9 +267,10 @@ try:
 
     # Opensees Connectors
     from .model.connectors import (
+        OpenseesRigidLinkConnector,
         OpenseesSpringConnector,
         OpenseesZeroLengthSpringConnector,
-        OpenseesRigidLinkConnector,
+        OpenseesZeroLengthContactConnector,
     )
 
     # Opensees release
@@ -409,9 +400,10 @@ try:
 
         backend[TieConstraint] = OpenseesTieConstraint
 
+        backend[RigidLinkConnector] = OpenseesRigidLinkConnector
         backend[SpringConnector] = OpenseesSpringConnector
         backend[ZeroLengthSpringConnector] = OpenseesZeroLengthSpringConnector
-        backend[RigidLinkConnector] = OpenseesRigidLinkConnector
+        backend[ZeroLengthContactConnector] = OpenseesZeroLengthContactConnector
 
         backend[BeamEndPinRelease] = OpenseesBeamEndPinRelease
 

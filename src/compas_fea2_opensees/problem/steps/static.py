@@ -132,7 +132,7 @@ integrator LoadControl {self.time}
 analysis {self.analysis}
 
 # create a dummy Recorder for the reactions (Limitation of OpenSees)
-recorder Node -file nodeDisp.out -node 0 -dof 1 reaction
+recorder Node -file dummy.out -node 0 -dof 1 reaction
 
 analyze {self.max_increments}
 loadConst -time 0.0

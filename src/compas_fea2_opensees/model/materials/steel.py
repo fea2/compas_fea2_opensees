@@ -23,4 +23,6 @@ class OpenseesSteel(Steel):
         return self._EshE
 
     def jobdata(self):
-        return "uniaxialMaterial Steel01 {0} {1} {2} {3}".format(self.key, self.fy, self.E, self.EshE)
+        lines = ["uniaxialMaterial Steel01 {0} {1} {2} {3}".format(self.key, self.fy, self.E, self.EshE)]
+        lines.append("nDMaterial ElasticIsotropic {} {} {} {}".format(self.key + 1000, self.E, self.v, self.density))
+        return "\n".join(lines)
