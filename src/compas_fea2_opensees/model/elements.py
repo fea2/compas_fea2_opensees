@@ -65,8 +65,8 @@ class OpenseesBeamElement(BeamElement):
     def jobdata(self):
         return "\n".join(
             [
-                f"geomTransf Linear {self.input_key}",
-                # "geomTransf Corotational {} {}".format(self.input_key, " ".join([str(i) for i in self.frame.zaxis])),
+                # f"geomTransf Linear {self.input_key}",
+                "geomTransf Corotational {} {}".format(self.input_key, " ".join([str(i) for i in self.frame.zaxis])),
                 self._job_data(),
             ]
         )

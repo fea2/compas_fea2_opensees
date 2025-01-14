@@ -110,19 +110,6 @@ close $shapeFile
 
 
 modalProperties -print -file "ModalReport.out" -unorm
-set mode 1
-# ---------------------------------------------
-# Custom Displacement Export Script
-# ---------------------------------------------
-set dispFile [open "shape.out" "w"]
-set allNodes [getNodeTags]
-foreach nodeTag $allNodes {{
-    set disp [eigen $mode]
-    puts $dispFile "$nodeTag $disp"
-}}
-close $dispFile
-puts "Displacements have been exported to shape.out"
-
 """
 
 

@@ -117,5 +117,5 @@ print("Results match OpenSees example!")
 
 # Show results
 # prb.show_displacements(step, show_bcs=0.1)
-# prb.show_reactions(step, show_bcs=0.1)
+prb.show_reactions(step, show_bcs=0.1)
 # prb.show_deformed(scale_results=100, show_original=0.2, show_bcs=0.01)
