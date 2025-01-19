@@ -131,6 +131,7 @@ analysis {self.analysis}
 
 # create a dummy Recorder for the reactions (Limitation of OpenSees)
 recorder Node -file dummy.out -node 0 -dof 1 reaction
+recorder Element -xml element_results.xml -eleRange 1 1 stresses
 
 analyze {self.max_increments}
 loadConst -time 0.0

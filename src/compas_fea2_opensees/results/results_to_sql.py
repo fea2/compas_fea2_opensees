@@ -5,6 +5,7 @@ The script creates tables in the SQLite database to store these results and thei
 """
 
 import os
+import numpy as np
 
 
 def read_results_file(connection, field_output):
@@ -35,9 +36,31 @@ def read_results_file(connection, field_output):
             input_key = int(columns[0])  # Convert the first column to int
             member = getattr(model, field_output._results_func)(input_key)[0]
 
-            # FIXME: this does not take into account the integration points
-            # which can be different from element implementation to element implementation
             values = list(map(lambda x: round(float(x), 6), columns[1:]))
+            if not values:
+                continue
+
+            # NOTE: OpenSees outputs the stresses at the integration points, so we need to average them to get the element stresses
+            if field_name == "s2d":
+                num_integration_points = 4
+                num_columns = len(values) // num_integration_points
+                reshaped_data = np.array(values).reshape((num_integration_points, num_columns))
+                averages = np.mean(reshaped_data, axis=0)
+                values = averages.tolist()
+                # NOTE: The OpenSees output is generalised stress, so we need to convert it to True stress
+                t = member.section.t
+                true_stresses = {
+                    "sigma_11": values[0] / t,
+                    "sigma_22": values[1] / t,
+                    "tau_12": values[2] / t,
+                    "sigma_b11": 6 * values[3] / t**2,
+                    "sigma_b22": 6 * values[4] / t**2,
+                    "sigma_b12": 6 * values[5] / t**2,
+                    "tau_q1": values[6] / (t * 5 / 6),  # Assuming shear area = 5/6 * t
+                    "tau_q2": values[7] / (t * 5 / 6),
+                }
+                values = list(true_stresses.values())
+
             if len(values) < len(field_output.components_names):
                 values = values + [0.0] * (len(field_output.components_names) - len(values))
             elif len(values) > len(field_output.components_names):
