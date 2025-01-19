@@ -32,12 +32,12 @@ def read_results_file(connection, field_output):
         for line in lines:
             columns = line.split()
 
-            key = int(columns[0])  # Convert the first column to int
-            member = getattr(model, field_output._results_func)(key)[0]
+            input_key = int(columns[0])  # Convert the first column to int
+            member = getattr(model, field_output._results_func)(input_key)[0]
 
             # FIXME: this does not take into account the integration points
             # which can be different from element implementation to element implementation
-            values = list(map(float, columns[1:]))
+            values = list(map(lambda x: round(float(x), 6), columns[1:]))
             if len(values) < len(field_output.components_names):
                 values = values + [0.0] * (len(field_output.components_names) - len(values))
             elif len(values) > len(field_output.components_names):
@@ -108,7 +108,7 @@ def process_modal_shapes(connection, step):
         mode INTEGER,
         step TEXT,
         part TEXT,
-        input_key INTEGER,
+        key INTEGER,
         {",\n".join([f"dof_{c+1} REAL" for c in range(6)])}
         )
     """
@@ -117,7 +117,7 @@ def process_modal_shapes(connection, step):
     for eigenvector in eigenvectors:
         cursor.execute(
             f"""
-        INSERT INTO eigenvectors (mode, step, part, input_key, {", ".join([f"dof_{c+1}" for c in range(6)])})
+        INSERT INTO eigenvectors (mode, step, part, key, {", ".join([f"dof_{c+1}" for c in range(6)])})
         VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?)
         """,
             eigenvector,

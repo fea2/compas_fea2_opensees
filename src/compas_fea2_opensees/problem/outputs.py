@@ -4,11 +4,11 @@ from __future__ import print_function
 
 from compas_fea2.problem.outputs import AccelerationFieldOutput
 from compas_fea2.problem.outputs import DisplacementFieldOutput
-from compas_fea2.problem.outputs import FieldOutput
-from compas_fea2.problem.outputs import HistoryOutput
 from compas_fea2.problem.outputs import ReactionFieldOutput
 from compas_fea2.problem.outputs import Stress2DFieldOutput
 from compas_fea2.problem.outputs import VelocityFieldOutput
+from compas_fea2.problem.outputs import SectionForcesFieldOutput
+from compas_fea2.problem.outputs import HistoryOutput
 
 
 def tcl_export_node_results(field_name, function_name):
@@ -33,19 +33,6 @@ class OpenseesDisplacementFieldOutput(DisplacementFieldOutput):
 
     def jobdata(self):
         return tcl_export_node_results(self.field_name, "nodeDisp")
-        return f"""
-# ---------------------------------------------
-# Custom Displacement Export Script
-# ---------------------------------------------
-set dispFile [open "{self.field_name}.out" "w"]
-set allNodes [getNodeTags]
-foreach nodeTag $allNodes {{
-    set disp [nodeDisp $nodeTag]
-    puts $dispFile "$nodeTag $disp"
-}}
-close $dispFile
-puts "Displacements have been exported to {self.field_name}.out"
-"""
 
 
 class OpenseesAccelerationFieldOutput(AccelerationFieldOutput):
@@ -108,13 +95,40 @@ puts "Element stresses have been exported to {self.field_name}.out"
 """
 
 
-class OpenseesFieldOutput(FieldOutput):
+class OpenseesSectionForcesFieldOutput(SectionForcesFieldOutput):
     """"""
 
-    __doc__ += FieldOutput.__doc__
+    __doc__ += SectionForcesFieldOutput.__doc__
 
-    def __init__(self, node_outputs=None, element_outputs=None, **kwargs):
-        super(OpenseesFieldOutput, self).__init__(node_outputs=node_outputs, element_outputs=element_outputs, contact_outputs=None, **kwargs)
+    def __init__(self, **kwargs):
+        super(OpenseesSectionForcesFieldOutput, self).__init__(**kwargs)
+
+    def jobdata(self):
+        return f"""
+# ---------------------------------------------
+# Custom Element Section Force Export Script
+# ---------------------------------------------
+# Open a file to write the section forces
+set sectionForceFile [open "{self.field_name}.out" "w"]
+
+# Get all element tags in the model
+set allElements [getEleTags]
+
+# Loop through each element and extract section forces
+foreach eleTag $allElements {{
+
+    set secForces [eleResponse $eleTag "force"]
+
+    # Write the element tag, section number, and forces to the file
+    puts $sectionForceFile "$eleTag $secForces"
+    }}
+
+# Close the file
+close $sectionForceFile
+
+# Print a message indicating the export is complete
+puts "Section forces have been exported to {self.field_name}.out"
+"""
 
 
 class OpenseesHistoryOutput(HistoryOutput):

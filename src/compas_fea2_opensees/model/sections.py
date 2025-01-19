@@ -150,8 +150,8 @@ class OpenseesISection(ISection):
 
     __doc__ += ISection.__doc__
 
-    def __init__(self, w, h, tw, tf, material, **kwargs):
-        super(OpenseesISection, self).__init__(w, h, tw, tf, material, **kwargs)
+    def __init__(self, w, h, tw, tbf, ttf, material, **kwargs):
+        super(OpenseesISection, self).__init__(w, h, tw, tbf, ttf, material, **kwargs)
 
     def jobdata(self):
         return beam_jobdata(self)

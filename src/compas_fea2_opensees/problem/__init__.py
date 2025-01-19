@@ -44,9 +44,9 @@ from .outputs import (
     OpenseesAccelerationFieldOutput,
     OpenseesVelocityFieldOutput,
     OpenseesReactionFieldOutput,
-    OpenseesFieldOutput,
     OpenseesHistoryOutput,
     OpenseesStress2DFieldOutput,
+    OpenseesSectionForcesFieldOutput,
 )
 
 __all__ = [
@@ -72,7 +72,7 @@ __all__ = [
     "OpenseesAccelerationFieldOutput",
     "OpenseesVelocityFieldOutput",
     "OpenseesReactionFieldOutput",
-    "OpenseesFieldOutput",
-    "OpenseesHistoryOutput",
     "OpenseesStress2DFieldOutput",
+    "OpenseesSectionForcesFieldOutput",
+    "OpenseesHistoryOutput",
 ]
