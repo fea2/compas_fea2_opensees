@@ -25,16 +25,16 @@ def read_results_file(connection, field_output):
     model = field_output.model
     step = field_output.step
     field_name = field_output.field_name
-    database_path = field_output.problem.database_path
+    problem_path = field_output.problem.path
 
     results = []
-    with open(os.path.join(database_path, f"{field_name}.out"), "r") as f:
+    with open(os.path.join(problem_path, f"{field_name}.out"), "r") as f:
         lines = f.readlines()
         for line in lines:
             columns = line.split()
 
             input_key = int(columns[0])  # Convert the first column to int
-            member = getattr(model, field_output._results_func)(input_key)[0]
+            member = getattr(model, field_output.results_func)(input_key)[0]
 
             values = list(map(lambda x: round(float(x), 6), columns[1:]))
             if not values:
@@ -70,21 +70,21 @@ def read_results_file(connection, field_output):
 
             results.append([member.key] + [step.name, member.part.name] + values)
 
-    field_output.create_table_for_output_class(connection, results)
+    field_output.create_sql_table(connection, results)
 
 
 def process_modal_shapes(connection, step):
-    database_path = step.problem.database_path
+    problem_path = step.problem.path
     model = step.model
 
     eigenvalues = []
-    with open(os.path.join(database_path, "eigenvalues.out"), "r") as f:
+    with open(os.path.join(problem_path, "eigenvalues.out"), "r") as f:
         lines = f.readlines()
         for line in lines:
             eigenvalues.append(line.split())
 
     eigenvectors = []
-    with open(os.path.join(database_path, "eigenvectors.out"), "r") as f:
+    with open(os.path.join(problem_path, "eigenvectors.out"), "r") as f:
         lines = f.readlines()
         for line in lines:
             eigenvectors.append(line.split())
@@ -148,4 +148,4 @@ def process_modal_shapes(connection, step):
 
     connection.commit()
 
-    print(f"Modal shapes and eigenvalues successfully saved to {database_path}")
+    print(f"Modal shapes and eigenvalues successfully saved to {problem_path}")

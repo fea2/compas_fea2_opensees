@@ -5,10 +5,10 @@ from __future__ import print_function
 import os
 import sqlite3
 
-import compas_fea2
 from compas_fea2.problem import Problem
 from compas_fea2.utilities._utils import launch_process
 from compas_fea2.utilities._utils import timer
+from compas_fea2.utilities._utils import with_spinner
 
 import compas_fea2_opensees
 
@@ -25,33 +25,31 @@ class OpenseesProblem(Problem):
     #                         Analysis methods
     # =========================================================================
 
-    @timer(message="Analysis completed in")
+    # @timer(message="Analysis completed in")
+    @with_spinner("Analysis in progress")
     def analyse(self, path, exe=None, verbose=False, *args, **kwargs):
         """Runs the analysis through the OpenSees solver.
 
         Parameters
         ----------
-        path : str, :class:`pathlib.Path`
+        path : str or pathlib.Path
             Path to the analysis folder. A new folder with the name
             of the problem will be created at this location for all the required
             analysis files.
         exe : str, optional
             Location of the OpenSees executable, by default ``C:/OpenSees3.2.0/bin/OpenSees.exe``.
         verbose : bool, optional
-            Decide wether print or not the output from the solver, by default ``False``.
+            Decide whether to print the output from the solver, by default ``False``.
 
         Returns
         -------
         None
-
         """
-        print("\nBegin the analysis...")
         self._check_analysis_path(path)
         self.write_input_file()
         filepath = os.path.join(self.path, self.name + ".tcl")
 
         exe = exe or compas_fea2_opensees.EXE
-
         if not os.path.exists(exe):
             raise ValueError(f"backend not found at {exe}")
 
@@ -60,8 +58,6 @@ class OpenseesProblem(Problem):
             line = line.strip().decode()
             if "error" in line.split(" "):
                 raise Exception("ERROR! - Analysis failed to converge!\nSet VERBOSE=True to check the error.")
-            if compas_fea2.VERBOSE or verbose:
-                print(line)
         print("Analysis completed!")
 
     def analyse_and_extract(self, path, exe=None, verbose=False, *args, **kwargs):
@@ -131,16 +127,11 @@ class OpenseesProblem(Problem):
 
         """
         print("Extracting data from Opensees .out files...")
-        self.database_path = database_path or self.path
-        self.database_name = database_name or self.name + "-results.db"
         from ..results.results_to_sql import process_modal_shapes
         from ..results.results_to_sql import read_results_file
 
-        db_file = os.path.join(self.database_path, self.database_name)
-
-        if os.path.exists(db_file):
-            os.remove(db_file)
-        connection = sqlite3.connect(db_file)
+        # FIXME use the ResultsDatabase class
+        connection = sqlite3.connect(self.path_db)
 
         for step in self.steps:
             if isinstance(step, compas_fea2_opensees.OpenseesModalAnalysis):
