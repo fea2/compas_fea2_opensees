@@ -34,7 +34,7 @@ def read_results_file(connection, field_output):
             columns = line.split()
 
             input_key = int(columns[0])  # Convert the first column to int
-            member = getattr(model, field_output.results_func)(input_key)[0]
+            member = getattr(model, field_output.results_func_output)(input_key)[0]
 
             values = list(map(lambda x: round(float(x), 6), columns[1:]))
             if not values:
@@ -132,7 +132,7 @@ def process_modal_shapes(connection, step):
         step TEXT,
         part TEXT,
         key INTEGER,
-        {",\n".join([f"dof_{c+1} REAL" for c in range(6)])}
+        {",\n".join([f"{c} REAL" for c in ['x', 'y', 'z', 'xx', 'yy', 'zz']])}
         )
     """
     )
@@ -140,7 +140,7 @@ def process_modal_shapes(connection, step):
     for eigenvector in eigenvectors:
         cursor.execute(
             f"""
-        INSERT INTO eigenvectors (mode, step, part, key, {", ".join([f"dof_{c+1}" for c in range(6)])})
+        INSERT INTO eigenvectors (mode, step, part, key, {", ".join([c for c in ['x', 'y', 'z', 'xx', 'yy', 'zz']])})
         VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?)
         """,
             eigenvector,

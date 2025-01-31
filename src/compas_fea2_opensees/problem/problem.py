@@ -27,7 +27,7 @@ class OpenseesProblem(Problem):
 
     # @timer(message="Analysis completed in")
     @with_spinner("Analysis in progress")
-    def analyse(self, path, exe=None, verbose=False, *args, **kwargs):
+    def analyse(self, path, exe=None, erase_data=False, verbose=False, *args, **kwargs):
         """Runs the analysis through the OpenSees solver.
 
         Parameters
@@ -45,7 +45,7 @@ class OpenseesProblem(Problem):
         -------
         None
         """
-        self._check_analysis_path(path)
+        self._check_analysis_path(path, erase_data=erase_data)
         self.write_input_file()
         filepath = os.path.join(self.path, self.name + ".tcl")
 
@@ -60,7 +60,7 @@ class OpenseesProblem(Problem):
                 raise Exception("ERROR! - Analysis failed to converge!\nSet VERBOSE=True to check the error.")
         print("Analysis completed!")
 
-    def analyse_and_extract(self, path, exe=None, verbose=False, *args, **kwargs):
+    def analyse_and_extract(self, path, exe=None, erase_data=False, verbose=False, *args, **kwargs):
         """Runs the analysis through the OpenSees solver and extract the results
         from the native format into a SQLite database. The Model is also saved as
         .cfm file.
@@ -81,7 +81,7 @@ class OpenseesProblem(Problem):
         None
 
         """
-        self.analyse(path=path, exe=exe, verbose=verbose, *args, **kwargs)
+        self.analyse(path=path, exe=exe, erase_data=erase_data, verbose=verbose, *args, **kwargs)
         if kwargs.get("save", False):
             self.model.to_cfm(self.model.path.joinpath(f"{self.model.name}.cfm"))
         return self.convert_results_to_sqlite()

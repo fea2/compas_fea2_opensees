@@ -92,6 +92,30 @@ foreach eleTag $allElements {{
 }}
 close $stressFile
 puts "Element stresses have been exported to {self.field_name}.out"
+
+# ---------------------------------------------
+# Custom Element Strain Export Script
+# ---------------------------------------------
+set strainFile [open "{self.field_name}_str.out" "w"]
+set allElements [getEleTags]
+foreach eleTag $allElements {{
+    set eleDeformation [eleResponse $eleTag "deformation"]
+    puts $strainFile "$eleTag $eleDeformation"
+}}
+close $strainFile
+puts "Element strains have been exported to {self.field_name}_str.out"
+
+# ---------------------------------------------
+# Custom Element Strain Export Script
+# ---------------------------------------------
+set deformationFile [open "{self.field_name}_def.out" "w"]
+set allElements [getEleTags]
+foreach eleTag $allElements {{
+    set eleDeformation [eleResponse $eleTag "deformation"]
+    puts $deformationFile "$eleTag $eleDeformation"
+}}
+close $deformationFile
+puts "Element deformations have been exported to {self.field_name}_def.out"
 """
 
 
