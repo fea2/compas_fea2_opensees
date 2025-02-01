@@ -26,7 +26,7 @@ from compas_fea2.model import TrussSection
 
 
 def beam_jobdata(self):
-    return "section Elastic {} {} {} {} {} {} {}".format(self.key, self.material.E, self.A, self.Iyy, self.Ixx, self.material.G, self.J)
+    return "section Elastic {} {} {} {} {} {} {}".format(self.input_key, self.material.E, self.A, self.Iyy, self.Ixx, self.material.G, self.J)
 
 
 # ==============================================================================

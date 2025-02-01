@@ -81,6 +81,7 @@ class OpenseesProblem(Problem):
         None
 
         """
+        self.model.assign_keys(start=self.model._key)
         self.analyse(path=path, exe=exe, erase_data=erase_data, verbose=verbose, *args, **kwargs)
         if kwargs.get("save", False):
             self.model.to_cfm(self.model.path.joinpath(f"{self.model.name}.cfm"))
