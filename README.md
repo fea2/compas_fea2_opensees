@@ -22,9 +22,8 @@ opensees plugin for compas_fea2
 
 ### First steps with code
 
-1. Install the newly created project 
-
-        pip install -e .
+1. Update existing conda environment to include extension
+        conda env update --name test-fea2-3 --file environment.yml --prune
 
 2. Install it on Rhino
 
