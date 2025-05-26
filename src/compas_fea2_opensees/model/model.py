@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_fea2.model import Model
 from compas_fea2.model import SolidSection
 from compas_fea2.model import TrussSection
