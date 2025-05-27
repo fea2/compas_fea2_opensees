@@ -55,7 +55,8 @@ class OpenseesProblem(Problem):
 
         cmd = 'cd "{}" && "{}" "{}"'.format(self.path, exe, filepath)
         for line in launch_process(cmd_args=cmd, cwd=self.path, verbose=verbose):
-            line = line.strip().decode()
+            # line = line.strip().decode()
+            print(line)
             if "error" in line.split(" "):
                 raise Exception("ERROR! - Analysis failed to converge!\nSet VERBOSE=True to check the error.")
         print("Analysis completed!")

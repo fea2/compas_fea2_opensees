@@ -39,15 +39,15 @@ from .combinations import (
 )
 
 # Opensees outputs
-from .outputs import (
-    OpenseesDisplacementFieldOutput,
-    OpenseesAccelerationFieldOutput,
-    OpenseesVelocityFieldOutput,
-    OpenseesReactionFieldOutput,
-    OpenseesHistoryOutput,
-    OpenseesStress2DFieldOutput,
-    OpenseesSectionForcesFieldOutput,
-)
+# from .outputs import (
+#     OpenseesDisplacementFieldOutput,
+#     OpenseesAccelerationFieldOutput,
+#     OpenseesVelocityFieldOutput,
+#     OpenseesReactionFieldOutput,
+#     OpenseesHistoryOutput,
+#     OpenseesStress2DFieldOutput,
+#     OpenseesSectionForcesFieldOutput,
+# )
 
 __all__ = [
     "OpenseesProblem",

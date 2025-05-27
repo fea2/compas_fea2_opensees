@@ -41,11 +41,11 @@ class OpenseesElasticIsotropic(ElasticIsotropic):
     def jobdata(self):
         if not self.notension:
             line = [
-                "uniaxialMaterial Elastic {} {}\n".format(self.input_key, self.E),
-                "nDMaterial ElasticIsotropic {} {} {} {}".format(self.input_key + 1000, self.E, self.v, self.density),
+                "uniaxialMaterial Elastic {} {}\n".format(self.key, self.E),
+                "nDMaterial ElasticIsotropic {} {} {} {}".format(self.key + 1000, self.E, self.v, self.density),
             ]  # FIXME Remove one of the two
         else:
-            line = ["uniaxialMaterial ENT {} {}\n".format(self.input_key, self.E)]
+            line = ["uniaxialMaterial ENT {} {}\n".format(self.key, self.E)]
         return "".join(line)
 
 

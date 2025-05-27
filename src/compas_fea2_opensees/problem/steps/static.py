@@ -141,7 +141,7 @@ loadConst -time 0.0
 #
 # - Output Results
 #   --------------
-{self._generate_output_section()}
+
 #
 """
 
