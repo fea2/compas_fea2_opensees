@@ -126,7 +126,7 @@ numberer {self.numberer}
 system {self.system}
 test {self.test}
 algorithm {self.algorithm}
-integrator LoadControl {self.time}
+integrator LoadControl {1 if not(self.time) else self.time}
 analysis {self.analysis}
 
 # create a dummy Recorder for the reactions (Limitation of OpenSees)

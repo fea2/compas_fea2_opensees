@@ -22,7 +22,6 @@ from .perturbations import (
     OpenseesComplexEigenValue,
     OpenseesBucklingAnalysis,
     OpenseesLinearStaticPerturbation,
-    OpenseesStedyStateDynamic,
     OpenseesSubstructureGeneration,
 )
 

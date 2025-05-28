@@ -22,7 +22,7 @@ dofs = ["x", "y", "z", "xx", "yy", "zz"]
 
 
 def _jobdata(bc, nodes):
-    return "\n".join(["fix {} {}".format(node.input_key, " ".join([str(int(getattr(bc, dof))) for dof in dofs[: node.part.ndf]])) for node in nodes])
+    return "\n".join(["fix {} {}".format(node.key, " ".join([str(int(getattr(bc, dof))) for dof in dofs[: node.part.ndf]])) for node in nodes])
 
 
 class OpenseesGeneralBC(GeneralBC):

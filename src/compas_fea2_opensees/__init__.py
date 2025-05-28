@@ -27,7 +27,7 @@ import compas_fea2
 
 # Models
 from compas_fea2.model import Model
-from compas_fea2.model import DeformablePart
+from compas_fea2.model import Part
 from compas_fea2.model import Node
 
 # Elements
@@ -161,14 +161,11 @@ from compas_fea2.problem.combinations import (
 )
 
 # Outputs
-from compas_fea2.problem.outputs import (
-    DisplacementFieldOutput,
-    AccelerationFieldOutput,
-    VelocityFieldOutput,
-    ReactionFieldOutput,
-    Stress2DFieldOutput,
-    SectionForcesFieldOutput,
-    HistoryOutput,
+from compas_fea2.results.fields import (
+    DisplacementFieldResults,
+    ReactionFieldResults,
+    StressFieldResults,
+    SectionForcesFieldResults
 )
 
 # Input File
@@ -317,15 +314,13 @@ try:
         OpenseesLoadCombination,
     )
 
-    # Opensees outputs
-    from .problem.outputs import (
-        OpenseesDisplacementFieldOutput,
-        OpenseesAccelerationFieldOutput,
-        OpenseesVelocityFieldOutput,
-        OpenseesReactionFieldOutput,
-        OpenseesStress2DFieldOutput,
-        OpenseesSectionForcesFieldOutput,
-        OpenseesHistoryOutput,
+
+    # Opensees FieldResults
+    from .results.fields import (
+        OpenseesDisplacementFieldResults,
+        OpenseesReactionFieldResults,
+        OpenseesSectionForcesFieldResults,
+        OpenseesStressFieldResults
     )
 
     # Opensees Input File
@@ -339,7 +334,7 @@ try:
         backend = compas_fea2.BACKENDS["compas_fea2_opensees"]
 
         backend[Model] = OpenseesModel
-        backend[DeformablePart] = OpenseesPart
+        backend[Part] = OpenseesPart
         backend[Node] = OpenseesNode
 
         backend[MassElement] = OpenseesMassElement
@@ -431,14 +426,12 @@ try:
 
         backend[LoadCombination] = OpenseesLoadCombination
 
-        backend[DisplacementFieldOutput] = OpenseesDisplacementFieldOutput
-        backend[AccelerationFieldOutput] = OpenseesAccelerationFieldOutput
-        backend[VelocityFieldOutput] = OpenseesVelocityFieldOutput
-        backend[ReactionFieldOutput] = OpenseesReactionFieldOutput
-        backend[Stress2DFieldOutput] = OpenseesStress2DFieldOutput
-        backend[SectionForcesFieldOutput] = OpenseesSectionForcesFieldOutput
+        backend[DisplacementFieldResults] = OpenseesDisplacementFieldResults
+        backend[ReactionFieldResults] = OpenseesReactionFieldResults
+        backend[StressFieldResults] = OpenseesReactionFieldResults
+        backend[SectionForcesFieldResults] = OpenseesSectionForcesFieldResults
 
-        backend[HistoryOutput] = OpenseesHistoryOutput
+        # backend[HistoryOutput] = OpenseesHistoryOutput
 
         backend[InputFile] = OpenseesInputFile
         backend[ParametersFile] = OpenseesParametersFile

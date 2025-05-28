@@ -17,7 +17,7 @@ class OpenseesNodesGroup(NodesGroup):
         super(OpenseesNodesGroup, self).__init__(nodes=nodes, **kwargs)
 
     def jobdata(self):
-        return f"region {self.input_key} -nodeOnly {' '.join([str(node.input_key) for node in self.nodes])}"
+        return f"region {self.key} -nodeOnly {' '.join([str(node.key) for node in self.nodes])}"
 
 
 class OpenseesElementsGroup(ElementsGroup):
@@ -29,7 +29,7 @@ class OpenseesElementsGroup(ElementsGroup):
         super(OpenseesElementsGroup, self).__init__(elements=elements, **kwargs)
 
     def jobdata(self):
-        return f"region {self.input_key} -eleOnly {' '.join([str(element.input_key) for element in self.elements])}"
+        return f"region {self.key} -eleOnly {' '.join([str(element.key) for element in self.elements])}"
 
 
 class OpenseesFacesGroup(FacesGroup):
