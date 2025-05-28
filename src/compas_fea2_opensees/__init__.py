@@ -161,15 +161,12 @@ from compas_fea2.problem.combinations import (
 )
 
 # Outputs
-# from compas_fea2.problem.outputs import (
-#     DisplacementFieldOutput,
-#     AccelerationFieldOutput,
-#     VelocityFieldOutput,
-#     ReactionFieldOutput,
-#     Stress2DFieldOutput,
-#     SectionForcesFieldOutput,
-#     HistoryOutput,
-# )
+from compas_fea2.results.fields import (
+    DisplacementFieldResults,
+    ReactionFieldResults,
+    StressFieldResults,
+    SectionForcesFieldResults
+)
 
 # Input File
 from compas_fea2.job import (
@@ -317,16 +314,14 @@ try:
         OpenseesLoadCombination,
     )
 
-    # Opensees outputs
-    # from .problem.outputs import (
-    #     OpenseesDisplacementFieldOutput,
-    #     OpenseesAccelerationFieldOutput,
-    #     OpenseesVelocityFieldOutput,
-    #     OpenseesReactionFieldOutput,
-    #     OpenseesStress2DFieldOutput,
-    #     OpenseesSectionForcesFieldOutput,
-    #     OpenseesHistoryOutput,
-    # )
+
+    # Opensees FieldResults
+    from .results.fields import (
+        OpenseesDisplacementFieldResults,
+        OpenseesReactionFieldResults,
+        OpenseesSectionForcesFieldResults,
+        OpenseesStressFieldResults
+    )
 
     # Opensees Input File
     from .job import (
@@ -431,12 +426,10 @@ try:
 
         backend[LoadCombination] = OpenseesLoadCombination
 
-        # backend[DisplacementFieldOutput] = OpenseesDisplacementFieldOutput
-        # backend[AccelerationFieldOutput] = OpenseesAccelerationFieldOutput
-        # backend[VelocityFieldOutput] = OpenseesVelocityFieldOutput
-        # backend[ReactionFieldOutput] = OpenseesReactionFieldOutput
-        # backend[Stress2DFieldOutput] = OpenseesStress2DFieldOutput
-        # backend[SectionForcesFieldOutput] = OpenseesSectionForcesFieldOutput
+        backend[DisplacementFieldResults] = OpenseesDisplacementFieldResults
+        backend[ReactionFieldResults] = OpenseesReactionFieldResults
+        backend[StressFieldResults] = OpenseesReactionFieldResults
+        backend[SectionForcesFieldResults] = OpenseesSectionForcesFieldResults
 
         # backend[HistoryOutput] = OpenseesHistoryOutput
 

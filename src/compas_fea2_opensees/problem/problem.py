@@ -140,7 +140,8 @@ class OpenseesProblem(Problem):
                 process_modal_shapes(connection, step)
             else:
                 for field_output in step.field_outputs:
-                    read_results_file(connection, field_output)
+                    # read_results_file(connection, field_output)
+                    field_output.extract_results()
 
         connection.close()
         print("Results extraction completed!")
