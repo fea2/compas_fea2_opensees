@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 # Opensees Problem
 from .problem import OpenseesProblem
@@ -34,19 +31,8 @@ from .displacements import (
 )
 
 # Opensees Displacements
-from .combinations import (
+from ._combinations import (
     OpenseesLoadCombination,
-)
-
-# Opensees outputs
-from .outputs import (
-    OpenseesDisplacementFieldOutput,
-    OpenseesAccelerationFieldOutput,
-    OpenseesVelocityFieldOutput,
-    OpenseesReactionFieldOutput,
-    OpenseesHistoryOutput,
-    OpenseesStress2DFieldOutput,
-    OpenseesSectionForcesFieldOutput,
 )
 
 __all__ = [
@@ -68,11 +54,4 @@ __all__ = [
     "OpenseesTributaryLoad",
     "OpenseesGeneralDisplacement",
     "OpenseesLoadCombination",
-    "OpenseesDisplacementFieldOutput",
-    "OpenseesAccelerationFieldOutput",
-    "OpenseesVelocityFieldOutput",
-    "OpenseesReactionFieldOutput",
-    "OpenseesStress2DFieldOutput",
-    "OpenseesSectionForcesFieldOutput",
-    "OpenseesHistoryOutput",
 ]

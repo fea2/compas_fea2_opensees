@@ -1,19 +1,16 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from compas_fea2.model import DeformablePart
+from compas_fea2.model import Part
 
 
-class OpenseesPart(DeformablePart):
-    """OpenSees implementation of :class:`compas_fea2.model.DeformablePart`.
+class OpenseesPart(Part):
+    """OpenSees implementation of :class:`compas_fea2.model.Part`.
 
     Note
     ----
     Models with multiple parts are not currently supported in Opensees.
     """
 
-    __doc__ += DeformablePart.__doc__
+    __doc__ += Part.__doc__
     __doc__ += """
     Additional Parameters
     ---------------------

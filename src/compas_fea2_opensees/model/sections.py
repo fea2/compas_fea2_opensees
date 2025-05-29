@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from compas_fea2.model import AngleSection
 from compas_fea2.model import BeamSection
@@ -26,7 +23,7 @@ from compas_fea2.model import TrussSection
 
 
 def beam_jobdata(self):
-    return "section Elastic {} {} {} {} {} {} {}".format(self.input_key, self.material.E, self.A, self.Iyy, self.Ixx, self.material.G, self.J)
+    return "section Elastic {} {} {} {} {} {} {}".format(self.key, self.material.E, self.A, self.Iyy, self.Ixx, self.material.G, self.J)
 
 
 # ==============================================================================
@@ -258,7 +255,7 @@ class OpenseesShellSection(ShellSection):
         super(OpenseesShellSection, self).__init__(t, material, **kwargs)
 
     def jobdata(self):
-        return "section ElasticMembranePlateSection {} {} {} {} {}".format(self.input_key, self.material.E, self.material.v, self.t, self.material.density)
+        return "section ElasticMembranePlateSection {} {} {} {} {}".format(self.key, self.material.E, self.material.v, self.t, self.material.density)
 
 
 class OpenseesMembraneSection(MembraneSection):

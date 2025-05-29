@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from compas_fea2.model import Steel
 
@@ -23,6 +20,6 @@ class OpenseesSteel(Steel):
         return self._EshE
 
     def jobdata(self):
-        lines = ["uniaxialMaterial Steel01 {0} {1} {2} {3}".format(self.input_key, self.fy, self.E, self.EshE)]
-        lines.append("nDMaterial ElasticIsotropic {} {} {} {}".format(self.input_key + 1000, self.E, self.v, self.density))
+        lines = ["uniaxialMaterial Steel01 {0} {1} {2} {3}".format(self.key, self.fy, self.E, self.EshE)]
+        lines.append("nDMaterial ElasticIsotropic {} {} {} {}".format(self.key + 1000, self.E, self.v, self.density))
         return "\n".join(lines)

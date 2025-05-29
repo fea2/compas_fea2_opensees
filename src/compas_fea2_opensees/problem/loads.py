@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from compas_fea2.problem import ConcentratedLoad
 from compas_fea2.problem import GravityLoad
@@ -22,7 +19,7 @@ class OpenseesConcentratedLoad(ConcentratedLoad):
         super(OpenseesConcentratedLoad, self).__init__(x=x, y=y, z=z, xx=xx, yy=yy, zz=zz, axes=axes, **kwargs)
 
     def jobdata(self, node):
-        return "\tload {} {}".format(node.input_key, " ".join([str(self.components[dof] or 0.0) for dof in dofs[: node.part.ndf]]))
+        return "\tload {} {}".format(node.key, " ".join([str(self.components[dof] or 0.0) for dof in dofs[: node.part.ndf]]))
 
 
 class OpenseesPressureLoad(PressureLoad):

@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from compas_fea2.problem.steps import StaticRiksStep
 from compas_fea2.problem.steps import StaticStep
@@ -93,7 +90,10 @@ class OpenseesStaticStep(StaticStep):
         algorithm="Newton",
         **kwargs,
     ):
-        super(OpenseesStaticStep, self).__init__(max_increments, initial_inc_size, min_inc_size, time, nlgeom, modify, **kwargs)
+        super(OpenseesStaticStep, self).__init__(max_increments=max_increments, 
+                                                 initial_inc_size=initial_inc_size, 
+                                                 max_inc_size=min_inc_size, 
+                                                 time=time, nlgeom=nlgeom, modify=modify, **kwargs)
         self.constraint = constraint
         self.algorithm = algorithm
         self.numberer = numberer
@@ -126,7 +126,7 @@ numberer {self.numberer}
 system {self.system}
 test {self.test}
 algorithm {self.algorithm}
-integrator LoadControl {self.time}
+integrator {self.integrator} {self.time}
 analysis {self.analysis}
 
 # create a dummy Recorder for the reactions (Limitation of OpenSees)
@@ -157,7 +157,17 @@ timeSeries Constant {self.problem._steps_order.index(self)} -factor 1.0
         return "\n".join([pattern.load.jobdata(pattern.distribution) for pattern in self.displacements]) or "#"
 
     def _generate_loads_section(self):
-        return self.combination.jobdata()
+        
+        factor = 1
+        index = 0
+        loads = "\n".join([load.jobdata(node) for node, load in self.combination.node_load])
+
+        return f"pattern Plain {index} {index} -fact {factor} {{\n{loads}\n}}" if loads else "#"
+        
+        # data = []
+        # for node, load in self.combination.node_load:
+        #     data.append(load.jobdata(node))
+        # return "\n".join(data) or "#"
 
     def _generate_fields_section(self):
         return "#"

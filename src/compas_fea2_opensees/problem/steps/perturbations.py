@@ -1,12 +1,8 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from compas_fea2.problem.steps import BucklingAnalysis
 from compas_fea2.problem.steps import ComplexEigenValue
 from compas_fea2.problem.steps import LinearStaticPerturbation
 from compas_fea2.problem.steps import ModalAnalysis
-from compas_fea2.problem.steps import StedyStateDynamic
 from compas_fea2.problem.steps import SubstructureGeneration
 
 
@@ -171,29 +167,6 @@ class OpenseesLinearStaticPerturbation(LinearStaticPerturbation):
         return f"""#
 {self._generate_header_section()}
 linearStaticPerturbation
-"""
-
-    def _generate_header_section(self):
-        return """#
-# STEP {0}
-#
-#""".format(
-            self.name
-        )
-
-
-class OpenseesStedyStateDynamic(StedyStateDynamic):
-    """"""
-
-    __doc__ += StedyStateDynamic.__doc__
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-    def jobdata(self):
-        return f"""#
-{self._generate_header_section()}
-steadyStateDynamic
 """
 
     def _generate_header_section(self):

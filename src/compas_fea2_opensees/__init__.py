@@ -16,10 +16,24 @@ https://opensees.github.io/OpenSeesDocumentation/user/userManual.html
 
 """
 
-from __future__ import print_function
-
 import os
 from dotenv import load_dotenv
+
+__author__ = ["Francesco Ranaudo"]
+__copyright__ = "Francesco Ranaudo"
+__license__ = "MIT License"
+__email__ = "francesco.ranaudo@gmail.com"
+__version__ = "0.1.0"
+
+HERE = os.path.dirname(__file__)
+
+HOME = os.path.abspath(os.path.join(HERE, "../../"))
+DATA = os.path.abspath(os.path.join(HOME, "data"))
+DOCS = os.path.abspath(os.path.join(HOME, "docs"))
+TEMP = os.path.abspath(os.path.join(HOME, "temp"))
+
+
+__all__ = ["HOME", "DATA", "DOCS", "TEMP"]
 
 from pydoc import ErrorDuringImport
 import compas_fea2
@@ -27,7 +41,8 @@ import compas_fea2
 
 # Models
 from compas_fea2.model import Model
-from compas_fea2.model import DeformablePart
+from compas_fea2.model import Part
+from compas_fea2.model import RigidPart
 from compas_fea2.model import Node
 
 # Elements
@@ -44,9 +59,10 @@ from compas_fea2.model.elements import (
 
 # Sections
 from compas_fea2.model.sections import (
+    SpringSection,
+    ConnectorSection,
     AngleSection,
     BeamSection,
-    GenericBeamSection,
     BoxSection,
     CircularSection,
     HexSection,
@@ -54,7 +70,6 @@ from compas_fea2.model.sections import (
     MassSection,
     PipeSection,
     RectangularSection,
-    SpringSection,
     StrutSection,
     TieSection,
     TrapezoidalSection,
@@ -91,14 +106,18 @@ from compas_fea2.model.groups import (
 # Constraints
 from compas_fea2.model.constraints import (
     TieConstraint,
+    TieMPC,
+    BeamMPC,
 )
 
 # Connectors
 from compas_fea2.model.connectors import (
+    LinearConnector,
     RigidLinkConnector,
     SpringConnector,
     ZeroLengthSpringConnector,
     ZeroLengthContactConnector,
+    # GroundSpringConnector,
 )
 
 # Releases
@@ -108,6 +127,7 @@ from compas_fea2.model.releases import (
 
 # Boundary Conditions
 from compas_fea2.model.bcs import (
+    GeneralBC,
     FixedBC,
     FixedBCX,
     FixedBCY,
@@ -123,6 +143,23 @@ from compas_fea2.model.bcs import (
     RollerBCYZ,
     RollerBCZ,
 )
+
+# Initial Conditions
+from compas_fea2.model.ics import (
+    InitialTemperatureField,
+    InitialStressField,
+)
+
+# # Interactions
+# from compas_fea2.model.interactions import (
+#     HardContactFrictionPenalty,
+#     HardContactNoFriction,
+#     HardContactRough,
+#     LinearContactFrictionPenalty,
+# )
+
+# # Interfaces
+# from compas_fea2.model.interfaces import Interface
 
 # Problem
 from compas_fea2.problem import Problem
@@ -142,7 +179,8 @@ from compas_fea2.problem.steps import (
 # Loads
 from compas_fea2.problem.loads import (
     ConcentratedLoad,
-    PressureLoad,
+    # EdgeLoad,
+    # FaceLoad,
     TributaryLoad,
     PrestressLoad,
     GravityLoad,
@@ -155,20 +193,13 @@ from compas_fea2.problem.displacements import (
     GeneralDisplacement,
 )
 
-# Displacements
-from compas_fea2.problem.combinations import (
-    LoadCombination,
-)
-
-# Outputs
-from compas_fea2.problem.outputs import (
-    DisplacementFieldOutput,
-    AccelerationFieldOutput,
-    VelocityFieldOutput,
-    ReactionFieldOutput,
-    Stress2DFieldOutput,
-    SectionForcesFieldOutput,
-    HistoryOutput,
+# Results
+from compas_fea2.results import (
+    DisplacementFieldResults,
+    ReactionFieldResults,
+    StressFieldResults,
+    SectionForcesFieldResults,
+    ContactForcesFieldResults,
 )
 
 # Input File
@@ -178,13 +209,14 @@ from compas_fea2.job import (
 )
 
 # =========================================================================
-#                           OPENSEES CLASSES
+#                           Opensees CLASSES
 # =========================================================================
 
 try:
     # Opensees Models
     from .model import OpenseesModel
     from .model import OpenseesPart
+    # from .model import OpenseesRigidPart
     from .model import OpenseesNode
 
     # Opensees Elements
@@ -201,9 +233,10 @@ try:
 
     # Opensees Sections
     from .model.sections import (
+        OpenseesSpringSection,
+        # OpenseesConnectorSection,
         OpenseesAngleSection,
         OpenseesBeamSection,
-        OpenseesGenericBeamSection,
         OpenseesBoxSection,
         OpenseesCircularSection,
         OpenseesHexSection,
@@ -211,7 +244,6 @@ try:
         OpenseesMassSection,
         OpenseesPipeSection,
         OpenseesRectangularSection,
-        OpenseesSpringSection,
         OpenseesStrutSection,
         OpenseesTieSection,
         OpenseesTrapezoidalSection,
@@ -248,14 +280,18 @@ try:
     # Opensees Constraints
     from .model.constraints import (
         OpenseesTieConstraint,
+        # OpenseesBeamMPC,
+        # OpenseesTieMPC,
     )
 
     # Opensees Connectors
     from .model.connectors import (
-        OpenseesRigidLinkConnector,
+        # OpenseesLinearConnector,
         OpenseesSpringConnector,
         OpenseesZeroLengthSpringConnector,
+        OpenseesRigidLinkConnector,
         OpenseesZeroLengthContactConnector,
+        # OpenseesGroundSpringConnector,
     )
 
     # Opensees release
@@ -265,6 +301,7 @@ try:
 
     # Opensees Boundary Conditions
     from .model.bcs import (
+        OpenseesGeneralBC,
         OpenseesFixedBC,
         OpenseesFixedBCX,
         OpenseesFixedBCY,
@@ -280,6 +317,23 @@ try:
         OpenseesRollerBCYZ,
         OpenseesRollerBCZ,
     )
+
+    # # Initial Conditions
+    # from .model.ics import (
+    #     OpenseesInitialTemperatureField,
+    #     OpenseesInitialStressField,
+    # )
+
+    # # Interactions
+    # from .model.interactions import (
+    #     OpenseesHardContactFrictionPenalty,
+    #     OpenseesHardContactRough,
+    #     OpenseesLinearContactFrictionPenalty,
+    #     OpenseesHardContactNoFriction,
+    # )
+
+    # # Opensees Interfaces
+    # from .model.interfaces import OpenseesInterface
 
     # Opensees Problem
     from .problem import OpenseesProblem
@@ -299,7 +353,6 @@ try:
     # Opensees Loads
     from .problem.loads import (
         OpenseesConcentratedLoad,
-        OpenseesPressureLoad,
         OpenseesTributaryLoad,
         OpenseesPrestressLoad,
         OpenseesGravityLoad,
@@ -312,20 +365,13 @@ try:
         OpenseesGeneralDisplacement,
     )
 
-    # Opensees Displacements
-    from .problem.combinations import (
-        OpenseesLoadCombination,
-    )
-
-    # Opensees outputs
-    from .problem.outputs import (
-        OpenseesDisplacementFieldOutput,
-        OpenseesAccelerationFieldOutput,
-        OpenseesVelocityFieldOutput,
-        OpenseesReactionFieldOutput,
-        OpenseesStress2DFieldOutput,
-        OpenseesSectionForcesFieldOutput,
-        OpenseesHistoryOutput,
+    # Opensees Results
+    from .results import (
+        OpenseesStressFieldResults,
+        OpenseesDisplacementFieldResults,
+        OpenseesReactionFieldResults,
+        OpenseesContactFieldResults,
+        OpenseesSectionForcesFieldResults,
     )
 
     # Opensees Input File
@@ -339,7 +385,8 @@ try:
         backend = compas_fea2.BACKENDS["compas_fea2_opensees"]
 
         backend[Model] = OpenseesModel
-        backend[DeformablePart] = OpenseesPart
+        backend[Part] = OpenseesPart
+        # backend[RigidPart] = OpenseesRigidPart
         backend[Node] = OpenseesNode
 
         backend[MassElement] = OpenseesMassElement
@@ -351,9 +398,10 @@ try:
         backend[_Element3D] = _OpenseesElement3D
         backend[TetrahedronElement] = OpenseesTetrahedronElement
 
+        backend[SpringSection] = OpenseesSpringSection
+        # backend[ConnectorSection] = OpenseesConnectorSection
         backend[AngleSection] = OpenseesAngleSection
         backend[BeamSection] = OpenseesBeamSection
-        backend[GenericBeamSection] = OpenseesGenericBeamSection
         backend[BoxSection] = OpenseesBoxSection
         backend[CircularSection] = OpenseesCircularSection
         backend[HexSection] = OpenseesHexSection
@@ -364,7 +412,6 @@ try:
         backend[RectangularSection] = OpenseesRectangularSection
         backend[ShellSection] = OpenseesShellSection
         backend[SolidSection] = OpenseesSolidSection
-        backend[SpringSection] = OpenseesSpringSection
         backend[StrutSection] = OpenseesStrutSection
         backend[TieSection] = OpenseesTieSection
         backend[TrapezoidalSection] = OpenseesTrapezoidalSection
@@ -385,14 +432,19 @@ try:
         backend[FacesGroup] = OpenseesFacesGroup
 
         backend[TieConstraint] = OpenseesTieConstraint
+        # backend[TieMPC] = OpenseesTieMPC
+        # backend[BeamMPC] = OpenseesBeamMPC
 
-        backend[RigidLinkConnector] = OpenseesRigidLinkConnector
         backend[SpringConnector] = OpenseesSpringConnector
+        # backend[LinearConnector] = OpenseesLinearConnector
         backend[ZeroLengthSpringConnector] = OpenseesZeroLengthSpringConnector
+        backend[RigidLinkConnector] = OpenseesRigidLinkConnector
         backend[ZeroLengthContactConnector] = OpenseesZeroLengthContactConnector
+        # backend[GroundSpringConnector] = OpenseesGroundSpringConnector
 
         backend[BeamEndPinRelease] = OpenseesBeamEndPinRelease
 
+        backend[GeneralBC] = OpenseesGeneralBC
         backend[FixedBC] = OpenseesFixedBC
         backend[FixedBCX] = OpenseesFixedBCX
         backend[FixedBCY] = OpenseesFixedBCY
@@ -408,6 +460,16 @@ try:
         backend[RollerBCYZ] = OpenseesRollerBCYZ
         backend[RollerBCZ] = OpenseesRollerBCZ
 
+        # backend[InitialStressField] = OpenseesInitialStressField
+        # backend[InitialTemperatureField] = OpenseesInitialTemperatureField
+
+        # backend[HardContactFrictionPenalty] = OpenseesHardContactFrictionPenalty
+        # backend[HardContactRough] = OpenseesHardContactRough
+        # backend[LinearContactFrictionPenalty] = OpenseesLinearContactFrictionPenalty
+        # backend[HardContactNoFriction] = OpenseesHardContactNoFriction
+
+        # backend[Interface] = OpenseesInterface
+
         backend[Problem] = OpenseesProblem
 
         backend[ModalAnalysis] = OpenseesModalAnalysis
@@ -421,7 +483,6 @@ try:
 
         backend[GravityLoad] = OpenseesGravityLoad
         backend[ConcentratedLoad] = OpenseesConcentratedLoad
-        backend[PressureLoad] = OpenseesPressureLoad
         backend[TributaryLoad] = OpenseesTributaryLoad
         backend[PrestressLoad] = OpenseesPrestressLoad
         backend[HarmonicPointLoad] = OpenseesHarmonicPointLoad
@@ -429,23 +490,18 @@ try:
 
         backend[GeneralDisplacement] = OpenseesGeneralDisplacement
 
-        backend[LoadCombination] = OpenseesLoadCombination
-
-        backend[DisplacementFieldOutput] = OpenseesDisplacementFieldOutput
-        backend[AccelerationFieldOutput] = OpenseesAccelerationFieldOutput
-        backend[VelocityFieldOutput] = OpenseesVelocityFieldOutput
-        backend[ReactionFieldOutput] = OpenseesReactionFieldOutput
-        backend[Stress2DFieldOutput] = OpenseesStress2DFieldOutput
-        backend[SectionForcesFieldOutput] = OpenseesSectionForcesFieldOutput
-
-        backend[HistoryOutput] = OpenseesHistoryOutput
+        backend[StressFieldResults] = OpenseesStressFieldResults
+        backend[DisplacementFieldResults] = OpenseesDisplacementFieldResults
+        backend[ReactionFieldResults] = OpenseesReactionFieldResults
+        backend[ContactForcesFieldResults] = OpenseesContactFieldResults
+        backend[SectionForcesFieldResults] = OpenseesSectionForcesFieldResults
 
         backend[InputFile] = OpenseesInputFile
         backend[ParametersFile] = OpenseesParametersFile
 
         print("Opensees implementations registered...")
 
-except ImportError:
+except:
     raise ErrorDuringImport()
 
 
@@ -477,34 +533,20 @@ def init_fea2_opensees(exe):
     load_dotenv(env_path)
 
 
-__author__ = ["Francesco Ranaudo"]
-__copyright__ = "Francesco Ranaudo"
-__license__ = "MIT License"
-__email__ = "ranaudo@arch.ethz.ch"
-__version__ = "0.2.0"
-
-HERE = os.path.dirname(__file__)
-
-HOME = os.path.abspath(os.path.join(HERE, "../../"))
-DATA = os.path.abspath(os.path.join(HOME, "data"))
-DOCS = os.path.abspath(os.path.join(HOME, "docs"))
-TEMP = os.path.abspath(os.path.join(HOME, "temp"))
-
-
-__all__ = ["HOME", "DATA", "DOCS", "TEMP"]
-
 if not load_dotenv():
+
     from sys import platform
 
     if platform == "linux" or platform == "linux2":
         # linux
-        exe = "OpenSees"
+        raise NotImplementedError()
     elif platform == "darwin":
         # OS X
-        exe = "/Applications/OpenSees3.7.0/bin/OpenSees"
+        # raise SystemError("Opensees is not available on Mac")
+        exe = '/Applications/OpenSees3.5.0/bin/OpenSees'
     elif platform == "win32":
         # Windows
-        exe = "C:/OpenSees3.7.0/bin/OpenSees.exe"
+        raise NotImplementedError()
     else:
         raise ValueError("you must specify the location of the solver.")
     init_fea2_opensees(exe)

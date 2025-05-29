@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_fea2.model import ClampBCXX
 from compas_fea2.model import ClampBCYY
 from compas_fea2.model import ClampBCZZ
@@ -22,7 +18,7 @@ dofs = ["x", "y", "z", "xx", "yy", "zz"]
 
 
 def _jobdata(bc, nodes):
-    return "\n".join(["fix {} {}".format(node.input_key, " ".join([str(int(getattr(bc, dof))) for dof in dofs[: node.part.ndf]])) for node in nodes])
+    return "\n".join(["fix {} {}".format(node.key, " ".join([str(int(getattr(bc, dof))) for dof in dofs[: node.part.ndf]])) for node in nodes])
 
 
 class OpenseesGeneralBC(GeneralBC):

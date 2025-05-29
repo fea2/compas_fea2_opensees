@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_fea2.model import RigidLinkConnector
 from compas_fea2.model import SpringConnector
 from compas_fea2.model import ZeroLengthContactConnector
@@ -17,8 +13,8 @@ class OpenseesRigidLinkConnector(RigidLinkConnector):
         super(OpenseesRigidLinkConnector, self).__init__(nodes, dofs, **kwargs)
 
     def jobdata(self):
-        cNode = self.nodes[0].input_key
-        rNode = self.nodes[1].input_key
+        cNode = self.nodes[0].key
+        rNode = self.nodes[1].key
         if self.dofs == "beam":
             return f"rigidLink beam {rNode} {cNode}"
         elif self.dofs == "bar":
@@ -79,13 +75,13 @@ class OpenseesZeroLengthContactConnector(ZeroLengthContactConnector):
             raise ValueError("{} is not a valid implementation.".format(self._implementation))
 
     def _Contact3D(self):
-        eleTag = self.input_key + len(sorted(self.model.elements, key=lambda x: x.input_key))
-        cNode = self.nodes[0].input_key
-        rNode = self.nodes[1].input_key
+        eleTag = self.key + len(sorted(self.model.elements, key=lambda x: x.key))
+        cNode = self.nodes[0].key
+        rNode = self.nodes[1].key
         return f"element zeroLengthContact3D {eleTag} {cNode} {rNode} {self.Kn} {self.Kt} {self.mu} {self._c} {self.direction}"
 
     def _ASDimplex(self):
-        eleTag = self.input_key + len(sorted(self.model.elements, key=lambda x: x.input_key))
-        cNode = self.nodes[0].input_key
-        rNode = self.nodes[1].input_key
+        eleTag = self.key + len(sorted(self.model.elements, key=lambda x: x.key))
+        cNode = self.nodes[0].key
+        rNode = self.nodes[1].key
         return f"element zeroLengthContactASDimplex {eleTag} {cNode} {rNode} {self.Kn} {self.Kt} {self.mu} -orient {' '.join([str(i) for i in self.direction])}"

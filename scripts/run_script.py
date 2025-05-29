@@ -22,19 +22,19 @@ from compas_fea2.utilities._utils import launch_process
 
 print("\nBegin the analysis...")
 
-file_path = "/Users/francesco/code/fea2/compas_fea2_opensees/scripts/tcl"
-file_name = "modal_analysis_beam"
+file_path = "/Users/frankie/code/FEA2/examples/temp/portal/simple_column_Fx/"
+file_name = "simple_column_Fx"
 filepath = os.path.join(file_path, file_name + ".tcl")
-filepath = (
-    "/Users/francesco/code/fea2/compas_fea2_opensees/temp/ModalAnalysis/ElasticFrame/ModalAnalysis/ModalAnalysis.tcl"
-)
+# filepath = (
+#     "/Users/frankie/code/FEA2/examples/temp/portal/simple_column_Fx/simple_column_Fx.tcl"
+# )
 
 verbose = True
-exe = "/Applications/OpenSees3.7.0/bin/OpenSees"
+exe = "/Applications/OpenSees3.5.0/bin/OpenSees"
 
 cmd = 'cd "{}" && "{}" "{}"'.format(file_path, exe, filepath)
 for line in launch_process(cmd_args=cmd, cwd=file_path, verbose=verbose):
-    line = line.strip().decode()
+    # line = line.strip().decode()
 
     if verbose:
         print(line)

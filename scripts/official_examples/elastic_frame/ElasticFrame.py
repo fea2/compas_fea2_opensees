@@ -1,4 +1,4 @@
-from compas_fea2.model import Model, DeformablePart, Node, BeamElement, ElasticIsotropic, GenericBeamSection
+from compas_fea2.model import Model, Part, Node, BeamElement, ElasticIsotropic, GenericBeamSection
 from compas_fea2.problem import Problem, ModalAnalysis
 from compas_fea2_opensees import TEMP
 import os
@@ -26,7 +26,7 @@ w3 = Load3 / (90 * ft)
 
 # Initialize the model
 mdl = Model(name="ElasticFrame")
-prt = mdl.add_part(DeformablePart(name="ElasticFrame-1"))
+prt = mdl.add_part(Part(name="ElasticFrame-1"))
 prt.ndm = 2
 prt.ndf = 3
 

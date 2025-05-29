@@ -1,14 +1,4 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from compas_fea2.problem.outputs import AccelerationFieldOutput
-from compas_fea2.problem.outputs import DisplacementFieldOutput
-from compas_fea2.problem.outputs import ReactionFieldOutput
-from compas_fea2.problem.outputs import Stress2DFieldOutput
-from compas_fea2.problem.outputs import VelocityFieldOutput
-from compas_fea2.problem.outputs import SectionForcesFieldOutput
-from compas_fea2.problem.outputs import HistoryOutput
 
 
 def tcl_export_node_results(field_name, function_name):

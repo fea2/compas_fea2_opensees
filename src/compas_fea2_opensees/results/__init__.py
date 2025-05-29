@@ -14,13 +14,20 @@ Results
 
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from .results_to_sql import read_results_file
+from .fields import (  # noqa: F401 F403
+    OpenseesDisplacementFieldResults,
+    OpenseesReactionFieldResults,
+    OpenseesSectionForcesFieldResults,
+    OpenseesStressFieldResults,
+    OpenseesContactFieldResults,
+)
 
 
 __all__ = [
-    "read_results_file",
+    "OpenseesDisplacementFieldResults",
+    "OpenseesReactionFieldResults",
+    "OpenseesSectionForcesFieldResults",
+    "OpenseesStressFieldResults",
+    "OpenseesContactFieldResults",
 ]

@@ -14,7 +14,7 @@ Replicating the OpenSees example with:
 import os
 
 import compas_fea2
-from compas_fea2.model import Model, DeformablePart
+from compas_fea2.model import Model, Part
 from compas_fea2.model import Node
 from compas_fea2.model import TrussSection
 from compas_fea2.model import ElasticIsotropic
@@ -36,7 +36,7 @@ compas_fea2.set_backend("compas_fea2_opensees")
 # 2. Create the Model
 # =============================================================================
 model = Model(name="Basic_Truss_Example")
-prt = DeformablePart(name="Truss", ndf=2, ndm=2)
+prt = Part(name="Truss", ndf=2, ndm=2)
 model.add_part(prt)
 
 # =============================================================================
