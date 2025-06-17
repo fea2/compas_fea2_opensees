@@ -30,7 +30,7 @@ filepath = os.path.join(file_path, file_name + ".tcl")
 # )
 
 verbose = True
-exe = "/Applications/OpenSees3.5.0/bin/OpenSees"
+exe = "/Applications/OpenSees3.7.0/bin/OpenSees"
 
 cmd = 'cd "{}" && "{}" "{}"'.format(file_path, exe, filepath)
 for line in launch_process(cmd_args=cmd, cwd=file_path, verbose=verbose):

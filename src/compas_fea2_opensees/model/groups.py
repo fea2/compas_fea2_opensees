@@ -34,8 +34,8 @@ class OpenseesFacesGroup(FacesGroup):
 
     __doc__ += FacesGroup.__doc__
 
-    def __init__(self, *, part, element_face, **kwargs):
-        super(FacesGroup, self).__init__(part=part, element_face=element_face, **kwargs)
+    def __init__(self, faces, **kwargs):
+        super(FacesGroup, self).__init__(faces, **kwargs)
 
     def jobdata(self):
         raise NotImplementedError

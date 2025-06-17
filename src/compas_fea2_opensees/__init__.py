@@ -543,7 +543,7 @@ if not load_dotenv():
     elif platform == "darwin":
         # OS X
         # raise SystemError("Opensees is not available on Mac")
-        exe = '/Applications/OpenSees3.5.0/bin/OpenSees'
+        exe = '/Applications/OpenSees3.7.0/bin/OpenSees'
     elif platform == "win32":
         # Windows
         raise NotImplementedError()

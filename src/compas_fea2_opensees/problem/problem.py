@@ -112,7 +112,7 @@ class OpenseesProblem(Problem):
     # ==========================================================================
     @timer(message="Data extracted from OpenSees .out files in")
     def extract_results(self, database_path=None, database_name=None, field_output=None):
-        """Extract data from the Abaqus .odb file and store into a SQLite database.
+        """Extract data from the Opensees .out file and store into a SQLite database.
 
         Parameters
         ----------
